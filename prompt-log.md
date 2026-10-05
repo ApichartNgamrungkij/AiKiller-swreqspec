@@ -297,3 +297,13 @@
 - สรุป: แตกงานเป็น 11 task ตามลำดับโมเดลข้อมูล, API, หน้าจอ, การเชื่อมต่อจริง, polling และการตรวจสอบระบบ
 - Open Questions ที่ต้องรอ: ไม่มี
 - หมายเหตุ: AC-SRCH-06 ยึดตาม spec ให้กิจกรรมใหม่แสดงทันทีโดยไม่ต้องรอ Admin อนุมัติ แม้ข้อความทดสอบเดิมใน plan.md จะระบุสวนทาง จึงไม่สร้าง task ซ่อนกิจกรรมที่ยังไม่อนุมัติ
+
+---
+
+## 2026-10-05 14:05 คำสั่ง: /tasks specs/002-Register/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/002-Register/spec.md และ specs/002-Register/plan.md
+- ผลลัพธ์: specs/002-Register/tasks.md
+- สรุป: แตกงานเป็น 10 task ครอบคลุมการฝัง Google Form, การบันทึก Google Sheets, การ sync สถานะ, การปิดรับ, สิทธิ์การเข้าถึง และ Notification
+- Open Questions ที่ต้องรอ: ไม่มี
