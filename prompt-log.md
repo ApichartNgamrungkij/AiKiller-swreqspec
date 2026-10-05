@@ -300,6 +300,16 @@
 
 ---
 
+## 2026-10-05 14:07 คำสั่ง: /tasks specs/006-ExportList/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/006-ExportList/spec.md และ specs/006-ExportList/plan.md
+- ผลลัพธ์: specs/006-ExportList/tasks.md
+- สรุป: แตกงานเป็น 9 task ครอบคลุมการอ่าน Google Sheets, การตรวจสิทธิ์, การพาไปยัง Sheets, การดาวน์โหลดไฟล์ และการคงกระบวนการ REG เดิม
+- Open Questions ที่ต้องรอ: ไม่มี
+
+---
+
 ## 2026-10-05 14:05 คำสั่ง: /tasks specs/002-Register/spec.md
 
 - เครื่องมือ: Copilot ใน Codespaces
