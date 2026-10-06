@@ -317,3 +317,13 @@
 - ผลลัพธ์: specs/002-Register/tasks.md
 - สรุป: แตกงานเป็น 10 task ครอบคลุมการฝัง Google Form, การบันทึก Google Sheets, การ sync สถานะ, การปิดรับ, สิทธิ์การเข้าถึง และ Notification
 - Open Questions ที่ต้องรอ: ไม่มี
+
+---
+
+## 2026-10-06 04:38 คำสั่ง: /tasks specs/007-DeleteActivity/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/007-DeleteActivity/spec.md และ specs/007-DeleteActivity/plan.md
+- ผลลัพธ์: specs/007-DeleteActivity/tasks.md
+- สรุป: แตกงานเป็น 6 task ครอบคลุมการจัดเก็บสถานะกิจกรรม, การเลือกและยืนยันลบ/ระงับ, การซ่อนกิจกรรมจากนักศึกษา, Audit Log, และการป้องกันผู้ไม่มีสิทธิ์ Admin
+- Open Questions ที่ต้องรอ: ไม่มี
