@@ -129,7 +129,17 @@
 
 - เครื่องมือ: Copilot ใน Codespaces
 - ผลลัพธ์: specs/003-Schedule/plan.md
-- Constraints ที่ยังไม่ได้ใช้: ไม่มี; CON-SCHED-01, IF-SCHED-01 และ DOM-SCHED-01 ถูกระบุในตารางตรวจ Constraints
+- Constraints ที่ยังไม่ได้ใช้: ไม่มี; CON-SCHED-01, IF-SCHED-01 และ DOM-SC
+
+---
+
+## 2026-10-06 09:59 คำสั่ง: /tasks specs/003-Schedule/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ผลลัพธ์: สร้างไฟล์ `specs/003-Schedule/tasks.md` สำเร็จ
+- สรุป: มี 8 task ทั้งหมด, 0 task ที่ต้องรอ Open Questions, และทุก AC-SCHED-01 ถึง AC-SCHED-07 มี task ที่ตรวจแล้ว
+- หมายเหตุ: spec.md อยู่ในสถานะ Draft v2 และไม่มี Open Questions จึงไม่ต้องหยุดที่ Q-xx
+HED-01 ถูกระบุในตารางตรวจ Constraints
 
 ---
 
@@ -316,4 +326,14 @@
 - ไฟล์: specs/002-Register/spec.md และ specs/002-Register/plan.md
 - ผลลัพธ์: specs/002-Register/tasks.md
 - สรุป: แตกงานเป็น 10 task ครอบคลุมการฝัง Google Form, การบันทึก Google Sheets, การ sync สถานะ, การปิดรับ, สิทธิ์การเข้าถึง และ Notification
+- Open Questions ที่ต้องรอ: ไม่มี
+
+---
+
+## 2026-10-06 10:01 คำสั่ง: /tasks specs/004-NewActivity/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/004-NewActivity/spec.md และ specs/004-NewActivity/plan.md
+- ผลลัพธ์: specs/004-NewActivity/tasks.md
+- สรุป: แตกงานเป็น 9 task ครอบคลุมการกำหนดโครงข้อมูล, การตรวจสิทธิ์, ฟอร์มกรอกข้อมูล, validation, การบันทึกและเผยแพร่กิจกรรม, edit log, cancellation notification, และการตัดสินใจ NFR 5,000 คน
 - Open Questions ที่ต้องรอ: ไม่มี
