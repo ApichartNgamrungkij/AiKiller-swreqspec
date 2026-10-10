@@ -54,7 +54,7 @@
 - ไฟล์ที่แตะ: `frontend/src/components/OverlapWarning.tsx`, `frontend/src/pages/ActivityDetailPage.tsx`, `frontend/tests/test_overlap_warning.py`
 - ต้องทำหลัง: T-05
 - เสร็จเมื่อ: ระบบแสดงคำเตือนว่ามีเวลาคาบเกี่ยว แต่ยังอนุญาตให้นักศึกษายังไปต่อได้ที่ขั้นตอนลงทะเบียน Google Form โดยไม่ติดบล็อก
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-07 ทดสอบ NFR ที่รองรับผู้ใช้งานพร้อมกัน 5,000 คน
 - รองรับ: NFR-SCHED-01, ASM-SCHED-05

@@ -25,6 +25,32 @@ test('AC-SCHED-05: Given a saved personal schedule, When the activity time overl
   expect(alert.textContent).toMatch(/มีช่วงเวลาคาบเกี่ยว/)
 })
 
+// Supports AC-SCHED-06
+test('AC-SCHED-06: Given a scheduling conflict warning, When the student proceeds to Google Form, Then the action remains available without blocking', () => {
+  render(
+    <ActivityDetailPage
+      title="กิจกรรมที่มีวันเวลาเกิน"
+      activityStart="2026-01-05T09:30"
+      activityEnd="2026-01-05T10:30"
+      busyPeriods={[
+        {
+          id: 12,
+          start_date: '2026-01-05',
+          end_date: '2026-01-05',
+          start_time: '09:00',
+          end_time: '10:00',
+        },
+      ]}
+    />,
+  )
+
+  const warning = screen.getByRole('alert')
+  expect(warning.textContent).toMatch(/มีช่วงเวลาคาบเกี่ยว/)
+
+  const continueButton = screen.getByRole('button', { name: 'ไปยัง Google Form' })
+  expect((continueButton as HTMLButtonElement).disabled).toBe(false)
+})
+
 // Supports AC-SCHED-07
 test('AC-SCHED-07: Given saved busy periods, When checking activity timings, Then the saved schedule is used for the comparison', () => {
   render(

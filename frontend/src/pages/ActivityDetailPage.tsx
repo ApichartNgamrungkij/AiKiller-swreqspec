@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import OverlapWarning from '../components/OverlapWarning'
 import { checkActivityScheduleOverlap, SavedBusyPeriod } from '../services/scheduleOverlap'
 
 export type ActivityDetailPageProps = {
@@ -29,26 +30,21 @@ export default function ActivityDetailPage({
       </p>
 
       {overlap.hasOverlap ? (
-        <p role="alert" aria-live="polite">
-          {overlap.message}
-        </p>
+        <OverlapWarning
+          message={overlap.message}
+          matchingItems={overlap.matchingPeriods.map((period) => ({
+            label: `${period.start_date} ถึง ${period.end_date} • ${period.start_time} - ${period.end_time}`,
+          }))}
+          onContinue={() => undefined}
+        />
       ) : (
-        <p role="status" aria-live="polite">
-          {overlap.message}
-        </p>
+        <>
+          <p role="status" aria-live="polite">
+            {overlap.message}
+          </p>
+          <button type="button">ไปยัง Google Form</button>
+        </>
       )}
-
-      {overlap.matchingPeriods.length > 0 && (
-        <ul>
-          {overlap.matchingPeriods.map((period) => (
-            <li key={period.id ?? `${period.start_date}-${period.start_time}`}>
-              {period.start_date} ถึง {period.end_date} • {period.start_time} - {period.end_time}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <button type="button">ไปยัง Google Form</button>
     </main>
   )
 }

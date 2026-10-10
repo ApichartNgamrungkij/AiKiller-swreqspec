@@ -381,3 +381,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_overlap_logic.py -q && cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
 - ผลลัพธ์ test: backend 3 passed in 0.01s; frontend 4 passed (4)
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้กติกา half-open interval ตาม spec อย่างชัดเจน ไม่เพิ่มฟีเจอร์บล็อกการลงทะเบียนหรือดึงตารางเรียนจากระบบมหาวิทยาลัย เพราะ task T-05 ครอบคลุมเฉพาะการตรวจวิเคราะห์และแสดงคำเตือนเท่านั้น
+
+---
+
+## 2026-10-10 13:25 คำสั่ง: /implement T-06 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/components/OverlapWarning.tsx, frontend/src/pages/ActivityDetailPage.tsx, frontend/src/pages/ActivityDetailPage.test.tsx
+- ผลลัพธ์: เพิ่มคำเตือนเวลาคาบเกี่ยวแบบ non-blocking โดยแสดงข้อความเตือนแล้วคงให้ปุ่ม “ไปยัง Google Form” ยังใช้งานได้ต่อโดยไม่ถูกปิดกั้น
+- Test ที่รัน: cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
+- ผลลัพธ์ test: 2 files passed; 5 tests passed
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่เพิ่มการบล็อกหรือการยกเลิกการไปต่อไปยัง Google Form เนื่องจาก spec ระบุชัดว่าคำเตือนต้อง “ไม่บล็อกการลงทะเบียน” และ task T-06 ครอบคลุมเฉพาะการแสดงคำเตือนเท่านั้น
