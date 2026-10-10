@@ -337,3 +337,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลลัพธ์: specs/004-NewActivity/tasks.md
 - สรุป: แตกงานเป็น 9 task ครอบคลุมการกำหนดโครงข้อมูล, การตรวจสิทธิ์, ฟอร์มกรอกข้อมูล, validation, การบันทึกและเผยแพร่กิจกรรม, edit log, cancellation notification, และการตัดสินใจ NFR 5,000 คน
 - Open Questions ที่ต้องรอ: ไม่มี
+
+---
+
+## 2026-10-10 13:14 คำสั่ง: /implement T-02 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/routes/ScheduleRoute.tsx, backend/app/routes/me_schedule.py, backend/tests/test_schedule_auth.py
+- ผลลัพธ์: เพิ่ม guard สำหรับการเข้าถึงหน้าตารางของฉันและ API โดยบังคับให้ต้องเข้าสู่ระบบก่อนใช้งาน และไม่อนุญาตถ้ายังไม่ได้เข้าสู่ระบบ
+- Test ที่รัน: pytest backend/tests/test_schedule_auth.py -q
+- ผลลัพธ์ test: 1 passed in 0.01s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้เงื่อนไขยืนยันสิทธิ์ที่ spec ระบุชัดเจนว่า “ต้องเข้าสู่ระบบแล้วก่อนใช้งาน” และ “มีเฉพาะนักศึกษาที่เข้าสู่ระบบเท่านั้น” ไม่ได้เพิ่มข้อกำหนดเพิ่มเติม
