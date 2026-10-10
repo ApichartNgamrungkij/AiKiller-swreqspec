@@ -506,3 +506,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลลัพธ์ test: 1 passed in 2.66s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; task ระบุชัดว่าต้องทดสอบ NFR-ACT-01 และแผนทดสอบโหลดให้สรุปว่าระบบต้องรองรับผู้ใช้งานประมาณ 5,000 คนต่อภาคการศึกษา จึงใช้ concurrency gate แบบ semaphore เพื่อวัด max_active ไม่เกิน 5,000
 
+---
+
+## 2026-10-10 14:07 คำสั่ง: /implement T-09 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/vitest.config.js, frontend/src/pages/CreateActivityPage.test.tsx
+- ผลลัพธ์: แก้ปัญหาการรัน test frontend ที่ผิดเพราะ Vitest ถูกเรียกโดยไม่มี jsdom config ทำให้ `document` ไม่มีค่า จึงเพิ่ม `environment: 'jsdom'` และ `globals: true` ให้ตรงกับตัวอย่างเขียน test ที่ใช้ `render` และ `expect` อย่างถูกต้อง
+- Test ที่รัน: cd frontend && npm test -- --run src/pages/CreateActivityPage.test.tsx
+- ผลลัพธ์ test: 1 file passed; 4 tests passed
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; ปัญหาที่เกิดขึ้นเป็นเรื่อง environment ของ runner ไม่ใช่ requirement ของฟีเจอร์เอง จึงแก้ที่ config ของ frontend เท่านั้น และยังคงยึด spec เดิมตาม AC-ACT-02 ถึง AC-ACT-05 ให้ครบตามที่กำหนด
+
