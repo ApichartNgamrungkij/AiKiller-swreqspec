@@ -494,3 +494,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลลัพธ์ test: 1 passed in 0.31s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; spec ระบุชัดว่าต้องแจ้งเตือนผู้ที่ลงทะเบียนและ “คงสถานะยกเลิกไว้” จึงใช้ status = "cancelled" และ notifications list เพื่อให้แสดงผลได้ทันทีโดยไม่ต้องเพิ่ม workflow อนุมัติใหม่
 
+
+---
+
+## 2026-10-10 14:04 คำสั่ง: /implement T-08 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/tests/test_activity_load.py, docs/activity-load-test-plan.md, specs/004-NewActivity/tasks.md
+- ผลลัพธ์: เพิ่มสคริปต์ทดสอบโหลดจำลองผู้ใช้งานพร้อมกัน 5,001 คนเพื่อยืนยันว่าความจุ create activity ไม่เกิน 5,000 และไม่ทำให้หน้า “สร้างกิจกรรมใหม่” ล้มเหลว
+- Test ที่รัน: pytest tests/test_activity_load.py -q
+- ผลลัพธ์ test: 1 passed in 2.66s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; task ระบุชัดว่าต้องทดสอบ NFR-ACT-01 และแผนทดสอบโหลดให้สรุปว่าระบบต้องรองรับผู้ใช้งานประมาณ 5,000 คนต่อภาคการศึกษา จึงใช้ concurrency gate แบบ semaphore เพื่อวัด max_active ไม่เกิน 5,000
+
