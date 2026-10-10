@@ -30,7 +30,7 @@
 - ไฟล์ที่แตะ: `frontend/src/pages/CreateActivityPage.tsx`, `frontend/src/components/ActivityForm.tsx`, `frontend/src/components/ConfirmCreateDialog.tsx`
 - ต้องทำหลัง: T-01, T-02
 - เสร็จเมื่อ: ฟอร์มรองรับการกรอกข้อมูลหลักและ URL ลงทะเบียน พร้อมแสดงหน้าตรวจสอบอีกครั้งก่อนบันทึกจริง และมีโครงสร้างสำหรับรอบหลายรอบในวันเดียวกัน
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-04 เพิ่ม validation สำหรับข้อมูลที่จำเป็นและประเภทที่รับรอง
 - รองรับ: DOM-ACT-01, FR-ACT-04, FR-ACT-07, DOM-ACT-02, DOM-ACT-03

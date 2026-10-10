@@ -436,3 +436,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_activity_auth.py -q
 - ผลลัพธ์ test: 1 passed in 0.01s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ต้องใช้ความหมายของ CON-ACT-01 ว่า “ผู้จัดกิจกรรมต้องได้รับสิทธิ์จาก Admin” เป็นสิทธิ์เฉพาะที่มีอยู่จริง ไม่ใช่ทุกคนที่ login สำเร็จ และไม่เพิ่มกระบวนการอนุมัติใหม่หรือสิทธิ์อื่นนอกเหนือจากการเปิดหน้า create activity
+
+---
+
+## 2026-10-10 13:49 คำสั่ง: /implement T-03 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/pages/CreateActivityPage.tsx, frontend/src/components/ActivityForm.tsx, frontend/src/components/ConfirmCreateDialog.tsx, frontend/src/pages/CreateActivityPage.test.tsx
+- ผลลัพธ์: สร้างฟอร์มสร้างกิจกรรมใหม่พร้อม validation แบบ custom ที่ยืนยันข้อมูลจำเป็นก่อนเปิดหน้าตรวจสอบอีกครั้ง และรองรับ slot หลายรอบในวันเดียวกัน เช่น เช้า/บ่าย พร้อม URL ลงทะเบียน
+- Test ที่รัน: npx vitest run src/pages/CreateActivityPage.test.tsx --reporter=verbose
+- ผลลัพธ์ test: 1 file passed; 4 tests passed
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ลบ `required` attribute จาก input เพื่อให้ฟอร์มใช้ validation ส่วนกลางของหน้าที่สอดคล้องกับ AC-ACT-04 และไม่ให้ browser validation ขัดกับ custom alert จาก task T-03
