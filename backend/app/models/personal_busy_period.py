@@ -45,6 +45,7 @@ class PersonalBusyPeriod:
         raise TypeError(f"Unsupported time value: {value!r}")
 
     @classmethod
+    @classmethod
     def from_dict(cls, payload: dict[str, object]) -> "PersonalBusyPeriod":
         return cls(
             id=payload.get("id"),
@@ -54,6 +55,17 @@ class PersonalBusyPeriod:
             start_time=payload.get("start_time"),
             end_time=payload.get("end_time"),
         )
+
+    def with_student_id(self, student_id: int | str | None) -> "PersonalBusyPeriod":
+        clone = PersonalBusyPeriod(
+            id=self.id,
+            student_id=student_id,
+            start_date=self.start_date,
+            end_date=self.end_date,
+            start_time=self.start_time,
+            end_time=self.end_time,
+        )
+        return clone
 
     def to_dict(self) -> dict[str, object]:
         return {

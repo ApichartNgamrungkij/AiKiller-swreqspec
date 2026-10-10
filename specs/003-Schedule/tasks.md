@@ -30,7 +30,7 @@
 - ไฟล์ที่แตะ: `backend/app/routes/me_schedule.py`, `backend/app/models/personal_busy_period.py`, `backend/tests/test_schedule_api.py`
 - ต้องทำหลัง: T-01
 - เสร็จเมื่อ: GET/POST/PUT สำหรับ `/me/schedule` คืนข้อมูลของนักศึกษาผู้ใช้ปัจจุบันและคงรายการอื่นไว้เมื่อแก้ไขรายการที่เลือก
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-04 สร้างหน้า “ตารางของฉัน” สำหรับเพิ่มและแก้ไขรายการ
 - รองรับ: FR-SCHED-01, FR-SCHED-02, FR-SCHED-03, CON-SCHED-01

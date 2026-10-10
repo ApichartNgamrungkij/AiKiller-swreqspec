@@ -348,3 +348,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_schedule_auth.py -q
 - ผลลัพธ์ test: 1 passed in 0.01s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้เงื่อนไขยืนยันสิทธิ์ที่ spec ระบุชัดเจนว่า “ต้องเข้าสู่ระบบแล้วก่อนใช้งาน” และ “มีเฉพาะนักศึกษาที่เข้าสู่ระบบเท่านั้น” ไม่ได้เพิ่มข้อกำหนดเพิ่มเติม
+
+---
+
+## 2026-10-10 13:17 คำสั่ง: /implement T-03 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/routes/me_schedule.py, backend/app/models/personal_busy_period.py, backend/tests/test_schedule_api.py
+- ผลลัพธ์: สร้าง API อ่าน/เพิ่ม/แก้ไขข้อมูลตารางส่วนตัวสำหรับนักศึกษา โดยคืนข้อมูลของนักศึกษาผู้ใช้ปัจจุบันและคงรายการอื่นไว้เมื่อแก้ไขรายการที่เลือก
+- Test ที่รัน: pytest backend/tests/test_schedule_api.py -q
+- ผลลัพธ์ test: 3 passed in 0.02s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่เพิ่มการลบรายการหรือดึงข้อมูลจากระบบมหาวิทยาลัย เพราะ spec ระบุว่าเป็น Out of Scope และ task T-03 ครอบคลุมเฉพาะ GET/POST/PUT สำหรับข้อมูลที่นักศึกษากรอกเองเท่านั้น
