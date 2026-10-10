@@ -392,3 +392,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
 - ผลลัพธ์ test: 2 files passed; 5 tests passed
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่เพิ่มการบล็อกหรือการยกเลิกการไปต่อไปยัง Google Form เนื่องจาก spec ระบุชัดว่าคำเตือนต้อง “ไม่บล็อกการลงทะเบียน” และ task T-06 ครอบคลุมเฉพาะการแสดงคำเตือนเท่านั้น
+
+---
+
+## 2026-10-10 13:27 คำสั่ง: /implement T-07 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/tests/test_schedule_concurrency.py, docs/schedule-load-test-plan.md
+- ผลลัพธ์: สร้างสคริปต์ทดสอบโหลดที่จำลองผู้ใช้งาน 5,001 คนพร้อมกัน เพื่อยืนยันว่ามีคิวรอและไม่เกินขีดจำกัด 5,000 คน พร้อมทั้งบันทึกแผนทดสอบโหลดตาม NFR-SCHED-01
+- Test ที่รัน: pytest backend/tests/test_schedule_concurrency.py -q
+- ผลลัพธ์ test: 1 passed in 2.16s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ Constraint NFR-SCHED-01 และ ASM-SCHED-05 เป็นพื้นฐานจริงของการจำลองคิวรอ ไม่เพิ่มกระบวนการลงทะเบียนหรือดึงข้อมูลจากระบบมหาวิทยาลัยเกิน scope ของ task T-07
