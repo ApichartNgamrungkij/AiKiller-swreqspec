@@ -22,7 +22,7 @@
 - ไฟล์ที่แตะ: `frontend/src/routes/CreateActivityRoute.tsx`, `backend/app/routes/activity.py`, `backend/tests/test_activity_auth.py`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: ผู้จัดกิจกรรมที่ได้รับสิทธิ์จาก Admin เท่านั้นที่สามารถเปิดหน้า “สร้างกิจกรรมใหม่” ได้ และได้รับสิทธิ์ก่อนสร้างกิจกรรมจริง
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-03 สร้างฟอร์มกรอกข้อมูลและการยืนยันก่อนบันทึก
 - รองรับ: FR-ACT-01, FR-ACT-02, FR-ACT-03, ASM-ACT-02, ASM-ACT-03, ASM-ACT-04, ASM-ACT-05

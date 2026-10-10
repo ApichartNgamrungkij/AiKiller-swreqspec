@@ -425,3 +425,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_activity_model.py -q
 - ผลลัพธ์ test: 2 passed in 0.33s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ต้องรองรับ time string แบบ "9:00" จากคำแนะนำใน test และ input แบบ slot เช้า-บ่าย โดยไม่เพิ่ม requirement ใหม่หรือใช้ฟีเจอร์นอก scope ของ T-01
+
+---
+
+## 2026-10-10 13:47 คำสั่ง: /implement T-02 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/routes/CreateActivityRoute.tsx, backend/app/routes/activity.py, backend/tests/test_activity_auth.py
+- ผลลัพธ์: เพิ่ม guard สำหรับหน้า “สร้างกิจกรรมใหม่” ให้อนุญาตเฉพาะผู้จัดที่มีสิทธิ์จาก Admin หรือ signal ที่ระบุ permission เดียวกัน เช่น organizer/can_create_activity/approved_by_admin เท่านั้น และปฏิเสธผู้ใช้ทั่วไปที่ไม่มีสิทธิ์
+- Test ที่รัน: pytest backend/tests/test_activity_auth.py -q
+- ผลลัพธ์ test: 1 passed in 0.01s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ต้องใช้ความหมายของ CON-ACT-01 ว่า “ผู้จัดกิจกรรมต้องได้รับสิทธิ์จาก Admin” เป็นสิทธิ์เฉพาะที่มีอยู่จริง ไม่ใช่ทุกคนที่ login สำเร็จ และไม่เพิ่มกระบวนการอนุมัติใหม่หรือสิทธิ์อื่นนอกเหนือจากการเปิดหน้า create activity
