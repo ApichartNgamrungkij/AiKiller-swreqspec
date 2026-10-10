@@ -54,7 +54,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/activity_edit_log.py`, `backend/app/services/activity_edit_history.py`, `backend/tests/test_activity_edit_history.py`
 - ต้องทำหลัง: T-05
 - เสร็จเมื่อ: ทุกครั้งที่ผู้จัดแก้ไขกิจกรรม ระบบบันทึกประวัติการแก้ไขและสามารถแสดงได้ในประวัติกิจกรรม
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-07 สร้าง流程ยกเลิกกิจกรรมและแจ้งเตือนผู้ที่ลงทะเบียน
 - รองรับ: FR-ACT-09, ASM-ACT-06

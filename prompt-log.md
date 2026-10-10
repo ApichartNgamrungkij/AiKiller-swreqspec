@@ -470,3 +470,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
   ผลลัพธ์: 9 passed in 0.31s
 - สิ่งที่ AI เกือบต้องเดาแต่ยังหลีกเลี่ยง: ไม่มี; การบันทึกใช้ validation และ student-visible list ที่มีอยู่แล้วตาม spec และไม่ต้องเพิ่มสเตปอนุมัติใหม่
 
+
+---
+
+## 2026-10-10 13:58 คำสั่ง: /implement T-06 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/models/activity_edit_log.py, backend/app/services/activity_edit_history.py, backend/tests/test_activity_edit_history.py, specs/004-NewActivity/tasks.md
+- ผลลัพธ์: เพิ่ม model และ service สำหรับบันทึกประวัติการแก้ไขกิจกรรม (edit log) ตาม FR-ACT-08 และ ASM-ACT-06 พร้อมฟังก์ชัน list_for_activity สำหรับเรียกดูประวัติของกิจกรรมตาม activity_id
+- Test ที่รัน: pytest tests/test_activity_edit_history.py -q
+- ผลลัพธ์ test: 1 passed in 0.28s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; spec ระบุชัดว่า “เมื่อผู้จัดแก้ไขกิจกรรม ระบบต้องบันทึกประวัติการแก้ไขในระบบ” ดังนั้น service จึงเก็บ field_name, old_value, new_value, editor_id, changed_at เพื่อให้เห็นการเปลี่ยนแปลงแต่ละฟิลด์ได้ชัดเจน
+
