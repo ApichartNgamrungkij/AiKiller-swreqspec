@@ -359,3 +359,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_schedule_api.py -q
 - ผลลัพธ์ test: 3 passed in 0.02s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่เพิ่มการลบรายการหรือดึงข้อมูลจากระบบมหาวิทยาลัย เพราะ spec ระบุว่าเป็น Out of Scope และ task T-03 ครอบคลุมเฉพาะ GET/POST/PUT สำหรับข้อมูลที่นักศึกษากรอกเองเท่านั้น
+
+---
+
+## 2026-10-10 13:19 คำสั่ง: /implement T-04 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/pages/SchedulePage.tsx, frontend/src/components/BusyPeriodForm.tsx, frontend/src/hooks/useSchedule.ts, frontend/src/pages/SchedulePage.test.tsx
+- ผลลัพธ์: สร้างหน้า “ตารางของฉัน” สำหรับเพิ่มและแก้ไขช่วงเวลาที่ไม่ว่าง โดยยืนยันว่าเมื่อแก้ไขรายการเดิมหรือเพิ่มรายการใหม่ ระบบจะคงรายการอื่นไว้
+- Test ที่รัน: npm test -- --run src/pages/SchedulePage.test.tsx
+- ผลลัพธ์ test: 2 passed (2)
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ form ที่มี field วันเริ่ม/สิ้นสุด เวลาเริ่ม/สิ้นสุด ตาม spec อย่างตรงไปตรงมา และไม่สร้างตัวเลือกหรือฟีเจอร์นอกขอบเขต เช่น การลบรายการหรือการดึงตารางเรียนจากระบบมหาวิทยาลัย
