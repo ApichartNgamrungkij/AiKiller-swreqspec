@@ -447,3 +447,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: npx vitest run src/pages/CreateActivityPage.test.tsx --reporter=verbose
 - ผลลัพธ์ test: 1 file passed; 4 tests passed
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ลบ `required` attribute จาก input เพื่อให้ฟอร์มใช้ validation ส่วนกลางของหน้าที่สอดคล้องกับ AC-ACT-04 และไม่ให้ browser validation ขัดกับ custom alert จาก task T-03
+
+---
+
+## 2026-10-10 13:54 คำสั่ง: /implement T-04 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/services/activity_validation.py, frontend/src/utils/activityValidators.ts, backend/tests/test_activity_validation.py
+- ผลลัพธ์: เพิ่ม validation สำหรับข้อมูลที่จำเป็น ประเภทกิจกรรมที่มหาวิทยาลัยรับรอง และการป้องกันไม่ให้ workflow สร้างขั้นตอนอนุมัติใหม่อีกชั้น พร้อม both-side validation สำหรับ backend และ frontend
+- Test ที่รัน: pytest backend/tests/test_activity_validation.py -q ; cd frontend && npm run build
+- ผลลัพธ์ test: backend 3 passed in 0.02s; frontend build succeeded in 1.95s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ชื่อประเภทที่ตรงตาม DOM-ACT-01 อย่างชัดเจนและปกป้องไม่ให้มีการเพิ่ม approval workflow ใหม่ แม้ spec จะระบุว่า “ผ่านการอนุมัติจากมหาวิทยาลัยแล้ว” เป็น precondition จึงไม่ทำ step ใหม่ใด ๆ ใน validation

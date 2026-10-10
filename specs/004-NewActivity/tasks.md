@@ -38,7 +38,7 @@
 - ไฟล์ที่แตะ: `backend/app/services/activity_validation.py`, `frontend/src/utils/activityValidators.ts`, `backend/tests/test_activity_validation.py`
 - ต้องทำหลัง: T-01, T-03
 - เสร็จเมื่อ: ระบบตรวจสอบว่าข้อมูลจำเป็นครบถ้วน ประเภทอยู่ใน 5 ประเภทที่มหาวิทยาลัยรับรอง และไม่ใส่ขั้นตอนอนุมัติใหม่เข้ามาใน workflow
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-05 สร้าง API บันทึกกิจกรรมและเผยแพร่ให้นักศึกษาเห็น
 - รองรับ: FR-ACT-05, FR-ACT-06, FR-ACT-07, DOM-ACT-03
