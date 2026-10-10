@@ -1,0 +1,21 @@
+# Supports NFR-SEC-01.
+# Deployment must terminate TLS before forwarding requests to the application.
+https:
+  enabled: true
+  redirect_http_to_https: true
+  tls:
+    minimum_version: "TLSv1.2"
+    hsts:
+      enabled: true
+      max_age_seconds: 31536000
+      include_subdomains: true
+      preload: true
+
+# Supports NFR-SEC-02 and ACC-VIEW-02.
+registrants_api:
+  path_prefix: "/api/v1/activities"
+  require_authorization: true
+  allowed_roles:
+    - "admin"
+    - "activity_owner"
+  deny_unauthorized_status: 403

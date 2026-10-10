@@ -1,11 +1,29 @@
 from __future__ import annotations
 
-from typing import Mapping
+from typing import Any, Mapping
 from urllib.parse import urlparse
 
 
 class AdminAccessError(PermissionError):
     """Raised when a non-admin user attempts to manage activity deletion."""
+
+
+# Supports ACC-VIEW-01, ACC-VIEW-02, FR-VIEW-05, NFR-SEC-02
+def is_activity_owner(
+    user: Mapping[str, object] | None,
+    activity: Mapping[str, object] | Any,
+) -> bool:
+    if user is None:
+        return False
+    user_id = user.get("user_id")
+    owner_id = (
+        activity.get("owner_id")
+        if isinstance(activity, Mapping)
+        else getattr(activity, "owner_id", None)
+    )
+    if user_id is None or owner_id is None:
+        return False
+    return str(user_id) == str(owner_id)
 
 
 # Supports FR-DEL-07, NFR-DEL-01, NFR-DEL-02, ACC-ADMIN-01, IF-ADMIN-01

@@ -517,3 +517,163 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลลัพธ์ test: 1 file passed; 4 tests passed
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; ปัญหาที่เกิดขึ้นเป็นเรื่อง environment ของ runner ไม่ใช่ requirement ของฟีเจอร์เอง จึงแก้ที่ config ของ frontend เท่านั้น และยังคงยึด spec เดิมตาม AC-ACT-02 ถึง AC-ACT-05 ให้ครบตามที่กำหนด
 
+---
+
+## 2026-10-10 15:34 คำสั่ง: /implement T-01 specs/005-ViewInfo/task.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/models/registrant.py, backend/app/models/registration_summary.py, frontend/src/types/registrant.ts, backend/tests/test_registrant_models.py, specs/005-ViewInfo/task.md
+- ผลลัพธ์: เพิ่มโมเดล `RegisteredStudent`, `ActivityRegistrationSummary` และ `SyncStatus` พร้อมฟิลด์ตาม plan.md และเพิ่ม test สำหรับตรวจข้อมูลผู้ลงทะเบียนกับ summary/cache
+- Test ที่รัน: pytest backend/tests/test_registrant_models.py -q
+- ผลลัพธ์ test: 2 passed in 0.04s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ทีมเลือกให้เพิ่มไฟล์ test เข้า scope ของ T-01 ก่อน implement เนื่องจาก task ไม่มี AC โดยตรงแต่กติกา /implement กำหนดให้มี test งานพื้นฐาน
+
+---
+
+## 2026-10-10 15:40 คำสั่ง: /implement T-02 specs/005-ViewInfo/task.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/api/deps.py, backend/app/services/access_control.py, backend/tests/api/test_registrant_access.py, specs/005-ViewInfo/task.md
+- ผลลัพธ์: เพิ่ม dependency `verify_event_owner_or_admin` ให้ Admin หรือผู้จัดกิจกรรมที่ `user_id` ตรงกับ `activity.owner_id` ผ่านได้ และปฏิเสธนักศึกษาหรือผู้จัดกิจกรรมคนอื่นด้วย HTTP 403
+- Test ที่รัน: `PYTHONPATH=. pytest backend/tests/api/test_registrant_access.py -q`
+- ผลลัพธ์ test: 3 passed in 0.31s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ทีมเลือกใช้ `user["user_id"] == activity["owner_id"]` เป็นกติกาตรวจเจ้าของกิจกรรมก่อน implement
+
+---
+
+## 2026-10-10 15:48 คำตอบทีมเพื่อปรับปรุง 005-ViewInfo
+
+- Q-VIEW-01: แสดง `studentId`, `fullName`, `faculty`, `email` และ `timestamp`
+- Q-VIEW-02: ยังไม่เพิ่ม Pagination หรือการค้นหารายชื่อในขอบเขตฟีเจอร์นี้
+- API response: ใช้ `activityId`, `totalRegistered`, `lastSyncedAt`, `syncStatus`, `isCache` และ `data`
+- กรณีผู้ลงทะเบียนเป็นศูนย์: ตอบ `200 OK` พร้อม `totalRegistered: 0`, `data: []` และแสดง Empty State
+- เจ้าของกิจกรรม: เพิ่ม `owner_id` ใน Activity และเทียบกับ `user_id`
+- Polling/Cache: ใช้ APScheduler + Database Cache; เป็นการเลือกของทีม ไม่ได้มาจาก spec
+- Authentication สำหรับ Google Sheets API: ใช้ Service Account
+
+## 2026-10-10 15:49 ปรับปรุง plan และ tasks ของ 005-ViewInfo
+
+- ปรับ API contract ให้ใช้ `activityId`, `totalRegistered`, `lastSyncedAt`, `syncStatus`, `isCache` และ `data`
+- กำหนดกรณีไม่มีผู้ลงทะเบียนให้คืน `200 OK` พร้อม `totalRegistered: 0` และ `data: []`
+- ปรับ Q-VIEW-01/Q-VIEW-02 เป็นข้อสรุปใน spec.md: แสดงฟิลด์ผู้ลงทะเบียน 5 รายการ และยังไม่เพิ่ม Pagination/ค้นหา
+- กำหนด `owner_id` ใน Activity และใช้ `user_id` ตรวจเจ้าของกิจกรรม
+- กำหนด Service Account สำหรับ Google Sheets API และ APScheduler + Database Cache
+- ปรับ T-02 ให้กลับเป็น `พร้อมทำ` เนื่องจากต้องเพิ่ม `owner_id` ใน Activity ตามข้อสรุปใหม่ และเพิ่มไฟล์ test ใน T-03
+
+---
+
+## 2026-10-10 15:55 คำสั่ง: /implement T-02 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/models/activity.py, backend/app/api/deps.py, backend/app/services/access_control.py, backend/tests/api/test_registrant_access.py, specs/005-ViewInfo/tasks.md
+- ผลลัพธ์: เพิ่ม `Activity.owner_id` และให้ dependency ตรวจ Admin หรือเจ้าของกิจกรรมจริง โดยเปรียบเทียบ `user["user_id"]` กับ `activity.owner_id`; ผู้ไม่มีสิทธิ์ได้รับ HTTP 403
+- Test ที่รัน: `PYTHONPATH=. pytest backend/tests/api/test_registrant_access.py -q`
+- ผลลัพธ์ test: 3 passed in 0.77s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ชนิด `String(100)` สำหรับ `owner_id` เพราะทีมกำหนดชื่อฟิลด์และกติกาการเทียบค่า แต่ไม่ได้ระบุชนิดข้อมูล จึงควรตรวจยืนยันก่อนเชื่อมฐานข้อมูลจริง
+
+---
+
+## 2026-10-10 15:58 คำสั่ง: แก้ความสอดคล้องของ owner_id กับ user_id
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่แก้: backend/app/services/access_control.py, backend/tests/api/test_registrant_access.py
+- ผลลัพธ์: ปรับการตรวจเจ้าของกิจกรรมให้รองรับ `user_id` ที่เป็น `int` หรือ `str` โดยตรวจค่าที่ไม่เป็น `None` และเปรียบเทียบตัวแทนข้อความของ ID; ยังคงเก็บ `Activity.owner_id` เป็นข้อความตามโมเดลปัจจุบัน
+- เพิ่ม test: `test_AC_VIEW_05_owner_access_accepts_numeric_user_id`
+- เหตุผล: repository ยังไม่มี User model หรือ schema กลางที่บังคับชนิด `user_id` เดียวกัน และโค้ดส่วนอื่นใช้ทั้ง `int` และ `str`
+
+---
+
+## 2026-10-10 16:04 คำสั่ง: /implement T-03 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/integrations/google_sheets.py, backend/app/services/sheets_service.py, backend/tests/test_sheets_service.py
+- ผลลัพธ์: เพิ่ม Google Sheets API v4 client ด้วย Service Account จาก `GOOGLE_SERVICE_ACCOUNT_JSON`; เพิ่ม service สำหรับอ่าน header/data และแปลงเป็น `RegisteredStudent`
+- การเลือกของทีม: ใช้ `google-api-python-client` และ `google-auth` ตามตัวเลือก 1
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่กำหนดที่เก็บ `spreadsheet_id` หรือ `range_name`; service รับสองค่านี้เป็น input และไม่เก็บ credential ใน source code
+
+### ผลการตรวจสอบ T-03
+
+- การรันด้วย Python environment เริ่มต้นล้มเหลวระหว่างเก็บ test เพราะไม่มี `google` module
+- ติดตั้ง `google-api-python-client`, `google-auth` และ `pytest` ใน `.venv` ของ workspace
+- การรันด้วย `/workspaces/AiKiller-swreqspec/.venv/bin/python -m pytest backend/tests/test_sheets_service.py -q`: `3 passed in 0.18s`
+- `compileall` และ `git diff --check` ผ่าน
+
+---
+
+## 2026-10-10 16:16 คำสั่ง: /implement T-04 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/jobs/polling_worker.py, backend/app/services/cache_service.py, backend/tests/services/test_polling_cache.py
+- ผลลัพธ์: เพิ่ม APScheduler สำหรับ polling ทุก 60–120 วินาที, บันทึก snapshot สำเร็จลง cache และคืน snapshot ล่าสุดพร้อม `SyncStatus.FAILED` เมื่อแหล่งข้อมูลล้มเหลว
+- Test ที่รัน: `PYTHONPATH=. /workspaces/AiKiller-swreqspec/.venv/bin/python -m pytest backend/tests/services/test_polling_cache.py -q`
+- ผลลัพธ์ test: `3 passed in 0.17s`; `compileall` และ `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: repository ยังไม่มี database session/engine หรือ schema สำหรับ Database Cache จึงถามทีมก่อนปิดงาน และทีมยืนยันให้ใช้ cache abstraction แบบ in-memory ก่อน โดยยังไม่เพิ่ม persistence เอง
+
+---
+
+## 2026-10-10 16:25 คำสั่ง: /implement T-05 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/api/registrants.py, backend/app/schemas/registrant.py, backend/tests/api/test_registrants.py
+- ไฟล์ที่แก้: specs/005-ViewInfo/tasks.md
+- ผลลัพธ์: เพิ่ม endpoint `GET /api/v1/activities/{activity_id}/registrants` พร้อม response contract `activityId`, `totalRegistered`, `lastSyncedAt`, `syncStatus`, `isCache` และ `data`; ตรวจสิทธิ์ผ่าน `verify_event_owner_or_admin`; รองรับ empty response `200 OK`
+- Test ที่รัน: `PYTHONPATH=. /workspaces/AiKiller-swreqspec/.venv/bin/python -m pytest backend/tests/api/test_registrants.py -q`
+- ผลลัพธ์ test: `5 passed in 0.77s` (มีคำเตือนจาก FastAPI/Starlette เกี่ยวกับ httpx); `compileall` และ `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ขออนุญาตเพิ่ม `backend/tests/api/test_registrants.py` เพราะ T-05 มี AC โดยตรง และไม่แตะไฟล์ app/router หลักนอก scope; router ต้องถูก include ใน FastAPI app จริงภายหลัง
+
+---
+
+## 2026-10-10 16:30 คำสั่ง: /implement T-06 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/pages/RegistrantsDetail.tsx, frontend/src/components/RegistrantTable.tsx, frontend/src/mocks/registrants.ts, frontend/src/pages/RegistrantsDetail.test.tsx
+- ผลลัพธ์: เพิ่มหน้ารายละเอียดผู้ลงทะเบียนด้วยข้อมูลจำลอง แสดงยอดรวม และตาราง `studentId`, `fullName`, `timestamp` ตาม AC-VIEW-01
+- Test ที่รัน: `cd frontend && npm run test -- --run src/pages/RegistrantsDetail.test.tsx`
+- ผลลัพธ์ test: `1 passed`; `cd frontend && npm run build` ผ่าน; `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ mock data ตามขอบเขต T-06 และยังไม่เพิ่ม Empty State หรือ Access Denied เพราะเป็นงานของ T-08
+
+---
+
+## 2026-10-10 16:36 คำสั่ง: /implement T-07 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/components/SyncStatusBadge.tsx, frontend/src/components/CacheWarningAlert.tsx, frontend/src/components/ViewInfoStatus.test.tsx
+- ผลลัพธ์: เพิ่ม Badge แสดงสถานะและเวลา sync ล่าสุด และแถบเตือนสีเหลืองเมื่อ `isCache` เป็นจริง ตาม IF-VIEW-02, FR-VIEW-04 และ AC-VIEW-03
+- Test ที่รัน: `cd frontend && npm run test -- --run src/components/ViewInfoStatus.test.tsx`
+- ผลลัพธ์ test: `1 passed`; `cd frontend && npm run build` ผ่าน; `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: component รับ `status`, `isCache` และ `lastSyncedAt` เป็น props และยังไม่ผูกเข้ากับหน้า T-06 เพราะการประกอบเข้าหน้าอยู่ใน task อื่น
+
+---
+
+## 2026-10-10 16:40 คำสั่ง: /implement T-08 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/components/EmptyRegistrantState.tsx, frontend/src/components/AccessDenied.tsx, frontend/src/pages/RegistrantsDetailAccess.test.tsx
+- ไฟล์ที่แก้: frontend/src/pages/RegistrantsDetail.tsx
+- ผลลัพธ์: เพิ่ม Empty State เมื่อไม่มีผู้ลงทะเบียน และหน้า Access Denied เมื่อ `isAccessDenied` เป็นจริง โดยคงการแสดงข้อมูลสำหรับผู้มีสิทธิ์ไว้
+- Test ที่รัน: `cd frontend && npm run test -- --run src/pages/RegistrantsDetailAccess.test.tsx src/pages/RegistrantsDetail.test.tsx`
+- ผลลัพธ์ test: `3 passed`; `cd frontend && npm run build` ผ่าน; `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ `isAccessDenied` เป็น prop สำหรับสถานะสิทธิ์ของหน้าจอ เพราะการเชื่อมระบบ authentication/API อยู่ใน T-09 และไม่ได้เพิ่มการตรวจ role เองใน T-08
+
+---
+
+## 2026-10-10 16:45 คำสั่ง: /implement T-09 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/services/registrantApi.ts, frontend/src/hooks/useRegistrants.ts, frontend/src/services/registrantApi.test.ts, frontend/src/hooks/useRegistrants.test.ts
+- ไฟล์ที่แก้: frontend/src/pages/RegistrantsDetail.tsx
+- ผลลัพธ์: เพิ่ม service เรียก `GET /api/v1/activities/{activityId}/registrants`, map response เป็น `ActivityRegistrationSummary`, และ hook polling ทุก 120 วินาที; หน้าแสดงข้อมูลจาก API เมื่อ `useApi` เป็นจริง
+- Test ที่รัน: `cd frontend && npm run test -- --run src/services/registrantApi.test.ts src/hooks/useRegistrants.test.ts src/pages/RegistrantsDetail.test.tsx src/pages/RegistrantsDetailAccess.test.tsx`
+- ผลลัพธ์ test: `6 passed`; `cd frontend && npm run build` ผ่าน; `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: คง `useApi` เป็น opt-in เพื่อไม่ทำลาย mock behavior ของ T-06/T-08; routing/auth integration จริงยังอยู่นอกไฟล์ที่ T-09 อนุญาตให้แตะ
+
+---
+
+## 2026-10-10 16:51 คำสั่ง: /implement T-10 specs/005-ViewInfo/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: deployment/https-config.yml, docs/integration/security-nfr.md, backend/tests/security/test_registrant_security.py
+- ผลลัพธ์: เพิ่ม deployment security contract สำหรับ HTTPS/TLS และ HSTS; บันทึกการตรวจสอบว่า endpoint รายชื่อผู้ลงทะเบียนบังคับ Authorization ทุก request และไม่ส่งข้อมูลส่วนบุคคลเมื่อผู้ใช้ถูกปฏิเสธ
+- Test ที่รัน: `PYTHONPATH=. /workspaces/AiKiller-swreqspec/.venv/bin/python -m pytest backend/tests/security/test_registrant_security.py backend/tests/api/test_registrants.py backend/tests/api/test_registrant_access.py`
+- ผลลัพธ์ test: `12 passed`; มี deprecation warning จาก `httpx`/Starlette ที่ไม่เกี่ยวกับ T-10
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: plan ระบุ HTTPS/TLS แต่ไม่ระบุผู้ให้บริการ deployment จึงทำ `https-config.yml` เป็น deployment-agnostic contract แทนการผูกกับ Nginx หรือ ingress ใดโดยเฉพาะ

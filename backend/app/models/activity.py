@@ -52,6 +52,8 @@ class Activity(Base):
     slots: list[Any] = []
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    # Supports ACC-VIEW-01, ACC-VIEW-02, FR-VIEW-05
+    owner_id: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[ActivityStatus] = mapped_column(
         SQLEnum(ActivityStatus, native_enum=False, name="activity_status"),

@@ -19,9 +19,9 @@
 |---|---|---|
 | **React (Vite)** | ทีมเลือกเอง ไม่ได้มาจาก spec | ใช้ทำ UI หน้าแสดงผลรายชื่อผู้ลงทะเบียนและสถานะการอัปเดต |
 | **Python FastAPI** | ทีมเลือกเอง ไม่ได้มาจาก spec | ใช้ทำ Backend API รับคำขอจาก Frontend และเชื่อมต่อ Google Sheets API |
-| **Google Sheets API v4** | IF-VIEW-01, FR-VIEW-02 | ใช้ดึงข้อมูลผู้ลงทะเบียนจาก Google Sheets ของกิจกรรม |
-| **APScheduler / Background Worker** | IF-VIEW-01, NFR-PERF-01 | ใช้ทำ Polling Job คอยดึงข้อมูลจาก Google Sheets ทุก 1–2 นาที |
-| **Redis / Database Cache** | IF-VIEW-02, FR-VIEW-04 | ใช้เก็บบันทึกข้อมูลผู้ลงทะเบียนรอบล่าสุดสำหรับทำ Fallback เมื่อ API มีปัญหา |
+| **Google Sheets API v4 + Service Account** | IF-VIEW-01, FR-VIEW-02, ASM-VIEW-01 | ใช้ดึงข้อมูลผู้ลงทะเบียนจาก Google Sheets ของกิจกรรม; Service Account เป็นการเลือกของทีมตาม ASM-VIEW-01 |
+| **APScheduler** | IF-VIEW-01, NFR-PERF-01 | ทีมเลือกเอง ไม่ได้มาจาก spec; ใช้ทำ Polling Job คอยดึงข้อมูลจาก Google Sheets ทุก 1–2 นาที |
+| **Database Cache** | IF-VIEW-02, FR-VIEW-04 | ทีมเลือกเอง ไม่ได้มาจาก spec; ใช้เก็บบันทึกข้อมูลผู้ลงทะเบียนรอบล่าสุดสำหรับทำ Fallback เมื่อ API มีปัญหา |
 | **HTTPS (TLS Encryption)** | NFR-SEC-01 | ใช้สำหรับการสื่อสารที่ปลอดภัยระหว่าง Client-Server |
 
 ---
@@ -47,6 +47,10 @@
 | `syncStatus` | สถานะการ Sync (`SUCCESS` / `FAILED`) | IF-VIEW-02, FR-VIEW-04 |
 | `cachedResponses` | รายชื่อผู้ลงทะเบียนฉบับ Cache | FR-VIEW-04 |
 
+### 3.3 Activity ownership
+
+กิจกรรมต้องมี `owner_id` เพื่อระบุผู้จัดกิจกรรมเจ้าของกิจกรรม โดยระบบเปรียบเทียบกับ `user_id` ของผู้เรียก API ตาม ACC-VIEW-01, ACC-VIEW-02 และ FR-VIEW-05
+
 ---
 
 ## 4. API / หน้าจอ
@@ -65,14 +69,17 @@
     ```json
     {
       "activityId": "ACT-001",
-      "totalCount": 45,
+      "totalRegistered": 45,
       "lastSyncedAt": "2026-10-04T20:00:00Z",
       "isCache": false,
       "syncStatus": "SUCCESS",
       "data": [
         {
+          "rowId": 1,
           "studentId": "660510001",
           "fullName": "นายสมชาย ใจดี",
+          "faculty": "วิศวกรรมศาสตร์",
+          "email": "student@example.com",
           "timestamp": "2026-10-04T19:30:12Z"
         }
       ]
@@ -81,6 +88,7 @@
   - **Error Responses**:
     - `403 Forbidden`: เมื่อผู้ใช้ไม่ใช่ Admin หรือผู้จัดกิจกรรมเจ้าของกิจกรรม (AC-VIEW-04)
     - `200 OK (with cache warning)`: เมื่อ API ดึง Google Sheets ล้มเหลว แต่มี Cache อยู่ (AC-VIEW-03)
+    - `200 OK`: เมื่อยังไม่มีผู้ลงทะเบียน โดยคืน `totalRegistered: 0` และ `data: []` (CON-VIEW-01)
 
 ---
 
@@ -89,7 +97,7 @@
 | Constraint ID / ข้อความใน spec | ถูกนำไปใช้ที่ไหนใน plan | สถานะ |
 |---|---|---|
 | **IF-VIEW-01**: ดึงข้อมูลจาก Google Sheets ผ่าน API ด้วย Polling ทุก 1–2 นาที | APScheduler Background Worker + Polling Job | ใช้แล้ว |
-| **IF-VIEW-02**: กรณีดึง API ไม่สำเร็จ ให้แสดงข้อมูลล่าสุดที่เคยดึงได้พร้อมเวลาอัปเดต ห้าม Crash | Redis/Database Cache Fallback Strategy + `isCache` Response Flag | ใช้แล้ว |
+| **IF-VIEW-02**: กรณีดึง API ไม่สำเร็จ ให้แสดงข้อมูลล่าสุดที่เคยดึงได้พร้อมเวลาอัปเดต ห้าม Crash | Database Cache Fallback Strategy + `isCache` Response Flag | ใช้แล้ว |
 | **ACC-VIEW-01**: สิทธิ์การเข้าถึงจำกัดเฉพาะ Admin และผู้จัดกิจกรรมที่เป็นเจ้าของกิจกรรม | FastAPI Dependency Injection (`verify_event_owner_or_admin`) | ใช้แล้ว |
 | **ACC-VIEW-02**: นักศึกษาทั่วไปห้ามดูข้อมูลผู้ลงทะเบียนคนอื่น | Authorization Check คืนค่า 403 Forbidden | ใช้แล้ว |
 | **CON-VIEW-01**: มีผู้ลงทะเบียนอย่างน้อย 1 คน ระบบจึงจะเริ่มแสดงข้อมูล | Validation Check บน API/UI (ถ้า 0 คนให้แสดง Empty State) | ใช้แล้ว |
@@ -124,6 +132,4 @@
 - **การดาวน์โหลดไฟล์ Excel/CSV**: จัดอยู่ในฟีเจอร์ UC-11 / `006-ExportList` (Out of Scope)
 - **การแก้ไข/ลบข้อมูลผู้ลงทะเบียน**: จัดอยู่นอกขอบเขตการทำงานของระบบ (Out of Scope)
 - **การเช็คชื่อหน้างานและการส่งข้อมูลเข้า REG**: จัดอยู่นอกขอบเขตฟีเจอร์ ViewInfo (Out of Scope)
-- **Open Questions ใน spec**:
-  - *Q-VIEW-01*: รูปแบบคอลัมน์ข้อมูลที่จะแสดง จะแมปตามโครงสร้างมาตรฐาน (รหัส, ชื่อ, คณะ) ไปก่อนจนกว่าผู้ดูแลระบบจะยืนยันเพิ่มเติม
-  - *Q-VIEW-02*: ระบบ Pagination จะถูกพิจารณาเพิ่มเติมหากจำนวนผู้ลงทะเบียนเกิน 100 รายการ
+- **Open Questions ใน spec**: ไม่มีคำถามค้างอยู่; Q-VIEW-01 และ Q-VIEW-02 ได้รับคำตอบและบันทึกเป็นข้อสรุปใน spec.md แล้ว
