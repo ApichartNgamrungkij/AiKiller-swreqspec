@@ -414,3 +414,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_overlap_logic.py backend/tests/test_schedule_auth.py backend/tests/test_schedule_api.py backend/tests/test_schedule_concurrency.py -q && cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
 - ผลลัพธ์ test: backend 8 passed in 1.73s; frontend 2 files passed, 5 tests passed
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ตรวจสอบ traceability ตาม spec โดยใช้ชื่อ AC เดิมและไม่เพิ่ม requirement ใด ๆ นอกเหนือจากสิ่งที่เคยกำหนดไว้แล้ว
+
+---
+
+## 2026-10-10 13:45 คำสั่ง: /implement T-01 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/models/activity.py, backend/app/models/activity_slot.py, backend/tests/test_activity_model.py
+- ผลลัพธ์: กำหนดโครงข้อมูลกิจกรรมและ slot หลายรอบในวันเดียวกันให้รองรับชื่อ/ประเภท/วันเวลา/สถานที่/จำนวนรับ/ชั่วโมงจิตอาสา พร้อม validation สำหรับประเภทที่มหาวิทยาลัยรับรอง และยอมรับรูปแบบเวลาแบบตัวเลข 1 หลัก เช่น 9:00 ได้ด้วยการ normalize ให้เป็น 09:00
+- Test ที่รัน: pytest backend/tests/test_activity_model.py -q
+- ผลลัพธ์ test: 2 passed in 0.33s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ต้องรองรับ time string แบบ "9:00" จากคำแนะนำใน test และ input แบบ slot เช้า-บ่าย โดยไม่เพิ่ม requirement ใหม่หรือใช้ฟีเจอร์นอก scope ของ T-01
