@@ -458,3 +458,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_activity_validation.py -q ; cd frontend && npm run build
 - ผลลัพธ์ test: backend 3 passed in 0.02s; frontend build succeeded in 1.95s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ชื่อประเภทที่ตรงตาม DOM-ACT-01 อย่างชัดเจนและปกป้องไม่ให้มีการเพิ่ม approval workflow ใหม่ แม้ spec จะระบุว่า “ผ่านการอนุมัติจากมหาวิทยาลัยแล้ว” เป็น precondition จึงไม่ทำ step ใหม่ใด ๆ ใน validation
+
+---
+
+## 2026-10-10 00:00 คำสั่ง: /implement T-05 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/routes/activity.py, backend/app/services/activity_service.py, backend/app/models/activity.py, backend/tests/test_activity_create_flow.py, specs/004-NewActivity/tasks.md
+- ผลลัพธ์: เพิ่ม flow บันทึกกิจกรรมแบบ published และเผยแพร่ให้นักศึกษามองเห็นได้ทันที โดยมี validation ตรวจสอบประเภทและไม่เพิ่ม approval workflow ใหม่
+- ทดสอบ: pytest tests/test_activity_auth.py tests/test_activity_model.py tests/test_activity_validation.py tests/test_activity_create_flow.py -q
+  ผลลัพธ์: 9 passed in 0.31s
+- สิ่งที่ AI เกือบต้องเดาแต่ยังหลีกเลี่ยง: ไม่มี; การบันทึกใช้ validation และ student-visible list ที่มีอยู่แล้วตาม spec และไม่ต้องเพิ่มสเตปอนุมัติใหม่
+

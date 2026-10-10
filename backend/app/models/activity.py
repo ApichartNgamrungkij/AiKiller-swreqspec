@@ -49,6 +49,8 @@ class Base(DeclarativeBase):
 class Activity(Base):
     __tablename__ = "activities"
 
+    slots: list[Any] = []
+
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[ActivityStatus] = mapped_column(
