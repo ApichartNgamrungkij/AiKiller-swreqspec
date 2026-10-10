@@ -482,3 +482,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลลัพธ์ test: 1 passed in 0.28s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; spec ระบุชัดว่า “เมื่อผู้จัดแก้ไขกิจกรรม ระบบต้องบันทึกประวัติการแก้ไขในระบบ” ดังนั้น service จึงเก็บ field_name, old_value, new_value, editor_id, changed_at เพื่อให้เห็นการเปลี่ยนแปลงแต่ละฟิลด์ได้ชัดเจน
 
+
+---
+
+## 2026-10-10 14:03 คำสั่ง: /implement T-07 specs/004-NewActivity/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/services/activity_cancellation.py, backend/app/routes/activity_cancel.py, backend/tests/test_activity_cancellation.py, specs/004-NewActivity/tasks.md
+- ผลลัพธ์: เพิ่ม workflow ยกเลิกกิจกรรมและแจ้งเตือนผู้ที่ลงทะเบียนว่ากิจกรรมถูกยกเลิกแล้ว พร้อมคงสถานะการยกเลิกและ timestamp การยกเลิกไว้ใน object ของกิจกรรม
+- Test ที่รัน: pytest tests/test_activity_cancellation.py -q
+- ผลลัพธ์ test: 1 passed in 0.31s
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ไม่มี; spec ระบุชัดว่าต้องแจ้งเตือนผู้ที่ลงทะเบียนและ “คงสถานะยกเลิกไว้” จึงใช้ status = "cancelled" และ notifications list เพื่อให้แสดงผลได้ทันทีโดยไม่ต้องเพิ่ม workflow อนุมัติใหม่
+
