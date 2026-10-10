@@ -370,3 +370,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: npm test -- --run src/pages/SchedulePage.test.tsx
 - ผลลัพธ์ test: 2 passed (2)
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ form ที่มี field วันเริ่ม/สิ้นสุด เวลาเริ่ม/สิ้นสุด ตาม spec อย่างตรงไปตรงมา และไม่สร้างตัวเลือกหรือฟีเจอร์นอกขอบเขต เช่น การลบรายการหรือการดึงตารางเรียนจากระบบมหาวิทยาลัย
+
+---
+
+## 2026-10-10 13:24 คำสั่ง: /implement T-05 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/pages/ActivityDetailPage.tsx, frontend/src/pages/ActivityDetailPage.test.tsx, frontend/src/services/scheduleOverlap.ts
+- ผลลัพธ์: เชื่อมหน้ารายละเอียดกิจกรรมกับการตรวจคาบเกี่ยวโดยส่งวันและเวลาของกิจกรรมไปเทียบกับตารางส่วนตัวที่นักศึกษาเคยบันทึกไว้ และแสดงข้อความเตือนเมื่อมีช่วงเวลาคาบเกี่ยวกัน
+- Test ที่รัน: pytest backend/tests/test_overlap_logic.py -q && cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
+- ผลลัพธ์ test: backend 3 passed in 0.01s; frontend 4 passed (4)
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้กติกา half-open interval ตาม spec อย่างชัดเจน ไม่เพิ่มฟีเจอร์บล็อกการลงทะเบียนหรือดึงตารางเรียนจากระบบมหาวิทยาลัย เพราะ task T-05 ครอบคลุมเฉพาะการตรวจวิเคราะห์และแสดงคำเตือนเท่านั้น

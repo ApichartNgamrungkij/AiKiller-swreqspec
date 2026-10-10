@@ -46,7 +46,7 @@
 - ไฟล์ที่แตะ: `frontend/src/pages/ActivityDetailPage.tsx`, `frontend/src/services/scheduleOverlap.ts`, `backend/app/services/overlap_checker.py`
 - ต้องทำหลัง: T-01, T-03
 - เสร็จเมื่อ: ข้อมูลวันและเวลาของกิจกรรมถูกส่งไปตรวจกับข้อมูลตารางส่วนตัวที่นักศึกษาบันทึกไว้ และแสดงผลเตือนเมื่อมีช่วงทับกัน
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-06 แสดงคำเตือนที่ไม่บล็อกการลงทะเบียน
 - รองรับ: DOM-SCHED-01, FR-SCHED-05, FR-SCHED-06
