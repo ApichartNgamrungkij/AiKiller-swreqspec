@@ -70,7 +70,7 @@
 - ไฟล์ที่แตะ: `backend/tests/`, `frontend/tests/`, `specs/003-Schedule/tasks.md`
 - ต้องทำหลัง: T-01, T-02, T-03, T-04, T-05, T-06, T-07
 - เสร็จเมื่อ: test_AC_SCHED_01 ถึง test_AC_SCHED_07 และการทดสอบ NFR-SCHED-01 ผ่านตาม Traceability ใน spec.md
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ## ตารางตรวจความครบ
 

@@ -403,3 +403,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: pytest backend/tests/test_schedule_concurrency.py -q
 - ผลลัพธ์ test: 1 passed in 2.16s
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: ใช้ Constraint NFR-SCHED-01 และ ASM-SCHED-05 เป็นพื้นฐานจริงของการจำลองคิวรอ ไม่เพิ่มกระบวนการลงทะเบียนหรือดึงข้อมูลจากระบบมหาวิทยาลัยเกิน scope ของ task T-07
+
+---
+
+## 2026-10-10 13:30 คำสั่ง: /implement T-08 specs/003-Schedule/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: specs/003-Schedule/tasks.md
+- ผลลัพธ์: ตรวจสอบความครบของ Acceptance Criteria และ NFR ด้วยชุดทดสอบของ Schedule ที่มีอยู่แล้วทุกแผนงาน ขั้นตอนนี้ยืนยันว่าทุกข้อ AC-SCHED-01 ถึง AC-SCHED-07 และ NFR-SCHED-01 ผ่านตาม Traceability ใน spec.md
+- Test ที่รัน: pytest backend/tests/test_overlap_logic.py backend/tests/test_schedule_auth.py backend/tests/test_schedule_api.py backend/tests/test_schedule_concurrency.py -q && cd frontend && npm test -- --run src/pages/ActivityDetailPage.test.tsx src/pages/SchedulePage.test.tsx
+- ผลลัพธ์ test: backend 8 passed in 1.73s; frontend 2 files passed, 5 tests passed
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: ตรวจสอบ traceability ตาม spec โดยใช้ชื่อ AC เดิมและไม่เพิ่ม requirement ใด ๆ นอกเหนือจากสิ่งที่เคยกำหนดไว้แล้ว
