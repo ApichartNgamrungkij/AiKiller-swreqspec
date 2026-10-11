@@ -744,3 +744,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd frontend && npm run test -- --run src/pages/ActivityDetail.test.tsx`; `npm run build`
 - ผลลัพธ์ test: `1 passed`; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ test; ใช้ `MockActivity` ที่มีอยู่และรับกิจกรรมผ่าน prop เพื่อไม่เพิ่ม routing/API นอกขอบเขต T-06
+
+---
+
+## 2026-10-11 12:15 คำสั่ง: /implement T-07 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/services/collision_service.py, backend/app/api/collision_status.py, frontend/src/components/CollisionWarning.tsx, frontend/src/components/StudentScheduleWarning.tsx, frontend/src/components/CollisionWarning.test.tsx, backend/tests/test_search_collision.py
+- ผลลัพธ์: เพิ่มการตรวจ collision จากตารางส่วนตัวของนักศึกษา แสดงคำเตือนสีแดง ระบุช่วงเวลาที่ชน และคงปุ่มให้เปิดดูรายละเอียดต่อได้โดยไม่ตัดสินใจแทนนักศึกษา
+- Test ที่รัน: `pytest backend/tests/test_search_collision.py -q`; `cd frontend && npm run test -- --run src/components/CollisionWarning.test.tsx`; `npm run build`
+- ผลลัพธ์ test: backend `1 passed`; frontend `1 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ทดสอบ; ใช้ `PersonalBusyPeriod` ที่เป็นข้อมูลตารางส่วนตัวที่นักศึกษากรอกเอง และไม่ดึงข้อมูลจากระบบตารางเรียนมหาวิทยาลัย

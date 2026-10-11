@@ -64,7 +64,7 @@
 - ไฟล์ที่แตะ: `backend/app/services/collision_service.py`, `backend/app/api/collision_status.py`, `frontend/src/components/CollisionWarning.tsx`, `frontend/src/components/StudentScheduleWarning.tsx`
 - ต้องทำหลัง: T-01, T-02, T-03, T-04
 - เสร็จเมื่อ: กิจกรรมและช่วงตารางที่ทับกันแสดงคำเตือนสีแดง เปิดดูรายละเอียดต่อได้ และไม่มีการตัดสินใจแทนนักศึกษา
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-08 ต่อหน้าจอกับ API จริงและแสดงกิจกรรมใหม่ทันที
 - รองรับ: FR-SRCH-01, FR-SRCH-03, FR-SRCH-05, AC-SRCH-06
