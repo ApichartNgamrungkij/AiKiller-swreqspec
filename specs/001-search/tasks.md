@@ -32,7 +32,7 @@
 - ไฟล์ที่แตะ: `frontend/src/pages/SearchList.tsx`, `frontend/src/components/ActivityCard.tsx`, `frontend/src/mocks/activities.ts`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: หน้ารายการแสดง activity card ทุกกิจกรรมและ badge “เต็มแล้ว/ยังรับสมัคร” ด้วยข้อมูลจำลอง
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-04 สร้างตัวกรองประเภทและช่วงเวลาว่างด้วยข้อมูลจำลอง
 - รองรับ: FR-SRCH-02, FR-SRCH-03, DOM — ประเภทกิจกรรมที่มหาวิทยาลัยรับรอง

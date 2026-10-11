@@ -700,3 +700,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd /workspaces/AiKiller-swreqspec && pytest backend/tests/test_activity_model.py backend/tests/test_overlap_logic.py backend/tests/test_schedule_api.py -q`
 - ผลลัพธ์ test: `8 passed in 0.26s`
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: repo มีโครงสร้างที่ใช้ `routes/me_schedule.py` และ `services/activity_service.py` เป็นคีย์ไอเดียหลักแทน `api/student_schedules.py` ตาม spec จึงยึดแนวทางเชื่อม wrapper เข้ากับฟังก์ชันที่มีอยู่แล้วแทนการสร้าง logic ซ้ำในไฟล์ที่ไม่ใช่ scope ของ task
+
+---
+
+## 2026-10-11 11:55 คำสั่ง: /implement T-03 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/pages/SearchList.tsx, frontend/src/components/ActivityCard.tsx, frontend/src/mocks/activities.ts, frontend/src/pages/SearchList.test.tsx
+- ผลลัพธ์: เพิ่มหน้ารายการกิจกรรมด้วยข้อมูลจำลอง แสดง activity card ทุกกิจกรรม พร้อม badge “เต็มแล้ว/ยังรับสมัคร” ตาม AC-SRCH-01
+- Test ที่รัน: `cd frontend && npm run test -- --run src/pages/SearchList.test.tsx`
+- ผลลัพธ์ test: `1 passed`; `cd frontend && npm run build` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: tasks.md ไม่ได้ระบุไฟล์ test แต่กติกา /implement กำหนดให้สร้าง test ตาม AC-SRCH-01 จึงขออนุญาตทีมก่อนเพิ่ม `frontend/src/pages/SearchList.test.tsx`
