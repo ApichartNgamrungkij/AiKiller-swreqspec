@@ -72,7 +72,7 @@
 - ไฟล์ที่แตะ: `frontend/src/services/activityApi.ts`, `frontend/src/pages/SearchList.tsx`, `frontend/src/pages/ActivityDetail.tsx`
 - ต้องทำหลัง: T-02, T-03, T-04, T-05, T-06, T-07
 - เสร็จเมื่อ: หน้าจอใช้ข้อมูลจาก API จริงและกิจกรรมที่ผู้จัดสร้างสำเร็จแล้วปรากฏในรายการนักศึกษาทันทีโดยไม่รอ Admin อนุมัติ
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-09 ทำระบบ polling และอัปเดตสถานะกิจกรรม
 - รองรับ: FR-SRCH-01, IF — polling Google Sheets ทุก 1–2 นาที, IF — อัปเดตสถานะภายใน 1 นาทีและไม่เกิน 2 นาที

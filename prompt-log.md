@@ -755,3 +755,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `pytest backend/tests/test_search_collision.py -q`; `cd frontend && npm run test -- --run src/components/CollisionWarning.test.tsx`; `npm run build`
 - ผลลัพธ์ test: backend `1 passed`; frontend `1 passed`; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ทดสอบ; ใช้ `PersonalBusyPeriod` ที่เป็นข้อมูลตารางส่วนตัวที่นักศึกษากรอกเอง และไม่ดึงข้อมูลจากระบบตารางเรียนมหาวิทยาลัย
+
+---
+
+## 2026-10-11 12:18 คำสั่ง: /implement T-08 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/services/activityApi.ts, frontend/src/services/activityApi.test.ts
+- ไฟล์ที่แก้: frontend/src/pages/SearchList.tsx, frontend/src/pages/ActivityDetail.tsx
+- ผลลัพธ์: เพิ่มการเรียก `GET /api/activities` และ `GET /api/activities/:id`, แปลง response เป็นข้อมูลกิจกรรมที่หน้าจอใช้ได้ และให้รายการ/รายละเอียดอัปเดตจาก API เมื่อข้อมูลใหม่ถูกสร้าง
+- Test ที่รัน: `cd frontend && npm run test -- --run src/services/activityApi.test.ts src/pages/SearchList.test.tsx src/pages/ActivityDetail.test.tsx`; `npm run build`
+- ผลลัพธ์ test: `3 passed`; build ผ่าน; มีคำเตือน React `act(...)` จาก test เดิมของ SearchList ระหว่าง state update แบบ asynchronous แต่ไม่ทำให้ test ล้มเหลว
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test; ใช้ path API ตาม plan.md และคงข้อมูลจำลองเริ่มต้นไว้เพื่อรักษาพฤติกรรมเดิมระหว่างรอ API โดยแสดง error อย่างชัดเจนหากโหลด API ไม่สำเร็จ
