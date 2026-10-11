@@ -733,3 +733,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd frontend && npm run test -- --run src/components/ActivityResults.test.tsx`; `npm run build`
 - ผลลัพธ์ test: `1 passed`; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ test และใช้ props `activities` เพื่อรับผลลัพธ์ที่กรองแล้วโดยไม่ผูกกับหน้าหรือ API ของ task อื่น
+
+---
+
+## 2026-10-11 12:13 คำสั่ง: /implement T-06 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/pages/ActivityDetail.tsx, frontend/src/components/ActivityDetail.tsx, frontend/src/pages/ActivityDetail.test.tsx
+- ผลลัพธ์: เพิ่มหน้ารายละเอียดกิจกรรมที่แสดงชั่วโมงจิตอาสา วันเวลา สถานที่ และลิงก์ Google Form สำหรับไปลงทะเบียนต่อ โดยไม่ทำกระบวนการลงทะเบียนจริง
+- Test ที่รัน: `cd frontend && npm run test -- --run src/pages/ActivityDetail.test.tsx`; `npm run build`
+- ผลลัพธ์ test: `1 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ test; ใช้ `MockActivity` ที่มีอยู่และรับกิจกรรมผ่าน prop เพื่อไม่เพิ่ม routing/API นอกขอบเขต T-06
