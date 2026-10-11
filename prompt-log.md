@@ -927,3 +927,50 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: จะบันทึกผลหลังรัน `pytest -q backend/tests/api/test_registration_confirmation.py` และ frontend test/build
 - ผลลัพธ์ test: AC-REG-05 tests ผ่าน `2 passed`; compile ผ่าน; frontend `npm run build` ผ่าน; `git diff --check` ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมและใช้ contract `{ studentId, message }` โดย `activityId` มาจาก path และ `is_read = false`
+## /implement T-01 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `backend/app/models/activity_export_source.py`, `backend/app/models/access_role.py`, `frontend/src/types/export.ts`
+- ผลการตรวจ: ตรวจโครงสร้างโมเดลด้วย Python import/compile และ TypeScript build
+- สิ่งที่ต้องเดา: ไม่มี; ใช้ฟิลด์และบทบาทตาม `spec.md` และ `plan.md`
+## /implement T-02 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `backend/app/integrations/google_sheets.py`, `backend/app/services/export_source_service.py`, `backend/app/api/export_access.py`
+- ผลการตรวจ: รัน test endpoint และ smoke test การอ่านจำนวนแถว โดยไม่นับ header
+- สิ่งที่ต้องเดา: ไม่มี; การตรวจ role เป็นขอบเขตของ T-03 ตาม tasks.md
+## /implement T-03 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `backend/app/services/access_control.py`, `backend/app/api/export_access.py`, `backend/app/api/google_sheet.py`
+- ผลการตรวจ: รัน smoke test AC-EXP-07 และ AC-EXP-08 สำหรับ endpoint ตรวจสิทธิ์ก่อนแสดงสิทธิ์และก่อนส่ง URL
+- สิ่งที่ต้องเดา: ไม่มี; endpoint `google-sheet` ส่ง URL หลังตรวจสิทธิ์ตาม plan.md
+## /implement T-04 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้าง: `frontend/src/pages/ActivityPage.tsx`, `frontend/src/components/ExportListButton.tsx`, `frontend/src/mocks/exportAccess.ts`
+- ผลการตรวจ: รัน frontend test/build และ smoke test กรณีมี/ไม่มีสิทธิ์หรือผู้ลงทะเบียน
+- สิ่งที่ต้องเดา: ไม่มี; การนำทางไป Google Sheets อยู่ในขอบเขต T-05
+## /implement T-05 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `backend/app/api/google_sheet.py`, `frontend/src/services/exportApi.ts`, `frontend/src/components/ExportListButton.tsx`
+- ผลการตรวจ: รัน smoke test endpoint และ frontend test/build สำหรับการเปิด Google Sheets ตาม URL ที่ตรวจสิทธิ์แล้ว
+- สิ่งที่ต้องเดา: ไม่มี; การดาวน์โหลด `.xlsx`/`.csv` และการดำเนินการ REG อยู่ใน task ถัดไปตาม tasks.md
+## /implement T-06 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้าง: `frontend/src/components/GoogleSheetExportGuide.tsx`, `backend/tests/integrations/test_google_sheets_export.py`
+- ผลการตรวจ: ทดสอบข้อมูลจำลองหลายคอลัมน์และลิงก์ export `.xlsx`/`.csv` พร้อม frontend test/build
+- สิ่งที่ต้องเดา: ไม่มี; ใช้ URL export ของ Google Sheets และไม่แปลงหรือตัดคอลัมน์ในระบบ
+## /implement T-07 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้าง: `docs/integration/export-reg-process.md`, `backend/tests/api/test_export_scope.py`
+- ผลการตรวจ: รัน tests AC-EXP-04, AC-EXP-05 และ AC-EXP-06 สำเร็จ
+- สิ่งที่ต้องเดา: ไม่มี; ยึดตาม spec ว่าผู้จัดกิจกรรมดำเนินการต่อใน REG เอง และระบบไม่อัปโหลดอัตโนมัติ
+
+## /implement T-08 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `backend/app/services/export_source_service.py`, `backend/app/api/google_sheet.py`, `frontend/src/components/ExportErrorState.tsx`
+- ผลการตรวจ: รัน smoke test กรณี URL ว่าง/รูปแบบไม่ถูกต้องและตรวจว่า API ไม่ส่ง URL ที่ใช้ไม่ได้
+- สิ่งที่ต้องเดา: ไม่มี; ใช้สถานะข้อผิดพลาดที่มีอยู่ใน API และเพิ่มข้อความ error ที่มองเห็นได้ใน frontend
+
+## /implement T-09 specs/006-ExportList/tasks.md
+
+- ไฟล์ที่สร้างหรือแก้: `frontend/src/services/exportApi.ts`, `frontend/src/pages/ActivityPage.tsx`, `backend/tests/api/test_student_google_sheet_access.py`
+- ผลการตรวจ: ทดสอบการปฏิเสธนักศึกษาและรัน frontend test/build
+- สิ่งที่ต้องเดา: ไม่มี; ใช้ API `export-access` และ endpoint `google-sheet` ตาม plan.md

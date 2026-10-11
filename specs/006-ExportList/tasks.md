@@ -16,7 +16,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/activity_export_source.py`, `backend/app/models/access_role.py`, `frontend/src/types/export.ts`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: โมเดลมี `activity_id`, `google_sheet_url`, `last_successful_response_count`, `last_successful_read_at` และข้อมูลบทบาทตาม plan.md ข้อ 3 โดยไม่มีฟิลด์สำหรับการเช็คชื่อหรืออัปโหลดเข้า REG
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-02 อ่านจำนวนผู้ลงทะเบียนล่าสุดจาก Google Sheets
 - รองรับ: FR-EXP-01, IF-GSHEET-01, CON-EXPORT-01, ASM-01, ASM-06
@@ -24,7 +24,7 @@
 - ไฟล์ที่แตะ: `backend/app/integrations/google_sheets.py`, `backend/app/services/export_source_service.py`, `backend/app/api/export_access.py`
 - ต้องทำหลัง: T-01
 - เสร็จเมื่อ: endpoint `GET /activities/{activityId}/export-access` คืน `can_export=true` เฉพาะเมื่อจำนวนล่าสุดที่อ่านสำเร็จมีอย่างน้อย 1 คน
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-03 สร้างการตรวจสิทธิ์เข้าถึง Google Sheets
 - รองรับ: ACC-GSHEET-01, ACC-GSHEET-02, NFR-SEC-01, NFR-SEC-02, ASM-02
@@ -32,7 +32,7 @@
 - ไฟล์ที่แตะ: `backend/app/services/access_control.py`, `backend/app/api/export_access.py`, `backend/app/api/google_sheet.py`
 - ต้องทำหลัง: T-01
 - เสร็จเมื่อ: ระบบตรวจบทบาททุกครั้งก่อนแสดงสิทธิ์และก่อนเปิด Google Sheets โดยอนุญาตเฉพาะ Admin/ผู้จัดกิจกรรม
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-04 สร้างหน้ากิจกรรมและปุ่มดาวน์โหลดรายชื่อด้วย API จำลอง
 - รองรับ: FR-EXP-01, FR-EXP-02, CON-EXPORT-01
@@ -40,7 +40,7 @@
 - ไฟล์ที่แตะ: `frontend/src/pages/ActivityPage.tsx`, `frontend/src/components/ExportListButton.tsx`, `frontend/src/mocks/exportAccess.ts`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: หน้ากิจกรรมแสดงปุ่ม “ดาวน์โหลดรายชื่อ” เมื่อข้อมูลจำลองระบุว่ามีผู้ลงทะเบียนและผู้ใช้มีสิทธิ์
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-05 พาผู้จัดกิจกรรมไปยัง Google Sheets โดยตรง
 - รองรับ: FR-EXP-02, IF-EXPORT-01, IF-GSHEET-01, ACC-GSHEET-01, ACC-GSHEET-02, ASM-05
@@ -48,7 +48,7 @@
 - ไฟล์ที่แตะ: `backend/app/api/google_sheet.py`, `frontend/src/services/exportApi.ts`, `frontend/src/components/ExportListButton.tsx`
 - ต้องทำหลัง: T-02, T-03, T-04
 - เสร็จเมื่อ: endpoint `GET /activities/{activityId}/google-sheet` ตรวจสิทธิ์ซ้ำและนำผู้จัดกิจกรรมไปยัง URL Google Sheets ที่ถูกต้องโดยตรง
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-06 รองรับการดาวน์โหลดและบันทึกข้อมูลทุกคอลัมน์
 - รองรับ: FR-EXP-03, FR-EXP-04, ASM-03
@@ -56,7 +56,7 @@
 - ไฟล์ที่แตะ: `frontend/src/components/GoogleSheetExportGuide.tsx`, `backend/tests/integrations/test_google_sheets_export.py`
 - ต้องทำหลัง: T-05
 - เสร็จเมื่อ: การทดสอบข้อมูลจำลองหลายคอลัมน์ยืนยันว่า Google Sheets รองรับ `.xlsx` และ `.csv` โดยไม่มีการตัดหรือปรับรูปแบบคอลัมน์
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-07 ตรวจสอบความสอดคล้องกับกระบวนการ REG เดิม
 - รองรับ: FR-EXP-05, FR-EXP-06, IF-REG-01, DOM-APP-01, ASM-04, ASM-07
@@ -64,7 +64,7 @@
 - ไฟล์ที่แตะ: `docs/integration/export-reg-process.md`, `backend/tests/api/test_export_scope.py`
 - ต้องทำหลัง: T-05, T-06
 - เสร็จเมื่อ: มีผลทดสอบยืนยันว่าไฟล์ถูกนำไปใช้ต่อโดยผู้จัดกิจกรรมเอง ไม่มี endpoint อัปโหลดเข้า REG และไม่มีการเปลี่ยนขั้นตอนอนุมัติโครงการเดิม
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-08 แสดงข้อผิดพลาดเมื่อแหล่งข้อมูลหรือลิงก์ไม่พร้อม
 - รองรับ: FR-EXP-01, FR-EXP-02, IF-GSHEET-01, IF-EXPORT-01, ASM-05
@@ -72,7 +72,7 @@
 - ไฟล์ที่แตะ: `backend/app/services/export_source_service.py`, `backend/app/api/google_sheet.py`, `frontend/src/components/ExportErrorState.tsx`
 - ต้องทำหลัง: T-02, T-03, T-04
 - เสร็จเมื่อ: เมื่อ Google Sheets หรือลิงก์ไม่พร้อม ระบบแสดงข้อผิดพลาดที่เห็นได้และไม่ส่ง URL ที่ใช้งานไม่ได้
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-09 เชื่อมหน้ากิจกรรมกับ API จริงและทดสอบสิทธิ์นักศึกษา
 - รองรับ: FR-EXP-01, FR-EXP-02, ACC-GSHEET-02, NFR-SEC-01, NFR-SEC-02
@@ -80,7 +80,7 @@
 - ไฟล์ที่แตะ: `frontend/src/services/exportApi.ts`, `frontend/src/pages/ActivityPage.tsx`, `backend/tests/api/test_student_google_sheet_access.py`
 - ต้องทำหลัง: T-03, T-04, T-05, T-08
 - เสร็จเมื่อ: หน้าจอใช้ API จริง แสดงปุ่มและเปิดลิงก์ได้เฉพาะ Admin/ผู้จัดกิจกรรม และคำขอจากนักศึกษาถูกปฏิเสธโดยไม่ส่ง URL หรือข้อมูล Google Sheets
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ## ตารางตรวจความครบของ Acceptance Criteria
 

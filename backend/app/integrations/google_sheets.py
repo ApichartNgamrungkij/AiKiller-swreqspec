@@ -88,3 +88,8 @@ class GoogleSheetsClient:
         """Return the number of registration rows, excluding the header row."""
         values = self.read_values(spreadsheet_id, range_name)
         return max(0, len(values) - 1)
+
+    # Supports FR-EXP-01, IF-GSHEET-01, CON-EXPORT-01, ASM-01, ASM-06.
+    def read_export_response_count(self, spreadsheet_id: str, range_name: str) -> int:
+        """Return the latest successful registration count for export access."""
+        return self.read_registration_count(spreadsheet_id, range_name)
