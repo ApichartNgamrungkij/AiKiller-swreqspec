@@ -16,7 +16,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/activity.py`, `backend/app/models/student_schedule.py`, `backend/app/models/collision_warning.py`, `frontend/src/types/activity.ts`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: โมเดลมีฟิลด์ตาม plan.md ข้อ 3 และไม่มีข้อมูลตารางเรียนจากมหาวิทยาลัยหรือข้อมูลส่วนตัวนอก spec
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-02 สร้าง API โหลดกิจกรรมและข้อมูลตารางส่วนตัว
 - รองรับ: FR-SRCH-01, FR-SRCH-02, FR-SRCH-03, FR-SRCH-05, IF — ใช้เฉพาะตารางที่นักศึกษากรอกเอง, DOM — กรองเฉพาะ 5 ประเภทที่รับรอง

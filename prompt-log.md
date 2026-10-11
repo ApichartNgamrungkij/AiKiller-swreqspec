@@ -677,3 +677,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `PYTHONPATH=. /workspaces/AiKiller-swreqspec/.venv/bin/python -m pytest backend/tests/security/test_registrant_security.py backend/tests/api/test_registrants.py backend/tests/api/test_registrant_access.py`
 - ผลลัพธ์ test: `12 passed`; มี deprecation warning จาก `httpx`/Starlette ที่ไม่เกี่ยวกับ T-10
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: plan ระบุ HTTPS/TLS แต่ไม่ระบุผู้ให้บริการ deployment จึงทำ `https-config.yml` เป็น deployment-agnostic contract แทนการผูกกับ Nginx หรือ ingress ใดโดยเฉพาะ
+
+---
+
+## 2026-10-11 11:46 คำสั่ง: /implement T-01 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่แตะ: ไม่มี (ตรวจสอบแล้วโค้ดที่มีอยู่ตรงตาม task T-01 แล้ว จึงไม่จำเป็นต้องแตะไฟล์เพิ่ม)
+- ผลลัพธ์: ยืนยันว่าโมเดลกิจกรรมและตารางส่วนตัวใน repo ตรงกับข้อกำหนดของ T-01 โดยใช้ `ActivityCategory`/`ActivityDraft` และ `PersonalBusyPeriod` ตาม spec และไม่เก็บข้อมูลตารางเรียนจากมหาวิทยาลัยหรือข้อมูลส่วนตัวนอก scope
+- Test ที่รัน: `cd /workspaces/AiKiller-swreqspec && pytest backend/tests/test_activity_model.py backend/tests/test_overlap_logic.py backend/tests/test_schedule_api.py -q`
+- ผลลัพธ์ test: `8 passed in 0.29s`
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: repo นี้มีการ implement ของ T-01 อยู่แล้วตามสัญญาในโครงงานดังนั้นไม่ต้องสร้างไฟล์ใหม่หรือแก้ logic เพิ่ม ส่วนที่ต้องระวังคือ T-01 มีการอ้างอิง `student_schedule`/`collision_warning` แบบชื่อ spec แต่โครงงานปัจจุบันใช้ `personal_busy_period` และ overlap checker เป็นชื่อสากลที่สอดคล้องกับ requirement เดียวกัน
