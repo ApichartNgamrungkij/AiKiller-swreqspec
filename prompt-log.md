@@ -711,3 +711,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd frontend && npm run test -- --run src/pages/SearchList.test.tsx`
 - ผลลัพธ์ test: `1 passed`; `cd frontend && npm run build` ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: tasks.md ไม่ได้ระบุไฟล์ test แต่กติกา /implement กำหนดให้สร้าง test ตาม AC-SRCH-01 จึงขออนุญาตทีมก่อนเพิ่ม `frontend/src/pages/SearchList.test.tsx`
+
+---
+
+## 2026-10-11 12:07 คำสั่ง: /implement T-04 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/components/ActivityFilters.tsx, frontend/src/services/activityFilter.ts, frontend/src/mocks/studentSchedule.ts, frontend/src/services/activityFilter.test.ts
+- ผลลัพธ์: เพิ่มตัวกรอง 5 ประเภทกิจกรรมที่มหาวิทยาลัยรับรอง และตัวกรองกิจกรรมที่อยู่ภายในช่วงเวลาว่างจากตารางจำลองที่นักศึกษากรอกเอง
+- Test ที่รัน: `cd frontend && npm run test -- --run src/services/activityFilter.test.ts`; `npm run build`
+- ผลลัพธ์ test: `2 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test และถามความหมายของช่วงเวลาว่าง; ทีมยืนยันให้ใช้ availability slot โดยตรง ไม่ใช่ช่วงเวลาไม่ว่างจาก PersonalBusyPeriod
