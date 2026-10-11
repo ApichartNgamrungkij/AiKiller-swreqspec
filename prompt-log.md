@@ -767,3 +767,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd frontend && npm run test -- --run src/services/activityApi.test.ts src/pages/SearchList.test.tsx src/pages/ActivityDetail.test.tsx`; `npm run build`
 - ผลลัพธ์ test: `3 passed`; build ผ่าน; มีคำเตือน React `act(...)` จาก test เดิมของ SearchList ระหว่าง state update แบบ asynchronous แต่ไม่ทำให้ test ล้มเหลว
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test; ใช้ path API ตาม plan.md และคงข้อมูลจำลองเริ่มต้นไว้เพื่อรักษาพฤติกรรมเดิมระหว่างรอ API โดยแสดง error อย่างชัดเจนหากโหลด API ไม่สำเร็จ
+
+---
+
+## 2026-10-11 12:21 คำสั่ง: /implement T-09 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/services/activity_status_sync.py, backend/app/jobs/status_polling.py, frontend/src/hooks/useActivityStatus.ts, backend/tests/test_activity_status_sync.py, frontend/src/hooks/useActivityStatus.test.ts
+- ไฟล์ที่แก้: backend/app/integrations/google_sheets.py, specs/001-search/tasks.md
+- ผลลัพธ์: เพิ่มการอ่านจำนวนผู้ลงทะเบียนจาก Google Sheets, คำนวณสถานะ `open/full`, เก็บ snapshot ล่าสุด และตั้ง polling ทุก 60–120 วินาที; frontend hook polling รายละเอียดกิจกรรมทุก 60 วินาที
+- Test ที่รัน: `pytest -q backend/tests/test_activity_status_sync.py`; `cd frontend && npm test -- --run src/hooks/useActivityStatus.test.ts`; `cd frontend && npm run build`
+- ผลลัพธ์ test: backend `4 passed`; frontend `1 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test; ใช้จำนวนแถวข้อมูล Google Sheets โดยไม่นับ header และใช้ capacity ของกิจกรรมเป็นเกณฑ์เปลี่ยนสถานะ

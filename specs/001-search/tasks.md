@@ -80,7 +80,7 @@
 - ไฟล์ที่แตะ: `backend/app/integrations/google_sheets.py`, `backend/app/services/activity_status_sync.py`, `backend/app/jobs/status_polling.py`, `frontend/src/hooks/useActivityStatus.ts`
 - ต้องทำหลัง: T-02, T-08
 - เสร็จเมื่อ: การจำลองข้อมูล Google Sheets ที่เต็มจำนวนทำให้ badge เปลี่ยนเป็น “เต็มแล้ว” ภายใน 1 นาที และไม่เกิน 2 นาที
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-10 ตรวจสอบ responsive และประสิทธิภาพการค้นหา
 - รองรับ: AC-SRCH-08, NFR — รองรับผู้ใช้งานประมาณ 5,000 คนต่อภาคการศึกษาและตอบสนองภายใน 2 วินาที, IF — รองรับผู้ใช้งานพร้อมกันประมาณ 5,000 คน

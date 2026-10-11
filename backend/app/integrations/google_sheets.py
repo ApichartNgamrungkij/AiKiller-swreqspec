@@ -4,10 +4,6 @@ import json
 import os
 from typing import Any
 
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-
-
 GOOGLE_SHEETS_READONLY_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly"
 
 
@@ -20,6 +16,9 @@ class GoogleSheetsClient:
 
     @staticmethod
     def _build_service() -> Any:
+        from google.oauth2 import service_account
+        from googleapiclient.discovery import build
+
         credentials_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
         if not credentials_json:
             raise RuntimeError("GOOGLE_SERVICE_ACCOUNT_JSON is required")
@@ -52,3 +51,9 @@ class GoogleSheetsClient:
         if not isinstance(values, list):
             raise ValueError("Google Sheets response values must be a list")
         return values
+
+    # Supports FR-SRCH-01 and IF status polling constraint.
+    def read_registration_count(self, spreadsheet_id: str, range_name: str) -> int:
+        """Return the number of registration rows, excluding the header row."""
+        values = self.read_values(spreadsheet_id, range_name)
+        return max(0, len(values) - 1)
