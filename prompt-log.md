@@ -722,3 +722,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd frontend && npm run test -- --run src/services/activityFilter.test.ts`; `npm run build`
 - ผลลัพธ์ test: `2 passed`; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test และถามความหมายของช่วงเวลาว่าง; ทีมยืนยันให้ใช้ availability slot โดยตรง ไม่ใช่ช่วงเวลาไม่ว่างจาก PersonalBusyPeriod
+
+---
+
+## 2026-10-11 12:10 คำสั่ง: /implement T-05 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/components/ActivityResults.tsx, frontend/src/components/EmptyActivityState.tsx, frontend/src/components/ActivityResults.test.tsx
+- ผลลัพธ์: เพิ่มการแสดงผลลัพธ์กิจกรรม และ Empty State ที่แสดงข้อความ “ไม่พบกิจกรรมที่ตรงกับเงื่อนไข” เมื่อไม่มีผลลัพธ์ตาม FR-SRCH-03/FR-SRCH-04
+- Test ที่รัน: `cd frontend && npm run test -- --run src/components/ActivityResults.test.tsx`; `npm run build`
+- ผลลัพธ์ test: `1 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ test และใช้ props `activities` เพื่อรับผลลัพธ์ที่กรองแล้วโดยไม่ผูกกับหน้าหรือ API ของ task อื่น
