@@ -59,3 +59,44 @@ def activity_to_student_view(activity: Activity) -> dict[str, Any]:
         "registration_url": activity.registration_url,
         "slots": getattr(activity, "slots", []),
     }
+
+
+# Supports FR-SRCH-01, FR-SRCH-02, FR-SRCH-03, DOM — กรองกิจกรรมตามบทบาทและประเภทก่อนส่งกลับให้ผู้ใช้
+def filter_activities_for_role(
+    activities: Iterable[Activity],
+    *,
+    user: Mapping[str, Any] | None = None,
+    category: str | None = None,
+) -> list[Activity]:
+    visible = [item for item in activities if item.status == ActivityStatus.PUBLISHED]
+    if category is not None:
+        normalized_category = ActivityCategory.normalize(category).value
+        visible = [item for item in visible if item.category == normalized_category]
+
+    role = str((user or {}).get("role", "")).strip().lower()
+    if role in {"student", "", None}:
+        return visible
+    if role in {"admin", "administrator", "organizer", "activity_manager"}:
+        return list(visible)
+    return visible
+
+
+# Supports FR-SRCH-01, FR-SRCH-05, IF — คืนรายละเอียดกิจกรรมตาม id สำหรับใช้แสดงในหน้าดูข้อมูลแบบเห็นภาพก่อนส่งต่อไป Google Form
+def find_activity_by_id(activities: Iterable[Activity], activity_id: Any) -> Activity | None:
+    for item in activities:
+        if item.id == activity_id:
+            return item
+    return None
+
+
+# Supports FR-SRCH-01, FR-SRCH-03
+def student_search_results(
+    activities: Iterable[Activity],
+    *,
+    category: str | None = None,
+    user: Mapping[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    return [
+        activity_to_student_view(item)
+        for item in filter_activities_for_role(activities, user=user, category=category)
+    ]

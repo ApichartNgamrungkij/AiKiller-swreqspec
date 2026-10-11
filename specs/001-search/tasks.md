@@ -24,7 +24,7 @@
 - ไฟล์ที่แตะ: `backend/app/api/activities.py`, `backend/app/api/student_schedules.py`, `backend/app/services/activity_service.py`
 - ต้องทำหลัง: T-01
 - เสร็จเมื่อ: endpoint ตาม plan.md ข้อ 4 คืนรายการกิจกรรม, รายละเอียด และตารางส่วนตัวตามบทบาทและตัวกรองได้
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-03 สร้างหน้ารายการกิจกรรมด้วยข้อมูลจำลอง
 - รองรับ: FR-SRCH-01, FR-SRCH-03

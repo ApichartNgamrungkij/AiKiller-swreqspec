@@ -688,3 +688,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `cd /workspaces/AiKiller-swreqspec && pytest backend/tests/test_activity_model.py backend/tests/test_overlap_logic.py backend/tests/test_schedule_api.py -q`
 - ผลลัพธ์ test: `8 passed in 0.29s`
 - สิ่งที่เกือบต้องเดาแต่ไม่เดา: repo นี้มีการ implement ของ T-01 อยู่แล้วตามสัญญาในโครงงานดังนั้นไม่ต้องสร้างไฟล์ใหม่หรือแก้ logic เพิ่ม ส่วนที่ต้องระวังคือ T-01 มีการอ้างอิง `student_schedule`/`collision_warning` แบบชื่อ spec แต่โครงงานปัจจุบันใช้ `personal_busy_period` และ overlap checker เป็นชื่อสากลที่สอดคล้องกับ requirement เดียวกัน
+
+---
+
+## 2026-10-11 11:52 คำสั่ง: /implement T-02 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/api/activities.py, backend/app/api/student_schedules.py
+- ไฟล์ที่แก้: backend/app/services/activity_service.py
+- ผลลัพธ์: เพิ่ม API wrapper สำหรับรายการกิจกรรม, รายละเอียดกิจกรรม, และตารางส่วนตัวของนักศึกษา พร้อมการกรองตามบทบาทและประเภทที่มหาวิทยาลัยรับรอง
+- Test ที่รัน: `cd /workspaces/AiKiller-swreqspec && pytest backend/tests/test_activity_model.py backend/tests/test_overlap_logic.py backend/tests/test_schedule_api.py -q`
+- ผลลัพธ์ test: `8 passed in 0.26s`
+- สิ่งที่เกือบต้องเดาแต่ไม่เดา: repo มีโครงสร้างที่ใช้ `routes/me_schedule.py` และ `services/activity_service.py` เป็นคีย์ไอเดียหลักแทน `api/student_schedules.py` ตาม spec จึงยึดแนวทางเชื่อม wrapper เข้ากับฟังก์ชันที่มีอยู่แล้วแทนการสร้าง logic ซ้ำในไฟล์ที่ไม่ใช่ scope ของ task
