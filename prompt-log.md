@@ -779,3 +779,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `pytest -q backend/tests/test_activity_status_sync.py`; `cd frontend && npm test -- --run src/hooks/useActivityStatus.test.ts`; `cd frontend && npm run build`
 - ผลลัพธ์ test: backend `4 passed`; frontend `1 passed`; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test; ใช้จำนวนแถวข้อมูล Google Sheets โดยไม่นับ header และใช้ capacity ของกิจกรรมเป็นเกณฑ์เปลี่ยนสถานะ
+
+---
+
+## 2026-10-11 12:26 คำสั่ง: /implement T-10 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/styles/responsive.css, backend/tests/performance/test_activity_search.py
+- ไฟล์ที่แก้: frontend/src/pages/SearchList.tsx, specs/001-search/tasks.md
+- ผลลัพธ์: เพิ่ม responsive layout สำหรับ Search list ที่ปรับตามขนาดหน้าจอ ไม่สร้าง horizontal overflow และรองรับการใช้งานแบบ touch; เพิ่ม benchmark ค้นหากิจกรรม 5,000 รายการให้เสร็จภายใน 2 วินาที
+- Test ที่รัน: `pytest -q backend/tests/performance/test_activity_search.py`; `cd frontend && npm test`; `cd frontend && npm run build`
+- ผลลัพธ์ test: benchmark และ frontend tests ผ่าน; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจากใช้ breakpoint และเกณฑ์ 2 วินาทีตาม plan.md/spec.md โดยตรง

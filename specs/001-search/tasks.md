@@ -88,7 +88,7 @@
 - ไฟล์ที่แตะ: `frontend/src/styles/responsive.css`, `frontend/src/pages/SearchList.tsx`, `backend/tests/performance/test_activity_search.py`
 - ต้องทำหลัง: T-04, T-05, T-06, T-08
 - เสร็จเมื่อ: ทดสอบบนคอมพิวเตอร์ มือถือ และไอแพดแล้วไม่เกิด horizontal scroll/pinch-zoom และ benchmark คำขอค้นหาผ่านเกณฑ์ 2 วินาที
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-11 ตรวจสอบการปฏิบัติตาม NFR ระบบกลางและ HTTPS
 - รองรับ: NFR — ส่งข้อมูลผ่าน HTTPS, NFR — เตรียมข้อมูลส่งเข้า REG ภายใน 1 วันทำการ, NFR — มี Audit Log การอนุมัติ/ปฏิเสธเอกสารของ Admin, ASM-08

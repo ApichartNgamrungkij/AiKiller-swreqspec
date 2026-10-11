@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import ActivityCard from '../components/ActivityCard'
 import { mockActivities, type MockActivity } from '../mocks/activities'
 import { fetchActivities } from '../services/activityApi'
+import '../styles/responsive.css'
 
 export type SearchListProps = {
   activities?: MockActivity[]
@@ -33,10 +34,10 @@ export default function SearchList({ activities = mockActivities }: SearchListPr
   }, [])
 
   return (
-    <main>
+    <main className="search-page">
       <h1>ค้นหากิจกรรมจิตอาสา</h1>
       {error && <p role="alert">{error}</p>}
-      <section aria-label="รายการกิจกรรม">
+      <section className="search-results" aria-label="รายการกิจกรรม">
         {visibleActivities.map((activity) => (
           <ActivityCard key={activity.id} activity={activity} />
         ))}
