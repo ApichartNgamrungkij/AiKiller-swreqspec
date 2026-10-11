@@ -4,12 +4,12 @@ import json
 import os
 from typing import Any
 
-GOOGLE_SHEETS_READONLY_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly"
+GOOGLE_SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets"
 
 
-# Supports IF-VIEW-01, FR-VIEW-02, ASM-VIEW-01
+# Supports IF-GSHEET-01, IF-GSAPI-01, FR-REG-03.
 class GoogleSheetsClient:
-    """Read values from Google Sheets with a Service Account."""
+    """Read and append Google Sheets values with a Service Account."""
 
     def __init__(self, service: Any | None = None) -> None:
         self._service = service or self._build_service()
@@ -30,7 +30,7 @@ class GoogleSheetsClient:
 
         credentials = service_account.Credentials.from_service_account_info(
             credentials_info,
-            scopes=[GOOGLE_SHEETS_READONLY_SCOPE],
+            scopes=[GOOGLE_SHEETS_SCOPE],
         )
         return build("sheets", "v4", credentials=credentials, cache_discovery=False)
 
@@ -51,6 +51,37 @@ class GoogleSheetsClient:
         if not isinstance(values, list):
             raise ValueError("Google Sheets response values must be a list")
         return values
+
+    # Supports IF-GSHEET-01 and FR-REG-03.
+    def append_values(
+        self,
+        spreadsheet_id: str,
+        range_name: str,
+        values: list[object],
+    ) -> dict[str, object]:
+        """Append one Google Form response to the activity sheet."""
+        if not spreadsheet_id.strip():
+            raise ValueError("spreadsheet_id is required")
+        if not range_name.strip():
+            raise ValueError("range_name is required")
+        if not values:
+            raise ValueError("values are required")
+
+        response = (
+            self._service.spreadsheets()
+            .values()
+            .append(
+                spreadsheetId=spreadsheet_id,
+                range=range_name,
+                valueInputOption="USER_ENTERED",
+                insertDataOption="INSERT_ROWS",
+                body={"values": [values]},
+            )
+            .execute()
+        )
+        if not isinstance(response, dict):
+            raise ValueError("Google Sheets append response must be an object")
+        return response
 
     # Supports FR-SRCH-01 and IF status polling constraint.
     def read_registration_count(self, spreadsheet_id: str, range_name: str) -> int:

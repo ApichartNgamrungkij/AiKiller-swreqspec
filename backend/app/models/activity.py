@@ -19,6 +19,12 @@ class ActivityStatus(str, Enum):
     SOFT_DELETED = "soft_deleted"
 
 
+# Supports FR-REG-05, FR-REG-06, CON-REG-01.
+class RegistrationStatus(str, Enum):
+    AVAILABLE = "available"
+    FULL = "full"
+
+
 # Supports FR-ACT-02, DOM-ACT-01, IF-ACT-01, IF-ACT-02, ASM-ACT-03, ASM-ACT-05
 class ActivityCategory(str, Enum):
     ACADEMIC = "วิชาการ"
@@ -78,6 +84,16 @@ class Activity(Base):
     max_participants: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, default=0)
     volunteer_hours: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, default=0)
     registration_url: Mapped[Optional[str]] = mapped_column(String(512), nullable=True, default="")
+    # Supports FR-REG-01, FR-REG-04, FR-REG-05, FR-REG-06, CON-REG-01.
+    activity_id: Mapped[int | None] = mapped_column(Integer, nullable=True, unique=True, index=True)
+    capacity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    registration_status: Mapped[RegistrationStatus] = mapped_column(
+        SQLEnum(RegistrationStatus, native_enum=False, name="registration_status"),
+        nullable=False,
+        default=RegistrationStatus.AVAILABLE,
+    )
+    google_form_url: Mapped[str] = mapped_column(String(512), nullable=False, default="")
+    google_sheet_id: Mapped[str] = mapped_column(String(255), nullable=False, default="")
 
     @property
     def is_visible_to_students(self) -> bool:

@@ -16,7 +16,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/activity.py`, `backend/app/models/registration_count_snapshot.py`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: โมเดลมี `activity_id`, `capacity`, `registration_status`, `google_form_url`, `google_sheet_id`, `response_count` และ `last_successful_sync_at` ตาม plan.md ข้อ 3
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-02 สร้างหน้ารายละเอียดกิจกรรมด้วย Google Form จำลอง
 - รองรับ: FR-REG-01, FR-REG-02, CON-REG-01, IF-GFORM-01
@@ -24,7 +24,7 @@
 - ไฟล์ที่แตะ: `frontend/src/pages/ActivityDetail.tsx`, `frontend/src/components/RegistrationFormEmbed.tsx`, `frontend/src/mocks/registrationActivity.ts`
 - ต้องทำหลัง: ไม่มี
 - เสร็จเมื่อ: นักศึกษาที่เข้าสู่ระบบและกิจกรรมยังไม่เต็มเห็นพื้นที่ Google Form จำลองฝังอยู่ในหน้ารายละเอียด
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-03 เชื่อม Google Form กับ Google Sheets ของกิจกรรม
 - รองรับ: FR-REG-02, FR-REG-03, IF-GFORM-01, IF-GSHEET-01, ASM-01, ASM-04
@@ -32,7 +32,7 @@
 - ไฟล์ที่แตะ: `backend/app/integrations/google_form.py`, `backend/app/integrations/google_sheets.py`, `frontend/src/services/registrationForm.ts`
 - ต้องทำหลัง: T-01, T-02
 - เสร็จเมื่อ: การจำลองการส่ง Google Form สำเร็จสร้างคำตอบใน Google Sheets ที่ผูกกับ `google_sheet_id` ของกิจกรรมนั้นโดยอัตโนมัติ
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-04 สร้างตัวอ่านจำนวนผู้ตอบผ่าน Google Sheets API
 - รองรับ: FR-REG-03, FR-REG-04, IF-GSAPI-01, ASM-02, ASM-12
@@ -40,7 +40,7 @@
 - ไฟล์ที่แตะ: `backend/app/integrations/google_sheets_api.py`, `backend/app/services/registration_count_service.py`
 - ต้องทำหลัง: T-01, T-03
 - เสร็จเมื่อ: service อ่านและนับทุกแถวคำตอบจาก Google Sheets รวมรายการซ้ำโดยไม่ตัดออกได้
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-05 คำนวณและอัปเดตสถานะกิจกรรม
 - รองรับ: FR-REG-04, FR-REG-05, NFR-PERF-01, ASM-07, ASM-12
@@ -48,7 +48,7 @@
 - ไฟล์ที่แตะ: `backend/app/api/registration_sync.py`, `backend/app/services/registration_status_service.py`
 - ต้องทำหลัง: T-01, T-04
 - เสร็จเมื่อ: endpoint `POST /activities/{activityId}/registration-sync` อัปเดตจำนวนและสถานะ “ว่าง/เต็มแล้ว” จากทุกแถวภายใน 2 นาที
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-06 ปิดรับ Google Form เมื่อกิจกรรมเต็ม
 - รองรับ: FR-REG-05, FR-REG-06, IF-GFORM-02, CON-REG-01, ASM-03, ASM-06, ASM-09
@@ -56,7 +56,7 @@
 - ไฟล์ที่แตะ: `backend/app/integrations/google_form_settings.py`, `backend/app/services/registration_status_service.py`, `frontend/src/components/RegistrationFormEmbed.tsx`
 - ต้องทำหลัง: T-03, T-05
 - เสร็จเมื่อ: เมื่อจำนวนผู้ตอบถึง `capacity` ระบบสั่งปิดรับคำตอบตามการตั้งค่าของ Google Form อัปเดตสถานะเป็น “เต็มแล้ว” และไม่แสดงหรือไม่อนุญาตให้ใช้งานฟอร์ม
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-07 คง snapshot เดิมเมื่อ Google Sheets API ล้มเหลว
 - รองรับ: FR-REG-04, FR-REG-05, NFR-PERF-01, ASM-08
@@ -64,7 +64,7 @@
 - ไฟล์ที่แตะ: `backend/app/services/registration_count_service.py`, `backend/app/services/registration_status_service.py`, `backend/tests/services/test_registration_sync.py`
 - ต้องทำหลัง: T-01, T-04, T-05
 - เสร็จเมื่อ: เมื่อ API ไม่ตอบสนอง ระบบคง `response_count`, สถานะล่าสุด และเวลา sync สำเร็จล่าสุดไว้โดยไม่เขียนค่าจำนวนใหม่
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-08 ควบคุมสิทธิ์การเข้าถึง Google Sheets
 - รองรับ: ACC-GSHEET-01, ACC-GSHEET-02, NFR-SEC-01, NFR-SEC-02, ASM-11
@@ -72,7 +72,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/access_role.py`, `backend/app/api/google_sheet_access.py`, `backend/app/services/access_control.py`
 - ต้องทำหลัง: T-01
 - เสร็จเมื่อ: endpoint `GET /activities/{activityId}/google-sheet-access` อนุญาตเฉพาะ Admin/ผู้จัดกิจกรรม และปฏิเสธนักศึกษา
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-09 ปฏิเสธการเข้าถึง Google Sheets ของนักศึกษาโดยตรง
 - รองรับ: ACC-GSHEET-02, NFR-SEC-02
@@ -80,7 +80,7 @@
 - ไฟล์ที่แตะ: `backend/app/api/google_sheet_access.py`, `backend/tests/api/test_google_sheet_access.py`
 - ต้องทำหลัง: T-08
 - เสร็จเมื่อ: คำขอจากนักศึกษาที่พยายามเข้าถึง Google Sheets ผ่านระบบได้รับการปฏิเสธและไม่เผยข้อมูลชีต
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-10 สร้างและเก็บ Notification ยืนยันการลงทะเบียน
 - รองรับ: FR-REG-07, IF-NOT-01, ASM-05, ASM-10
@@ -88,7 +88,7 @@
 - ไฟล์ที่แตะ: `backend/app/models/notification.py`, `backend/app/api/registration_confirmation.py`, `backend/app/services/notification_service.py`, `frontend/src/components/NotificationInbox.tsx`
 - ต้องทำหลัง: T-03, T-05
 - เสร็จเมื่อ: endpoint `POST /activities/{activityId}/registration-confirmation` สร้าง Notification ภายในเว็บไซต์หลังบันทึกสำเร็จ แสดงเป็นยังไม่อ่าน และเก็บไว้จนกว่านักศึกษาจะอ่าน
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ## ตารางตรวจความครบของ Acceptance Criteria
 

@@ -803,3 +803,127 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: ตรวจสอบโครงสร้าง YAML และทบทวนเอกสาร/จุดเชื่อมต่อจาก source code
 - ผลลัพธ์ test: ผ่านการตรวจสอบเชิงเอกสาร; ยังไม่มี integration test จริงสำหรับ REG หรือ reverse proxy เพราะอยู่นอก scope และต้องรอระบบกลาง
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่กำหนด URL, schema หรือ authentication ของ REG เพราะ spec ไม่ระบุ และบันทึกเป็น dependency ที่ต้องยืนยันก่อน production
+
+---
+
+## 2026-10-11 12:33 คำสั่ง: /implement T-01 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/models/registration_count_snapshot.py
+- ไฟล์ที่แก้: backend/app/models/activity.py, specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่มฟิลด์ `activity_id`, `capacity`, `registration_status`, `google_form_url` และ `google_sheet_id` ในโมเดล Activity และสร้าง RegistrationCountSnapshot สำหรับ `response_count` กับ `last_successful_sync_at`
+- Test ที่รัน: `python -m compileall -q backend/app/models/activity.py backend/app/models/registration_count_snapshot.py`; Register T-01 model smoke test ผ่าน
+- ผลลัพธ์ test: syntax ผ่าน และ smoke test ยืนยันว่าโมเดล/ค่า default ที่จำเป็นโหลดได้ถูกต้อง
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจากชื่อฟิลด์และขอบเขตโมเดลระบุไว้ใน tasks.md และ plan.md โดยตรง
+
+---
+
+## 2026-10-11 12:35 คำสั่ง: /implement T-02 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/components/RegistrationFormEmbed.tsx, frontend/src/mocks/registrationActivity.ts, frontend/src/pages/ActivityDetailRegister.test.tsx
+- ไฟล์ที่แก้: frontend/src/pages/ActivityDetail.tsx, specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่มพื้นที่ Google Form จำลองในหน้ารายละเอียดกิจกรรมสำหรับกิจกรรมที่ยังไม่เต็ม และไม่แสดงพื้นที่ดังกล่าวเมื่อสถานะเป็น `full`
+- Test ที่รัน: `cd frontend && npm test -- --run src/pages/ActivityDetailRegister.test.tsx`; `cd frontend && npm run build`
+- ผลลัพธ์ test: AC-REG-01 และเงื่อนไขกิจกรรมเต็มผ่าน; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนเพิ่มไฟล์ test เนื่องจาก tasks.md ไม่ได้ระบุไฟล์ทดสอบ; ถือว่าหน้ารายละเอียดอยู่หลังการเข้าสู่ระบบตาม precondition ของ spec
+
+---
+
+## 2026-10-11 12:37 คำสั่ง: /implement T-03 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/integrations/google_form.py, frontend/src/services/registrationForm.ts, backend/tests/integrations/test_google_form.py, frontend/src/services/registrationForm.test.ts
+- ไฟล์ที่แก้: backend/app/integrations/google_sheets.py, specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่ม adapter จำลองการส่ง Google Form ที่ append คำตอบไปยัง Google Sheet ตาม `google_sheet_id` และเพิ่ม frontend service ที่ส่งข้อมูลผ่าน `POST /api/activities/{activityId}/registration-form`
+- Test ที่รัน: `pytest -q backend/tests/integrations/test_google_form.py`; `cd frontend && npm test -- --run src/services/registrationForm.test.ts`; `cd frontend && npm run build`
+- ผลลัพธ์ test: backend `2 passed`; frontend `1 passed`; build ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมก่อนกำหนด HTTP contract ของ frontend service และใช้ `POST /api/activities/{activityId}/registration-form` พร้อม `googleSheetId` กับ `formData`
+
+---
+
+## 2026-10-11 12:39 คำสั่ง: /implement T-04 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/integrations/google_sheets_api.py, backend/app/services/registration_count_service.py
+- ไฟล์ที่แก้: specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่ม adapter อ่าน response rows จาก Google Sheets API และ service นับทุกแถวคำตอบโดยไม่ตัดรายการซ้ำ
+- Test ที่รัน: ตรวจ syntax/import ของโมดูลและทบทวน contract การอ่าน Google Sheets
+- ผลลัพธ์ test: ผ่านการตรวจสอบโมดูล; ไม่มี AC ตรงสำหรับ T-04 จึงไม่ได้เพิ่มไฟล์ test
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจาก plan.md ระบุ Google Sheets API และ tasks.md ระบุให้รวมทุกแถวคำตอบโดยไม่ตัดรายการซ้ำ
+
+---
+
+## 2026-10-11 12:41 คำสั่ง: /implement T-05 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/api/registration_sync.py, backend/app/services/registration_status_service.py
+- ไฟล์ที่แก้: specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่ม service คำนวณจำนวนผู้ตอบและสถานะ `available`/`full` จากทุกแถวใน Google Sheets พร้อม endpoint `POST /activities/{activityId}/registration-sync` ที่อัปเดตสถานะกิจกรรมและเก็บ snapshot ล่าสุด
+- Test ที่รัน: `python -m compileall -q backend/app/api/registration_sync.py backend/app/services/registration_status_service.py`; smoke test ชื่อ `test_AC_REG_03_syncs_row_count_and_status_within_two_minutes`
+- ผลลัพธ์ test: compile ผ่าน; AC-REG-03 smoke test ผ่าน โดยนับ 2 แถวและอัปเดตสถานะเป็น `full`
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจาก path, พฤติกรรมการนับ และเงื่อนไข capacity ระบุไว้ใน spec.md และ plan.md
+
+---
+
+## 2026-10-11 12:44 คำสั่ง: /implement T-06 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/integrations/google_form_settings.py
+- ไฟล์ที่แก้: backend/app/services/registration_status_service.py, backend/app/api/registration_sync.py, frontend/src/components/RegistrationFormEmbed.tsx, specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่มการตั้งค่า simulated Google Form ให้หยุดรับคำตอบเมื่อจำนวน response ถึง `capacity`, อัปเดตสถานะกิจกรรมเป็น `full` และ frontend ไม่แสดงฟอร์มเมื่อกิจกรรมเต็ม โดยแสดงข้อความปิดรับแทน
+- Test ที่รัน: จะบันทึกผลหลังรัน AC-REG-04 smoke test และ compile สำเร็จ
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ขออนุญาตทีมก่อนแก้ `backend/app/api/registration_sync.py` ซึ่งอยู่นอกช่องไฟล์ของ T-06 เพื่อส่ง `google_form_url` ให้ service สั่งปิดฟอร์มจริง
+
+### ผล validation เพิ่มเติมของ T-06
+
+- `python -m compileall -q backend/app/api/registration_sync.py backend/app/integrations/google_form_settings.py backend/app/services/registration_status_service.py`: ผ่าน
+- `test_AC_REG_04_closes_form_and_marks_activity_full`: ผ่าน โดยตรวจว่าเมื่อ response count เท่ากับ capacity แล้วสถานะเป็น `full` และ Google Form หยุดรับคำตอบ
+- `cd frontend && npm test -- --run src/pages/ActivityDetailRegister.test.tsx`: ผ่าน `2 tests`
+
+---
+
+## 2026-10-11 12:46 คำสั่ง: /implement T-07 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/tests/services/test_registration_sync.py
+- ไฟล์ที่แก้: backend/app/services/registration_count_service.py, backend/app/services/registration_status_service.py, specs/002-Register/tasks.md
+- ผลลัพธ์: ยืนยันว่า count service ไม่แก้ผลลัพธ์เดิมเมื่อการอ่าน Google Sheets ล้มเหลว และ status service เปลี่ยน snapshot เฉพาะหลังอ่านสำเร็จเท่านั้น
+- Test ที่รัน: `pytest -q backend/tests/services/test_registration_sync.py`
+- ผลลัพธ์ test: T-07 tests ผ่าน `2 passed`; related registration/sync tests ผ่าน `6 passed`; compile และ `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจาก ASM-08 ระบุพฤติกรรมเมื่อ Google Sheets API ไม่ตอบสนองโดยตรง
+
+---
+
+## 2026-10-11 12:49 คำสั่ง: /implement T-08 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/models/access_role.py, backend/app/api/google_sheet_access.py, backend/tests/api/test_google_sheet_access.py
+- ไฟล์ที่แก้: backend/app/services/access_control.py, specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่มการตรวจสิทธิ์ Google Sheets ให้ Admin และผู้จัดกิจกรรมของกิจกรรมนั้นเข้าถึงได้ และปฏิเสธนักศึกษาหรือผู้จัดกิจกรรมคนอื่นโดยไม่เปิดเผยข้อมูลชีต
+- Test ที่รัน: จะบันทึกผลหลังรัน `pytest -q backend/tests/api/test_google_sheet_access.py`
+- ผลลัพธ์ test: AC-REG-06 tests ผ่าน `2 passed`; related access-control tests ผ่าน `6 passed`; compile และ `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ขออนุญาตทีมก่อนเพิ่มไฟล์ test เนื่องจาก T-08 มี AC-REG-06 แต่ไม่ได้ระบุไฟล์ test ในช่องไฟล์ที่แตะ
+
+---
+
+## 2026-10-11 12:51 คำสั่ง: /implement T-09 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่แก้: backend/app/api/google_sheet_access.py, backend/tests/api/test_google_sheet_access.py, specs/002-Register/tasks.md
+- ผลลัพธ์: ยืนยัน endpoint ไม่อนุญาตให้นักศึกษาเข้าถึง Google Sheets โดยตรง และ test ตรวจว่า response ไม่เปิดเผย `google_sheet_id` หรือข้อมูลแถวในชีต
+- Test ที่รัน: `pytest -q backend/tests/api/test_google_sheet_access.py`
+- ผลลัพธ์ test: AC-REG-07/access tests ผ่าน `4 passed`; related student-access tests ผ่าน `3 passed`; compile และ `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจาก AC-REG-07 และ ACC-GSHEET-02 ระบุพฤติกรรมการปฏิเสธและไม่เปิดเผยข้อมูลโดยตรง
+
+---
+
+## 2026-10-11 12:53 คำสั่ง: /implement T-10 specs/002-Register/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/models/notification.py, backend/app/api/registration_confirmation.py, backend/app/services/notification_service.py, frontend/src/components/NotificationInbox.tsx, backend/tests/api/test_registration_confirmation.py
+- ไฟล์ที่แก้: specs/002-Register/tasks.md
+- ผลลัพธ์: เพิ่ม endpoint `POST /activities/{activityId}/registration-confirmation` รับ payload `{ studentId, message }`, สร้าง Notification เป็น unread และเก็บไว้จนกว่านักศึกษาจะอ่าน
+- Test ที่รัน: จะบันทึกผลหลังรัน `pytest -q backend/tests/api/test_registration_confirmation.py` และ frontend test/build
+- ผลลัพธ์ test: AC-REG-05 tests ผ่าน `2 passed`; compile ผ่าน; frontend `npm run build` ผ่าน; `git diff --check` ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ถามทีมและใช้ contract `{ studentId, message }` โดย `activityId` มาจาก path และ `is_read = false`

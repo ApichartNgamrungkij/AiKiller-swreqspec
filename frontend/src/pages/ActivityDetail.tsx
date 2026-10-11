@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import ActivityDetail from '../components/ActivityDetail'
-import { mockActivities, type MockActivity } from '../mocks/activities'
+import type { MockActivity } from '../mocks/activities'
+import RegistrationFormEmbed from '../components/RegistrationFormEmbed'
+import { registrationActivity } from '../mocks/registrationActivity'
 import { fetchActivityDetail } from '../services/activityApi'
 
 export type ActivityDetailPageProps = {
@@ -10,7 +12,10 @@ export type ActivityDetailPageProps = {
 }
 
 // Supports FR-SRCH-05 and ASM-02
-export default function ActivityDetailPage({ activity = mockActivities[0], activityId }: ActivityDetailPageProps) {
+export default function ActivityDetailPage({
+  activity = registrationActivity,
+  activityId,
+}: ActivityDetailPageProps) {
   const [visibleActivity, setVisibleActivity] = useState(activity)
   const [error, setError] = useState<string | null>(null)
 
@@ -42,6 +47,7 @@ export default function ActivityDetailPage({ activity = mockActivities[0], activ
       <h1>รายละเอียดกิจกรรม</h1>
       {error && <p role="alert">{error}</p>}
       <ActivityDetail activity={visibleActivity} />
+      <RegistrationFormEmbed activity={visibleActivity} />
     </main>
   )
 }

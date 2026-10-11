@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import Any, Mapping
 from urllib.parse import urlparse
 
+from backend.app.models.access_role import AccessRole
+
 
 class AdminAccessError(PermissionError):
     """Raised when a non-admin user attempts to manage activity deletion."""
@@ -49,6 +51,23 @@ def is_admin_user(user: Mapping[str, object] | None) -> bool:
         return normalized_access in {"admin", "administrator", "system_admin"}
 
     return False
+
+
+# Supports ACC-GSHEET-01, ACC-GSHEET-02, NFR-SEC-01, NFR-SEC-02.
+def can_access_activity_sheet(
+    user: Mapping[str, object] | None,
+    activity: Mapping[str, object] | Any,
+) -> bool:
+    """Allow only an admin or the activity organizer to access a sheet."""
+    if is_admin_user(user):
+        return True
+    if not user:
+        return False
+
+    role = str(user.get("role", "")).strip().lower()
+    if role != AccessRole.ORGANIZER.value:
+        return False
+    return is_activity_owner(user, activity)
 
 
 # Supports FR-DEL-07, NFR-DEL-01, ACC-ADMIN-01, IF-ADMIN-01
