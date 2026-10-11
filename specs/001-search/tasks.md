@@ -96,7 +96,7 @@
 - ไฟล์ที่แตะ: `deployment/https-config.yml`, `docs/integration/search-system-nfr.md`
 - ต้องทำหลัง: T-02, T-08, T-09, T-10
 - เสร็จเมื่อ: มีผลตรวจยืนยันว่า endpoint ของ Search ใช้ HTTPS และมีจุดเชื่อมต่อ/การพึ่งพา REG กับ Audit Log ตามระบบกลาง โดยไม่สร้าง workflow นอก scope ของ Search
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ## ตารางตรวจความครบของ Acceptance Criteria
 

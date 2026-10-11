@@ -19,3 +19,22 @@ registrants_api:
     - "admin"
     - "activity_owner"
   deny_unauthorized_status: 403
+
+# Supports Search NFR — Search endpoints are exposed only through the TLS listener.
+search_api:
+  path_prefix: "/api/activities"
+  require_https: true
+  http_redirect_status: 308
+
+# Supports Search NFR and ASM-08 — these are system-owned integration boundaries.
+system_integrations:
+  reg:
+    required: true
+    owner: "system-registry"
+    readiness_sla_business_days: 1
+  audit_log:
+    required: true
+    source: "backend.app.api.admin_activity.record_activity_audit_log"
+    actions:
+      - "delete"
+      - "suspend"

@@ -791,3 +791,15 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Test ที่รัน: `pytest -q backend/tests/performance/test_activity_search.py`; `cd frontend && npm test`; `cd frontend && npm run build`
 - ผลลัพธ์ test: benchmark และ frontend tests ผ่าน; build ผ่าน
 - สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เนื่องจากใช้ breakpoint และเกณฑ์ 2 วินาทีตาม plan.md/spec.md โดยตรง
+
+---
+
+## 2026-10-11 12:29 คำสั่ง: /implement T-11 specs/001-search/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: docs/integration/search-system-nfr.md
+- ไฟล์ที่แก้: deployment/https-config.yml, specs/001-search/tasks.md
+- ผลลัพธ์: เพิ่ม deployment contract สำหรับ HTTPS ของ Search, ระบุ dependency boundary ของ REG และอ้างอิงจุดเชื่อมต่อ Audit Log ที่มีอยู่แล้ว โดยไม่สร้าง workflow REG หรือ approval นอก scope
+- Test ที่รัน: ตรวจสอบโครงสร้าง YAML และทบทวนเอกสาร/จุดเชื่อมต่อจาก source code
+- ผลลัพธ์ test: ผ่านการตรวจสอบเชิงเอกสาร; ยังไม่มี integration test จริงสำหรับ REG หรือ reverse proxy เพราะอยู่นอก scope และต้องรอระบบกลาง
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่กำหนด URL, schema หรือ authentication ของ REG เพราะ spec ไม่ระบุ และบันทึกเป็น dependency ที่ต้องยืนยันก่อน production
