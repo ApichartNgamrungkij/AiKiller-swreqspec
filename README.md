@@ -1,4 +1,4 @@
-# <ชื่อทีม>-swreqspec
+# AiKiller-swreqspec
 
 repo สำหรับงาน Spec-Driven Development ในรายวิชา 520461-165 Software Requirement Specification and Management
 ภาควิชาคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยศิลปากร
