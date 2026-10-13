@@ -9,6 +9,10 @@ test('test_AC_SRCH_04_detail_view_shows_required_fields', () => {
 
   expect(screen.getByText('6 ชั่วโมง')).toBeTruthy()
   expect(screen.getByText(/ค่ายอาสาพัฒนาชุมชน/)).toBeTruthy()
+  expect(screen.getByText(/วันเวลา/)).toBeTruthy()
+  expect(screen.getByText(/7 พฤศจิกายน 2569/)).toBeTruthy()
+  expect(screen.getByText(/09:00/)).toBeTruthy()
+  expect(screen.getByText(/16:00/)).toBeTruthy()
   expect(screen.getByText(/ศูนย์ชุมชนคลองสาม/)).toBeTruthy()
 
   const registrationLink = screen.getByRole('link', {

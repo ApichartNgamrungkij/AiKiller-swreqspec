@@ -35,4 +35,17 @@ describe('useActivityStatus', () => {
     expect(result.current.bookedSlots).toBe(10)
     expect(fetch).toHaveBeenCalledWith('/api/activities/1')
   })
+
+  it('test_AC_SRCH_07_status_polling_accepts_two_minute_upper_bound', async () => {
+    const { result } = renderHook(() =>
+      useActivityStatus(1, { status: 'open', bookedSlots: 9, availableSlots: 10 }, 120_000),
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(120_000)
+    })
+
+    expect(result.current.status).toBe('full')
+    expect(fetch).toHaveBeenCalledWith('/api/activities/1')
+  })
 })

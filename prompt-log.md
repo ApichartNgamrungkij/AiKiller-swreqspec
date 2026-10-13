@@ -84,6 +84,16 @@
   - จำนวนสถานะไปข้างหน้า: ครบ 4, ยังไม่ถึง 0, รอ 0, ช่องโหว่ 11
   - F-ID ข้อค้นพบใหม่: `F-01` ถึง `F-08`
 
+  ---
+
+  ## 2026-10-13 คำสั่ง: แก้ข้อค้นพบใน `/verify specs/001-search`
+
+  - แก้ F-02: เชื่อมตัวกรองประเภท/ช่วงเวลาว่างเข้ากับหน้า Search และ `ActivityResults`
+  - แก้ F-03 ถึง F-05: เพิ่ม/ปรับ test สำหรับกิจกรรมใหม่, badge ต่อ card, วันเวลาเริ่ม/สิ้นสุด และ polling ที่ 120 วินาที
+  - แก้ F-08: เพิ่ม `apscheduler>=3.10` ใน `backend/requirements.txt` และแก้ `backend/pytest.ini` ให้ import package จาก repository root
+  - ไม่แก้ F-01 เพราะทีมระบุ `เพิ่ม Q-xx`; ไม่แก้ F-07 เพราะ component เดียวกันถูกใช้และมี test ของ Registration จึงต้องแยกขอบเขต/ถามทีมก่อน
+  - ผล test: `frontend`: 18 test files, 32 tests ผ่าน; `backend` ด้วย `.venv/bin/python -m pytest -v`: 73 tests ผ่าน
+
 ---
 
 ## 2026-10-04 04:51 คำสั่ง: /clarify
@@ -1002,3 +1012,12 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ไฟล์ที่สร้างหรือแก้: `frontend/src/services/exportApi.ts`, `frontend/src/pages/ActivityPage.tsx`, `backend/tests/api/test_student_google_sheet_access.py`
 - ผลการตรวจ: ทดสอบการปฏิเสธนักศึกษาและรัน frontend test/build
 - สิ่งที่ต้องเดา: ไม่มี; ใช้ API `export-access` และ endpoint `google-sheet` ตาม plan.md
+
+---
+
+## 2026-10-13 17:18 คำสั่ง: เพิ่ม Q-xx ใน `specs/001-search/spec.md`
+
+- อัปเดต `specs/001-search/spec.md` เป็น Draft v3 และเพิ่ม `Q-04` เรื่องขอบเขตการแสดงกิจกรรมของนักศึกษา
+- เพิ่ม `Q-05` เรื่องขอบเขตของ `RegistrationFormEmbed` ระหว่างฟีเจอร์ Search และ Registration
+- สร้าง `specs/001-search/CHANGELOG.md` เพื่อบันทึกการเปลี่ยนแปลงของ spec
+- ไม่กำหนดคำตอบแทนทีมสำหรับ Q-04 และ Q-05

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import SearchList from './SearchList'
 
@@ -21,8 +21,10 @@ test('test_TC_SRCH_01_1_list_shows_all_activities_with_status', () => {
   expect(screen.getByRole('heading', { name: 'ค่ายอาสาพัฒนาชุมชน' })).toBeTruthy()
   expect(screen.getByRole('heading', { name: 'อบรมทักษะการนำเสนอ' })).toBeTruthy()
   // Then: กำกับแต่ละรายการด้วยสถานะ "เต็มแล้ว" หรือ "ยังรับสมัคร"
-  expect(screen.getByText('ยังรับสมัคร')).toBeTruthy()
-  expect(screen.getByText('เต็มแล้ว')).toBeTruthy()
+  const openCard = screen.getByRole('article', { name: 'กิจกรรม ค่ายอาสาพัฒนาชุมชน' })
+  const fullCard = screen.getByRole('article', { name: 'กิจกรรม อบรมทักษะการนำเสนอ' })
+  expect(within(openCard).getByText('ยังรับสมัคร')).toBeTruthy()
+  expect(within(fullCard).getByText('เต็มแล้ว')).toBeTruthy()
 })
 
 test('test_TC_SRCH_01_2_list_shows_boundary_statuses', () => {
@@ -63,6 +65,19 @@ test('test_TC_SRCH_01_2_list_shows_boundary_statuses', () => {
   expect(screen.getByRole('heading', { name: 'กิจกรรมยังรับสมัคร' })).toBeTruthy()
   expect(screen.getByRole('heading', { name: 'กิจกรรมเต็มแล้ว' })).toBeTruthy()
   // Then: แสดงสถานะของแต่ละรายการตรงกับสถานะของกิจกรรมนั้น
-  expect(screen.getByText('ยังรับสมัคร')).toBeTruthy()
-  expect(screen.getByText('เต็มแล้ว')).toBeTruthy()
+  const openCard = screen.getByRole('article', { name: 'กิจกรรม กิจกรรมยังรับสมัคร' })
+  const fullCard = screen.getByRole('article', { name: 'กิจกรรม กิจกรรมเต็มแล้ว' })
+  expect(within(openCard).getByText('ยังรับสมัคร')).toBeTruthy()
+  expect(within(fullCard).getByText('เต็มแล้ว')).toBeTruthy()
+})
+
+test('test_AC_SRCH_02_search_page_applies_category_filter', () => {
+  // Given: มีกิจกรรมหลายประเภทในรายการ
+  // When: นักศึกษาเลือกกรองตามประเภทกิจกรรม
+  render(<SearchList />)
+  fireEvent.change(screen.getByLabelText('ประเภทกิจกรรม'), { target: { value: 'วิชาการ' } })
+
+  // Then: ระบบแสดงเฉพาะกิจกรรมที่ตรงกับประเภทที่เลือก
+  expect(screen.getByRole('heading', { name: 'อบรมทักษะการนำเสนอ' })).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: 'ค่ายอาสาพัฒนาชุมชน' })).toBeNull()
 })

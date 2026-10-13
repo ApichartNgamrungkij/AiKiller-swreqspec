@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import ActivityCard from '../components/ActivityCard'
+import ActivityFilters from '../components/ActivityFilters'
+import ActivityResults from '../components/ActivityResults'
 import { mockActivities, type MockActivity } from '../mocks/activities'
+import { mockStudentSchedule } from '../mocks/studentSchedule'
 import { fetchActivities } from '../services/activityApi'
+import { filterActivities, type ActivityFilter } from '../services/activityFilter'
 import '../styles/responsive.css'
 
 export type SearchListProps = {
   activities?: MockActivity[]
 }
 
-// Supports FR-SRCH-01 and FR-SRCH-03
+// Supports FR-SRCH-01, FR-SRCH-02, FR-SRCH-03, and FR-SRCH-04
 export default function SearchList({ activities = mockActivities }: SearchListProps) {
   const [visibleActivities, setVisibleActivities] = useState(activities)
+  const [filters, setFilters] = useState<ActivityFilter>({})
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -33,15 +37,17 @@ export default function SearchList({ activities = mockActivities }: SearchListPr
     }
   }, [])
 
+  const filteredActivities = useMemo(
+    () => filterActivities(visibleActivities, filters, mockStudentSchedule),
+    [filters, visibleActivities],
+  )
+
   return (
     <main className="search-page">
       <h1>ค้นหากิจกรรมจิตอาสา</h1>
       {error && <p role="alert">{error}</p>}
-      <section className="search-results" aria-label="รายการกิจกรรม">
-        {visibleActivities.map((activity) => (
-          <ActivityCard key={activity.id} activity={activity} />
-        ))}
-      </section>
+      <ActivityFilters value={filters} onChange={setFilters} />
+      <ActivityResults activities={filteredActivities} />
     </main>
   )
 }

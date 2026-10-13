@@ -1,6 +1,6 @@
 # RTM: ค้นหาและดูกิจกรรม (Search)
 อ้างอิง: spec.md `Draft v2` | tasks.md | test-cases.md
-สร้างด้วย `/verify` เมื่อ 2026-10-13 16:55 | test: 30 ผ่าน, backend เก็บ test ไม่สำเร็จ 11 errors
+สร้างด้วย `/verify` เมื่อ 2026-10-13 16:55 | แก้ตาม F-02 ถึง F-08 เมื่อ 2026-10-13 17:16 | test: frontend 32 ผ่าน, backend 73 ผ่าน
 
 ## 1. ตามรอยไปข้างหน้า (requirement ไป โค้ด ไป test)
 | ID | AC | task | โค้ด (ไฟล์: ฟังก์ชัน) | test (ผล) | สถานะ |
@@ -52,15 +52,19 @@
 | F-ID | ชนิด | อยู่ที่ | ขัดกับ | รายละเอียด | ทีมตัดสิน |
 |---|---|---|---|---|---|
 | F-01 | ละเมิด Constraint / โค้ดไม่มี FR | `backend/app/api/activities.py:list_activities`, `backend/app/services/activity_service.py:filter_activities_for_role` | FR-SRCH-01, Scope นักศึกษา/ผู้ดูแล | รายการกรองเพียง `PUBLISHED`; ไม่มีเงื่อนไขว่างสำหรับนักศึกษา และบทบาทผู้ดูแลไม่ได้จำกัดเป็นกิจกรรมของตนเอง | เพิ่ม Q-xx |
-| F-02 | โค้ดไม่มี FR / test อ่อน | `frontend/src/pages/SearchList.tsx:SearchList` | FR-SRCH-02, FR-SRCH-03 | มีตัวกรองใน service แต่หน้า Search ไม่แสดงหรือเรียกตัวกรอง จึงไม่ครบ flow ที่ผู้ใช้เลือกกรองและเห็นผลลัพธ์ | แก้โค้ด |
-| F-03 | AC ไม่มี test | `frontend/src/services/activityApi.ts:fetchActivities`, `frontend/src/pages/SearchList.tsx:SearchList` | AC-SRCH-06 | task T-08 ระบุว่ากิจกรรมใหม่ต้องแสดงทันทีโดยไม่รอ Admin แต่ไม่มี test ที่ตรวจเงื่อนไขนี้ | แก้โค้ด |
-| F-04 | test อ่อน | `frontend/src/pages/SearchList.test.tsx`, `frontend/src/pages/ActivityDetail.test.tsx` | AC-SRCH-01, AC-SRCH-04 | AC-SRCH-01 ตรวจเพียงว่ามีชื่อและ badge อยู่ แต่ไม่ตรวจ badge ต่อกิจกรรม; AC-SRCH-04 ไม่ assert ระยะเวลาเริ่ม-สิ้นสุดโดยตรง | แก้โค้ด |
-| F-05 | test อ่อน | `frontend/src/hooks/useActivityStatus.test.ts`, `backend/tests/test_activity_status_sync.py` | AC-SRCH-07, IF status SLA | ทดสอบที่ 60 วินาที แต่ไม่ทดสอบขอบบน 120 วินาทีหรือเวลาจริงตั้งแต่ Google Sheets อัปเดต | แก้โค้ด |
-| F-06 | AC ไม่มี test / test อ่อน | `backend/tests/performance/test_activity_search.py`, frontend responsive surface | AC-SRCH-08, NFR-01 | backend test เก็บไม่ได้จาก import error ในคำสั่งมาตรฐาน และไม่มี test UI สำหรับมือถือ/ไอแพด/no horizontal scroll | แก้โค้ด |
-| F-07 | โค้ดไม่มี FR / อยู่ใน Out of Scope | `frontend/src/components/RegistrationFormEmbed.tsx:RegistrationFormEmbed` | Out Scope: การลงทะเบียนจริงภายในฟีเจอร์นี้ | มี Google Form จำลองและข้อความให้กรอกข้อมูลลงทะเบียน แทนการมีเพียงลิงก์ส่งต่อ | แก้โค้ด |
-| F-08 | test อ่อน | backend test collection | การตรวจสอบทั้งระบบ | `cd backend && pytest -v` จบที่ 11 collection errors เพราะ test imports `backend` ไม่ได้ จึงยังสรุปผล backend requirement จากการรันมาตรฐานไม่ได้ | แก้โค้ด |
+| F-02 | โค้ดไม่มี FR / test อ่อน | `frontend/src/pages/SearchList.tsx:SearchList` | FR-SRCH-02, FR-SRCH-03 | มีตัวกรองใน service แต่หน้า Search ไม่แสดงหรือเรียกตัวกรอง จึงไม่ครบ flow ที่ผู้ใช้เลือกกรองและเห็นผลลัพธ์ | แก้แล้ว: หน้า Search แสดง `ActivityFilters` และส่งผลผ่าน `ActivityResults`; test category filter ผ่าน |
+| F-03 | AC ไม่มี test | `frontend/src/services/activityApi.ts:fetchActivities`, `frontend/src/pages/SearchList.tsx:SearchList` | AC-SRCH-06 | task T-08 ระบุว่ากิจกรรมใหม่ต้องแสดงทันทีโดยไม่รอ Admin แต่ไม่มี test ที่ตรวจเงื่อนไขนี้ | แก้แล้ว: test `test_AC_SRCH_06_new_activity_from_api_is_available_immediately` ผ่าน |
+| F-04 | test อ่อน | `frontend/src/pages/SearchList.test.tsx`, `frontend/src/pages/ActivityDetail.test.tsx` | AC-SRCH-01, AC-SRCH-04 | AC-SRCH-01 ตรวจเพียงว่ามีชื่อและ badge อยู่ แต่ไม่ตรวจ badge ต่อกิจกรรม; AC-SRCH-04 ไม่ assert ระยะเวลาเริ่ม-สิ้นสุดโดยตรง | แก้แล้ว: assert badge ภายใน card แต่ละรายการและ assert วันเวลาเริ่ม/สิ้นสุด |
+| F-05 | test อ่อน | `frontend/src/hooks/useActivityStatus.test.ts`, `backend/tests/test_activity_status_sync.py` | AC-SRCH-07, IF status SLA | ทดสอบที่ 60 วินาที แต่ไม่ทดสอบขอบบน 120 วินาทีหรือเวลาจริงตั้งแต่ Google Sheets อัปเดต | แก้บางส่วน: เพิ่ม test polling ที่ 120 วินาที; ยังไม่ได้พิสูจน์เวลาอัปเดตจากต้นทางจริง |
+| F-06 | AC ไม่มี test / test อ่อน | `backend/tests/performance/test_activity_search.py`, frontend responsive surface | AC-SRCH-08, NFR-01 | backend test เก็บไม่ได้จาก import error ในคำสั่งมาตรฐาน และไม่มี test UI สำหรับมือถือ/ไอแพด/no horizontal scroll | แก้บางส่วน: แก้ `pytest.ini` ให้ import package ได้; responsive ยังต้องตรวจด้วยคน |
+| F-07 | โค้ดไม่มี FR / อยู่ใน Out of Scope | `frontend/src/components/RegistrationFormEmbed.tsx:RegistrationFormEmbed` | Out Scope: การลงทะเบียนจริงภายในฟีเจอร์นี้ | มี Google Form จำลองและข้อความให้กรอกข้อมูลลงทะเบียน แทนการมีเพียงลิงก์ส่งต่อ แต่ component ถูกใช้โดย test ของฟีเจอร์ Registration ด้วย จึงไม่ตัดออกโดยพลการ | เพิ่ม Q-xx |
+| F-08 | test อ่อน | backend test collection | การตรวจสอบทั้งระบบ | `cd backend && pytest -v` เคยจบที่ collection error เพราะขาด package `apscheduler` ซึ่งถูก import โดยโค้ด | แก้แล้ว: เพิ่ม dependency `apscheduler`, แก้ `pytest.ini`, และ `.venv/bin/python -m pytest -v` ผ่าน 73 tests |
 
 ## 4. แก้แล้ว
 | F-ID | แก้อย่างไร | รู้ได้อย่างไร |
 |---|---|---|
-| - | ไม่มี | ไม่มีข้อค้นพบเดิมให้ยืนยันว่าแก้แล้ว |
+| F-02 | เชื่อม `ActivityFilters` และ `ActivityResults` ใน `SearchList` | Vitest ผ่านและตรวจ category filter |
+| F-03 | ยืนยันการคืนกิจกรรมใหม่จาก API โดยไม่ต้องมี approval field | test AC-SRCH-06 ผ่าน |
+| F-04 | เพิ่ม assertions ความสัมพันธ์ badge/card และวันเวลาเริ่ม/สิ้นสุด | Vitest ผ่าน |
+| F-05 | เพิ่ม test polling ที่ขอบบน 120 วินาที | Vitest ผ่าน; SLA จากต้นทางจริงยังไม่ได้จำลอง |
+| F-08 | เพิ่ม `apscheduler` ใน requirements และแก้ pytest import path | backend 73 tests ผ่านด้วย `.venv` |
