@@ -65,6 +65,25 @@
   - TC ID: `TC-SRCH-01-1`, `TC-SRCH-01-2`, `TC-SRCH-01-3`
   - หมายเหตุ: กรณีไม่มีรายการกิจกรรมยังไม่มีพฤติกรรมที่ระบุใน `spec.md` จึงระบุว่า `spec ไม่ได้บอก` และยังไม่เขียนโค้ด test
 
+  ---
+
+  ## 2026-10-13 คำสั่ง: `/testcases AC-SRCH-01 specs/001-search/`
+
+  - โหมด: เขียน test
+  - ผลลัพธ์: เพิ่ม test 2 ตัวใน `frontend/src/pages/SearchList.test.tsx`
+  - TC ID: `TC-SRCH-01-1`, `TC-SRCH-01-2`
+  - `TC-SRCH-01-3` ไม่เขียนโค้ด เนื่องจากตารางกำหนด `ตรวจด้วย: คน`
+  - ผล test: Vitest ทั้งชุดผ่าน 18 test files, 30 tests; มี React `act(...)` warning เดิมจาก `SearchList` แต่ไม่มี test ล้มเหลว
+
+  ---
+
+  ## 2026-10-13 คำสั่ง: `/verify specs/001-search`
+
+  - ผล test: `cd frontend && npm test` ผ่าน 18 test files, 30 tests; `cd backend && pytest -v` เก็บ 44 รายการไม่ได้และจบที่ 11 collection errors จาก `ModuleNotFoundError: No module named 'backend'`
+  - RTM: สร้าง `specs/001-search/rtm.md`
+  - จำนวนสถานะไปข้างหน้า: ครบ 4, ยังไม่ถึง 0, รอ 0, ช่องโหว่ 11
+  - F-ID ข้อค้นพบใหม่: `F-01` ถึง `F-08`
+
 ---
 
 ## 2026-10-04 04:51 คำสั่ง: /clarify
