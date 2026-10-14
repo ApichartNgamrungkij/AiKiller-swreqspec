@@ -1056,3 +1056,14 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ผลสรุปตามรอยไปข้างหน้า: `FR-DEL-01` ถึง `NFR-DEL-03` และ Constraints ที่เกี่ยวข้องทั้งหมดอยู่ในสถานะ `ครบ` เมื่อเทียบกับโค้ดและ test ที่ตรวจได้; ไม่มีข้อค้นพบใหม่ตาม spec
 - F-ID: ไม่มี
 - หมายเหตุ: ปัญหาที่พบเป็น env blocker ของ backend suite ทั้งหมด ไม่ใช่ช่องว่างใน requirement ของ DeleteActivity; ฟีเจอร์ที่ทำให้ Admin ลบ/ระงับกิจกรรม, ป้องกันไม่ให้ Non-admin และบันทึก Audit Log มีการตรวจสอบจริงผ่าน feature-specific test และ frontend suite แล้ว
+
+---
+
+## 2026-10-14 04:38 คำสั่ง: /testcases AC-SCHED-01 specs/003-Schedule
+
+- เครื่องมือ: Copilot ใน Codespaces
+- โหมด: ร่าง
+- ผลลัพธ์: สร้าง `specs/003-Schedule/test-cases.md` และเสนอ test case 3 แถวสำหรับ `AC-SCHED-01`
+- TC ID: `TC-SCHED-01-1`, `TC-SCHED-01-2`, `TC-SCHED-01-3`
+- สถานะ: ร่างทั้งหมด เพื่อให้ทีมตรวจแถวและเปลี่ยนเป็น `ใช้ได้` ก่อนสั่ง `/testcases` อีกครั้ง
+- หมายเหตุ: ยังไม่เขียนโค้ด test เนื่องจากตาราง AC ยังไม่มีแถวที่มีสถานะ `ใช้ได้`
