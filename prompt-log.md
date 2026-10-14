@@ -120,6 +120,21 @@
 - ไฟล์ที่ตรวจ: [frontend/src/pages/ActivityDetailRegister.test.tsx](/workspaces/AiKiller-swreqspec/frontend/src/pages/ActivityDetailRegister.test.tsx)
 - ผลทดสอบ: `cd /workspaces/AiKiller-swreqspec/frontend && npm test -- --run src/pages/ActivityDetailRegister.test.tsx` → 2 passed / 0 failed
 - หมายเหตุ: สถานะของแถวทั้งหมดใน test-cases.md อยู่ที่ `ใช้ได้` แล้ว และ code test ที่มีอยู่ครอบคลุมการแสดงฟอร์มสำหรับกิจกรรมที่ว่าง และซ่อนฟอร์มเมื่อกิจกรรมเต็ม
+
+---
+
+## 2026-10-14 คำสั่ง: `/verify specs/002-Register/`
+
+- โหมด: ตรวจ requirement และ traceability แบบไม่แก้โค้ด
+- ผลรวม: ตรวจ requirement ใน [specs/002-Register/spec.md](/workspaces/AiKiller-swreqspec/specs/002-Register/spec.md) เทียบกับโค้ดจริงและ test ที่มี
+- สรุป test feature-specific:
+  - `cd /workspaces/AiKiller-swreqspec/backend && pytest -q tests/integrations/test_google_form.py tests/api/test_google_sheet_access.py tests/api/test_registration_confirmation.py tests/services/test_registration_sync.py` → 9 passed, 0 failed
+  - `cd /workspaces/AiKiller-swreqspec/frontend && npm test -- --run src/pages/ActivityDetailRegister.test.tsx` → 2 passed, 0 failed
+- สรุป test repo-wide:
+  - `cd /workspaces/AiKiller-swreqspec/backend && pytest -v` → 3 collection errors จาก dependency ที่ไม่เกี่ยวข้อง (`apscheduler` missing)
+  - `cd /workspaces/AiKiller-swreqspec/frontend && npm test` → 1 unrelated failed test in DeleteActivity (`src/__tests__/TC-DEL-01-1.test.jsx`)
+- ผล RTM: สร้าง [specs/002-Register/rtm.md](/workspaces/AiKiller-swreqspec/specs/002-Register/rtm.md)
+- ข้อค้นพบ: ไม่มีข้อค้นพบใหม่จากการตรวจนี้
 pec.md` จึงระบุว่า `spec ไม่ได้บอก` และยังไม่เขียนโค้ด test
 
   ---
