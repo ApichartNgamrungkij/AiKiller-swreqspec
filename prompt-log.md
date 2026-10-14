@@ -94,6 +94,21 @@
 - ไฟล์ที่เพิ่ม: [frontend/src/__tests__/TC-ACT-01.test.jsx](/workspaces/AiKiller-swreqspec/frontend/src/__tests__/TC-ACT-01.test.jsx)
 - ผลทดสอบ: ผ่าน 3/3
 - คำสั่งรัน: `cd /workspaces/AiKiller-swreqspec/frontend && npm test -- --run src/__tests__/TC-ACT-01.test.jsx`
+
+---
+
+## 2026-10-14 คำสั่ง: `/verify specs/004-NewActivity/`
+
+- โหมด: ตรวจ requirement และ traceability แบบไม่แก้โค้ด
+- ผลรวม: ตรวจ requirement ทั้งหมดใน [specs/004-NewActivity/spec.md](/workspaces/AiKiller-swreqspec/specs/004-NewActivity/spec.md) เทียบกับโค้ดจริงและ test ที่มี
+- สรุป test:
+  - `cd /workspaces/AiKiller-swreqspec/backend && pytest -v tests/test_activity_model.py tests/test_activity_validation.py tests/test_activity_create_flow.py tests/test_activity_edit_history.py tests/test_activity_cancellation.py tests/test_activity_traceability.py` → 20 passed
+  - `cd /workspaces/AiKiller-swreqspec/backend && pytest -q tests/test_activity_load.py` → 1 passed
+  - `cd /workspaces/AiKiller-swreqspec/frontend && npm test -- --run src/pages/CreateActivityPage.test.tsx src/__tests__/TC-ACT-01.test.jsx` → 7 passed
+  - รวม feature verification: 28 passed, 0 failed
+- หมายเหตุ: การรัน full backend suite ทั้งหมดยังให้ error 3 รายการจาก dependency ที่ไม่เกี่ยวข้องกับฟีเจอร์นี้ (`apscheduler` missing) และ full frontend suite มี test ที่ไม่เกี่ยวกับ feature ชื่อ DeleteActivity fail เช่นกัน
+- ผล RTM: สร้าง [specs/004-NewActivity/rtm.md](/workspaces/AiKiller-swreqspec/specs/004-NewActivity/rtm.md)
+- ข้อค้นพบ: ไม่มีข้อค้นพบใหม่จากการตรวจนี้
 pec.md` จึงระบุว่า `spec ไม่ได้บอก` และยังไม่เขียนโค้ด test
 
   ---
