@@ -73,6 +73,27 @@
 - ผลลัพธ์: สร้าง `specs/004-NewActivity/test-cases.md` และเสนอ test case 3 แถวสำหรับ `AC-ACT-01`
 - TC ID: `TC-ACT-01-1`, `TC-ACT-01-2`, `TC-ACT-01-3`
 - หมายเหตุ: ไม่มี `test-cases.md` ในฟีเจอร์นี้ก่อนหน้า จึงสร้างตารางแบบร่างตามแม่แบบ และหยุดก่อนเขียนโค้ด test ตามคำสั่ง
+
+---
+
+## 2026-10-14 คำสั่ง: `/testcases AC-ACT-01 specs/004-NewActivity`
+
+- โหมด: ร่าง (หยุดตามเงื่อนไข: มีเฉพาะแถวสถานะ “ร่าง” และไม่มีแถว “ใช้ได้”)
+- ผลลัพธ์: ไม่เขียนโค้ด test และไม่รัน test เนื่องจากต้องมีการตรวจแถวก่อน
+- TC ID ที่เสนอ: `TC-ACT-01-1`, `TC-ACT-01-2`, `TC-ACT-01-3`
+- สถานะปัจจุบันใน [specs/004-NewActivity/test-cases.md](/workspaces/AiKiller-swreqspec/specs/004-NewActivity/test-cases.md): ทั้ง 3 แถวเป็น `ร่าง`
+- ข้อสรุป: ต้องให้ทีมตรวจแถวในตารางและเปลี่ยนสถานะเป็น `ใช้ได้` ก่อน จากนั้นสั่ง `/testcases` อีกครั้ง
+
+---
+
+## 2026-10-14 คำสั่ง: `/testcases AC-ACT-01 specs/004-NewActivity`
+
+- โหมด: เขียน test
+- ผลลัพธ์: เขียน test ตามแถวที่มีสถานะ `ใช้ได้` ใน [specs/004-NewActivity/test-cases.md](/workspaces/AiKiller-swreqspec/specs/004-NewActivity/test-cases.md)
+- TC ID ที่เขียน: `TC-ACT-01-1`, `TC-ACT-01-2`, `TC-ACT-01-3`
+- ไฟล์ที่เพิ่ม: [frontend/src/__tests__/TC-ACT-01.test.jsx](/workspaces/AiKiller-swreqspec/frontend/src/__tests__/TC-ACT-01.test.jsx)
+- ผลทดสอบ: ผ่าน 3/3
+- คำสั่งรัน: `cd /workspaces/AiKiller-swreqspec/frontend && npm test -- --run src/__tests__/TC-ACT-01.test.jsx`
 pec.md` จึงระบุว่า `spec ไม่ได้บอก` และยังไม่เขียนโค้ด test
 
   ---
