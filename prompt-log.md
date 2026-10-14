@@ -1021,3 +1021,38 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - เพิ่ม `Q-05` เรื่องขอบเขตของ `RegistrationFormEmbed` ระหว่างฟีเจอร์ Search และ Registration
 - สร้าง `specs/001-search/CHANGELOG.md` เพื่อบันทึกการเปลี่ยนแปลงของ spec
 - ไม่กำหนดคำตอบแทนทีมสำหรับ Q-04 และ Q-05
+
+---
+
+## 2026-10-14 00:39 คำสั่ง: /testcases AC-DEL-01 specs/007-DeleteActivity/
+
+- โหมด: ร่าง
+- ผลลัพธ์: สร้าง `specs/007-DeleteActivity/test-cases.md` และเสนอ test case 3 แถวสำหรับ `AC-DEL-01`
+- TC ID: `TC-DEL-01-1`, `TC-DEL-01-2`, `TC-DEL-01-3`
+- สถานะ: ร่างทั้งหมด เพื่อให้ทีมตรวจแถวและเปลี่ยนเป็น `ใช้ได้` ก่อนสั่ง `/testcases` อีกครั้ง
+- หมายเหตุ: ยังไม่เขียนโค้ด test เนื่องจากตาราง AC ยังไม่มีแถวที่มีสถานะ `ใช้ได้`
+
+---
+
+## 2026-10-14 00:49 คำสั่ง: /testcases AC-DEL-01 specs/007-DeleteActivity/
+
+- โหมด: เขียน test
+- ผลลัพธ์: แถว `TC-DEL-01-1`, `TC-DEL-01-2`, `TC-DEL-01-3` มีสถานะ `ใช้ได้` จึงสร้าง test frontend สำหรับ AC นี้
+- ไฟล์ที่สร้าง: `frontend/src/__tests__/TC-DEL-01-1.test.jsx`
+- รัน: `cd frontend && npm test -- --run src/__tests__/TC-DEL-01-1.test.jsx`
+- ผลลัพธ์ test: 5 passed, 2 failed
+- สาเหตุที่ไม่ผ่าน: `AdminActivityPage` ยังไม่มีการตรวจสอบสิทธิ์ Admin ก่อนแสดงเมนู “ลบ” / “ระงับ” สำหรับผู้ใช้งานที่ไม่ใช่ Admin (AC-DEL-01/AC-DEL-06)
+
+---
+
+## 2026-10-14 01:45 คำสั่ง: /verify specs/007-DeleteActivity/
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ผลลัพธ์: ตรวจ `spec.md`, `plan.md`, `tasks.md`, `test-cases.md`, `rtm.md`, และโค้ดจริงใน `backend/app/` กับ `frontend/src/`
+- Test ที่รัน:
+  - `cd backend && pytest -v` → ผิดที่ collection ของ `tests/services/test_polling_cache.py` เพราะหาตัวแปร `apscheduler` ไม่พบ (`ModuleNotFoundError: No module named 'apscheduler'`)
+  - `cd backend && pytest tests/api/test_delete_activity_access.py app/api/admin_activity.py -q` → `6 passed in 0.32s`
+  - `cd frontend && npm test -- --run` → `19 files passed`, `39 tests passed`
+- ผลสรุปตามรอยไปข้างหน้า: `FR-DEL-01` ถึง `NFR-DEL-03` และ Constraints ที่เกี่ยวข้องทั้งหมดอยู่ในสถานะ `ครบ` เมื่อเทียบกับโค้ดและ test ที่ตรวจได้; ไม่มีข้อค้นพบใหม่ตาม spec
+- F-ID: ไม่มี
+- หมายเหตุ: ปัญหาที่พบเป็น env blocker ของ backend suite ทั้งหมด ไม่ใช่ช่องว่างใน requirement ของ DeleteActivity; ฟีเจอร์ที่ทำให้ Admin ลบ/ระงับกิจกรรม, ป้องกันไม่ให้ Non-admin และบันทึก Audit Log มีการตรวจสอบจริงผ่าน feature-specific test และ frontend suite แล้ว
