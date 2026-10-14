@@ -109,6 +109,16 @@
 - หมายเหตุ: การรัน full backend suite ทั้งหมดยังให้ error 3 รายการจาก dependency ที่ไม่เกี่ยวข้องกับฟีเจอร์นี้ (`apscheduler` missing) และ full frontend suite มี test ที่ไม่เกี่ยวกับ feature ชื่อ DeleteActivity fail เช่นกัน
 - ผล RTM: สร้าง [specs/004-NewActivity/rtm.md](/workspaces/AiKiller-swreqspec/specs/004-NewActivity/rtm.md)
 - ข้อค้นพบ: ไม่มีข้อค้นพบใหม่จากการตรวจนี้
+
+---
+
+## 2026-10-14 คำสั่ง: `/testcases AC-REG-01 specs/002-Register`
+
+- โหมด: ร่าง
+- ผลลัพธ์: สร้าง [specs/002-Register/test-cases.md](/workspaces/AiKiller-swreqspec/specs/002-Register/test-cases.md) และเสนอ test case 3 แถวสำหรับ `AC-REG-01`
+- TC ID ที่เสนอ: `TC-REG-01-1`, `TC-REG-01-2`, `TC-REG-01-3`
+- หมายเหตุ: `AC-REG-01` มี Then ที่ระบุชัดว่า “แสดง Google Form” และเงื่อนไขด้าน “กิจกรรมยังไม่เต็ม” จาก `CON-REG-01` แต่ spec ไม่ได้ระบุข้อความ UI ใดเพิ่มเติม จึงใช้เงื่อนไขหลักและสถานะกิจกรรมเป็นฐานของ Then ต่อไป
+- ตัวเลือกต่อไป: ต้องตรวจแถวในตารางและเปลี่ยนสถานะเป็น `ใช้ได้` ก่อน จากนั้นสั่ง `/testcases AC-REG-01 specs/002-Register` อีกครั้ง เพื่อเริ่มเขียนโค้ด test
 pec.md` จึงระบุว่า `spec ไม่ได้บอก` และยังไม่เขียนโค้ด test
 
   ---
