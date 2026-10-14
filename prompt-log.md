@@ -1166,3 +1166,10 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - F-03: ทีมตัดสิน `แก้โค้ด/สภาพแวดล้อม` เพราะต้องทำให้ dependency `googleapiclient` พร้อมก่อนตรวจ polling/cache
 - F-04: ทีมตัดสิน `ไม่ใช่ปัญหา` ของ 005 เพราะเป็น failure ของฟีเจอร์ 007 ให้เจ้าของฟีเจอร์แยกไปดำเนินการ
 - ขั้นถัดไปคือแก้ F-01 ถึง F-03 แยกจากการตรวจ verify แล้วรัน `/verify` รอบสอง
+
+## 2026-10-14 05:20 การเตรียม Change Request สำหรับ F-01
+
+- ผู้ใช้เลือกให้เตรียมคำถาม/Change Request สำหรับกำหนด Authentication และ Activity Lookup
+- สร้าง `specs/changes/CR-005-viewinfo-runtime-dependencies.md`
+- CR บันทึกสาเหตุ ผลกระทบ และคำถาม Q-CR-005-01 ถึง Q-CR-005-03
+- ยังไม่แก้ `spec.md`, `plan.md`, `tasks.md` หรือโค้ด เพราะทีมยังไม่ได้ยืนยัน runtime dependencies
