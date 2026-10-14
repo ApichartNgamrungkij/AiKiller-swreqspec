@@ -1,8 +1,8 @@
-// test ตรวจว่าโครงหน้าจอพร้อมใช้ (ไม่ใช่ test ของ AC ใด)
+// test ตรวจหน้าจอรายการกิจกรรม (อ้างอิง FR-SRCH-01)
 import { render, screen } from '@testing-library/react'
 import App from '../App.jsx'
 
-test('โครงหน้าจอเปิดได้', () => {
+test('หน้าระบบจัดหากิจกรรมเปิดได้', () => {
   render(<App />)
-  expect(screen.getByText('ระบบจองคิวตรวจสุขภาพ')).toBeTruthy()
+  expect(screen.getByText('กิจกรรมที่กำลังเปิดรับ')).toBeTruthy()
 })
