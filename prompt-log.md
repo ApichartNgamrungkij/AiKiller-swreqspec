@@ -1093,3 +1093,46 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - ข้อค้นพบ: ไม่มีใหม่
 - F-ID: ไม่มี
 - หมายเหตุ: อุปสรรคการรัน backend ทั้งหมดเป็น env blocker จาก dependency ที่หาย (`apscheduler`) และไม่ใช่ข้อผิดพลาดใน Schedule feature; Schedule-specific code และ test ที่เกี่ยวข้องมีการตรวจสอบที่สอดคล้องกับ spec
+
+## 2026-10-14 04:48 คำสั่ง: /testcases AC-VIEW-01 specs/005-ViewInfo/
+
+- โหมด: ร่าง
+- ผลลัพธ์: สร้าง `specs/005-ViewInfo/test-cases.md` และเสนอ test case 3 แถวสำหรับ `AC-VIEW-01`
+- TC ID: `TC-VIEW-01-1`, `TC-VIEW-01-2`, `TC-VIEW-01-3`
+- สถานะ: ร่างทั้งหมด เพื่อให้ทีมตรวจแถวและเปลี่ยนเป็น `ใช้ได้` ก่อนสั่ง `/testcases` อีกครั้ง
+- หมายเหตุ: กรณีไม่มีผู้ลงทะเบียนใช้ผลลัพธ์ `200 OK`, `totalRegistered: 0`, `data: []` จาก CON-VIEW-01 และสัญญา API ใน plan.md; ยังไม่เขียนโค้ด test
+
+## 2026-10-14 04:51 คำสั่ง: /testcases AC-VIEW-01 specs/005-ViewInfo/
+
+- โหมด: เขียน test
+- ผลลัพธ์: แถว `TC-VIEW-01-1`, `TC-VIEW-01-2`, `TC-VIEW-01-3` มีสถานะ `ใช้ได้` จึงเพิ่ม test ตามตารางทั้งฝั่ง backend และ frontend
+- ไฟล์ที่สร้าง: `backend/tests/test_AC_VIEW_01.py`, `frontend/src/__tests__/TC-VIEW-01.test.tsx`
+- Test ที่เพิ่ม: `test_TC_VIEW_01_1_owner_sees_registrant_count_and_names`, `test_TC_VIEW_01_2_owner_sees_single_registrant`, `test_TC_VIEW_01_3_owner_sees_empty_state_without_registrants`
+- ผลการรัน: รอรัน test backend และ frontend
+
+## 2026-10-14 04:53 ผลการรัน `/testcases AC-VIEW-01`
+
+- Backend targeted: `cd backend && pytest -q tests/test_AC_VIEW_01.py tests/api/test_registrants.py` → `8 passed`
+- Frontend targeted: `cd frontend && npm test -- --run src/__tests__/TC-VIEW-01.test.tsx src/pages/RegistrantsDetail.test.tsx` → `4 passed`
+- Backend full suite: collection หยุดที่ `tests/services/test_polling_cache.py` เพราะ environment ขาด `googleapiclient`; test ของ AC-VIEW-01 ยังผ่านใน targeted suite
+- Frontend full suite: `19` test files, `38 passed`, `1 failed`; failure อยู่ใน `TC-DEL-01-1.test.jsx` ของ `007-DeleteActivity` ไม่เกี่ยวกับ AC-VIEW-01
+- สรุป: test ของ `TC-VIEW-01-1` ถึง `TC-VIEW-01-3` ผ่านแล้ว และไม่ได้แก้โค้ดระบบ
+
+## 2026-10-14 04:55 คำสั่ง: /testcases AC-VIEW-02 specs/005-ViewInfo/ ทำให้ถึง AC-VIEW-05 ไปเลย
+
+- โหมด: ร่าง
+- ผลลัพธ์: เพิ่ม test case สำหรับ `AC-VIEW-02` ถึง `AC-VIEW-05` ใน `specs/005-ViewInfo/test-cases.md`
+- จำนวน: 12 แถว รวม AC ละ 3 แถว ครบทางปกติ ขอบ และทางผิด
+- TC ID: `TC-VIEW-02-1` ถึง `TC-VIEW-05-3`
+- ส่วนที่ spec ไม่ได้บอก: กรณีข้อมูลใหม่ยังไม่ถูกดึงจาก Google Sheets (`Q-VIEW-03`), กรณี API ล้มเหลวและไม่มี Cache (`Q-VIEW-04`), และผลของ AC-VIEW-04 เมื่อผู้ใช้เป็นผู้มีสิทธิ์ (`AC-VIEW-05` ระบุผลไว้แทน)
+- สถานะ: ร่างทั้งหมด ยังไม่เขียนโค้ด test; ให้ทีมตรวจแถวและเปลี่ยนสถานะเป็น `ใช้ได้` ก่อนสั่ง `/testcases` อีกครั้ง
+
+## 2026-10-14 04:59 คำสั่ง: /testcases AC-VIEW-02 specs/005-ViewInfo/
+
+- โหมด: เขียน test
+- ผลลัพธ์: `TC-VIEW-02-1` และ `TC-VIEW-02-2` มีสถานะ `ใช้ได้`; `TC-VIEW-02-3` เป็น `คน` และรอ `Q-VIEW-03` จึงไม่เขียนโค้ดให้แถวนั้น
+- ไฟล์ที่สร้าง: `backend/tests/test_AC_VIEW_02.py`, `frontend/src/__tests__/TC-VIEW-02.test.tsx`
+- Test ที่เพิ่ม: `test_TC_VIEW_02_1_count_updates_after_new_registration`, `test_TC_VIEW_02_2_count_updates_at_two_minute_boundary` ทั้ง backend และ frontend
+- Frontend targeted: `cd frontend && npm test -- --run src/__tests__/TC-VIEW-02.test.tsx src/hooks/useRegistrants.test.ts` → `3 passed`
+- Backend targeted: `cd backend && pytest -q tests/test_AC_VIEW_02.py tests/services/test_polling_cache.py` → collection ไม่ได้เพราะ environment ขาด `googleapiclient`; ไม่ใช่ assertion failure ของ test ใหม่
+- `TC-VIEW-02-3` ต้องให้คนตรวจตาม Given/When/Then หลังทีมตัดสิน Q-VIEW-03
