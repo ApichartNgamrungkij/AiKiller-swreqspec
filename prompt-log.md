@@ -1136,3 +1136,33 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - Frontend targeted: `cd frontend && npm test -- --run src/__tests__/TC-VIEW-02.test.tsx src/hooks/useRegistrants.test.ts` → `3 passed`
 - Backend targeted: `cd backend && pytest -q tests/test_AC_VIEW_02.py tests/services/test_polling_cache.py` → collection ไม่ได้เพราะ environment ขาด `googleapiclient`; ไม่ใช่ assertion failure ของ test ใหม่
 - `TC-VIEW-02-3` ต้องให้คนตรวจตาม Given/When/Then หลังทีมตัดสิน Q-VIEW-03
+
+## 2026-10-14 05:08 ทำ test ต่อสำหรับ AC-VIEW-03 ถึง AC-VIEW-05
+
+- โหมด: เขียน test จากแถวที่มีสถานะ `ใช้ได้`
+- เพิ่ม test สำหรับ `AC-VIEW-03`: `TC-VIEW-03-1`, `TC-VIEW-03-2`; ข้าม `TC-VIEW-03-3` เพราะตรวจด้วยคนและรอ `Q-VIEW-04`
+- เพิ่ม test สำหรับ `AC-VIEW-04`: `TC-VIEW-04-1`, `TC-VIEW-04-2`, `TC-VIEW-04-3`
+- เพิ่ม test สำหรับ `AC-VIEW-05`: `TC-VIEW-05-1`, `TC-VIEW-05-2`, `TC-VIEW-05-3`
+- ไฟล์ backend: `backend/tests/test_AC_VIEW_03.py`, `backend/tests/test_AC_VIEW_04.py`, `backend/tests/test_AC_VIEW_05.py`
+- ไฟล์ frontend: `frontend/src/__tests__/TC-VIEW-03.test.tsx`, `frontend/src/__tests__/TC-VIEW-04.test.tsx`, `frontend/src/__tests__/TC-VIEW-05.test.tsx`
+- Frontend targeted: `11 passed` จาก 5 test files ที่เกี่ยวข้องกับ AC-VIEW-03 ถึง AC-VIEW-05
+- Backend targeted AC-VIEW-04 ถึง AC-VIEW-05: `10 passed`
+- Backend AC-VIEW-03: collection ไม่ได้เพราะ environment ขาด `googleapiclient`; dependency นี้ยังไม่อยู่ใน `backend/requirements.txt` จึงไม่เพิ่ม dependency เอง
+- `TC-VIEW-03-3` ยังเป็นการตรวจด้วยคนและรอ `Q-VIEW-04`
+
+## 2026-10-14 05:08 คำสั่ง: /verify specs/005-ViewInfo/
+
+- ผล test: backend full suite เก็บได้ 79 tests แต่ collection มี 3 errors จาก `ModuleNotFoundError: googleapiclient`; backend ที่ไม่รวม polling/AC-VIEW-02/03 ผ่าน `79 passed`; frontend full suite `51 passed, 1 failed` โดย failure อยู่ใน `007-DeleteActivity`
+- สร้าง `specs/005-ViewInfo/rtm.md`
+- ตารางตามรอยไปข้างหน้าครอบคลุม FR 5, NFR 3 และ Constraint 5 รายการ
+- สถานะตาราง: ครบ 2, ยังไม่ถึง 0, รอ Q-xx 0, ช่องโหว่ 11 แถว (แถวเดียวอาจอ้างหลาย F-ID)
+- ข้อค้นพบใหม่: F-01 ถึง F-04
+- ห้ามแก้โค้ด/test/spec/plan/tasks ในขั้น verify; รอทีมตัดสินในช่อง `ทีมตัดสิน`
+
+## 2026-10-14 05:13 การตัดสินข้อค้นพบจาก `/verify specs/005-ViewInfo/`
+
+- F-01: ทีมตัดสิน `แก้โค้ด` เพราะ dependency หลักของ endpoint ยังตอบ `501 NOT_IMPLEMENTED`
+- F-02: ทีมตัดสิน `แก้โค้ด` เพราะหน้า detail ยังไม่แสดง cache status และ Last Updated Time
+- F-03: ทีมตัดสิน `แก้โค้ด/สภาพแวดล้อม` เพราะต้องทำให้ dependency `googleapiclient` พร้อมก่อนตรวจ polling/cache
+- F-04: ทีมตัดสิน `ไม่ใช่ปัญหา` ของ 005 เพราะเป็น failure ของฟีเจอร์ 007 ให้เจ้าของฟีเจอร์แยกไปดำเนินการ
+- ขั้นถัดไปคือแก้ F-01 ถึง F-03 แยกจากการตรวจ verify แล้วรัน `/verify` รอบสอง
