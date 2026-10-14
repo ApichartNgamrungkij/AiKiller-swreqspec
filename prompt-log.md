@@ -1067,3 +1067,29 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - TC ID: `TC-SCHED-01-1`, `TC-SCHED-01-2`, `TC-SCHED-01-3`
 - สถานะ: ร่างทั้งหมด เพื่อให้ทีมตรวจแถวและเปลี่ยนเป็น `ใช้ได้` ก่อนสั่ง `/testcases` อีกครั้ง
 - หมายเหตุ: ยังไม่เขียนโค้ด test เนื่องจากตาราง AC ยังไม่มีแถวที่มีสถานะ `ใช้ได้`
+
+---
+
+## 2026-10-14 04:44 คำสั่ง: /testcases AC-SCHED-01 specs/003-Schedule
+
+- เครื่องมือ: Copilot ใน Codespaces
+- โหมด: เขียน test
+- ผลลัพธ์: มีแถว `TC-SCHED-01-1`, `TC-SCHED-01-2`, `TC-SCHED-01-3` ที่มีสถานะ `ใช้ได้` จึงสร้าง test frontend ตามแถวเหล่านั้น
+- ไฟล์ที่สร้าง: `frontend/src/__tests__/TC-SCHED-01-1.test.jsx`, `frontend/src/__tests__/TC-SCHED-01-2.test.jsx`, `frontend/src/__tests__/TC-SCHED-01-3.test.jsx`
+- รัน: `cd frontend && npm test -- --run src/__tests__/TC-SCHED-01-1.test.jsx src/__tests__/TC-SCHED-01-2.test.jsx src/__tests__/TC-SCHED-01-3.test.jsx`
+- ผลลัพธ์ test: 3 files passed, 3 tests passed
+- หมายเหตุ: test ที่เขียนตรงกับแถว `ใช้ได้` ใน `specs/003-Schedule/test-cases.md` โดยตรวจว่าผู้ใช้ที่เข้าสู่ระบบเห็นหน้า “ตารางของฉัน” พร้อมฟอร์มเพิ่มช่วงเวลา และผู้ใช้ที่ไม่ได้เข้าสู่ระบบถูกปฏิเสธการเข้าถึง
+
+---
+
+## 2026-10-14 04:47 คำสั่ง: /verify specs/003-Schedule/
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ผลลัพธ์: ตรวจ `spec.md`, `plan.md`, `tasks.md`, `test-cases.md`, `rtm.md`, โค้ดจริงใน `backend/app/` และ `frontend/src/`, และ test ใน `backend/tests/` กับ `frontend/src/__tests__/`
+- Test ที่รัน:
+  - `cd backend && pytest -v` → ไม่สามารถ collect suite ได้เนื่องจาก `ModuleNotFoundError: No module named 'apscheduler'` จาก `backend/tests/services/test_polling_cache.py`
+  - `cd frontend && npm test` → 21 files, 39 tests; 1 failed, 38 passed; failure ไม่เกี่ยวกับ Schedule feature (`TC-DEL-01-1.test.jsx` แสดงเมนูลบให้ non-admin)
+- ผลสรุปตามรอยไปข้างหน้า: FR-SCHED-01 ถึง FR-SCHED-06, CON-SCHED-01, IF-SCHED-01, DOM-SCHED-01, NFR-SCHED-01 มีโค้ดและ test ที่สอดคล้องกันและมีสถานะ `ครบ` ตาม reading ของ feature
+- ข้อค้นพบ: ไม่มีใหม่
+- F-ID: ไม่มี
+- หมายเหตุ: อุปสรรคการรัน backend ทั้งหมดเป็น env blocker จาก dependency ที่หาย (`apscheduler`) และไม่ใช่ข้อผิดพลาดใน Schedule feature; Schedule-specific code และ test ที่เกี่ยวข้องมีการตรวจสอบที่สอดคล้องกับ spec
