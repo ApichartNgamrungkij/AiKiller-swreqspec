@@ -58,13 +58,22 @@
 - เสร็จเมื่อ: ผู้ใช้งานที่ไม่ใช่ Admin ถูกปฏิเสธโดยตรงทั้งก่อนเปิดฟอร์มและก่อนยืนยันการลบ/ระงับ และการเรียก API ถูกส่งผ่าน HTTPS เท่านั้น
 - สถานะ: เสร็จ รอทีมตรวจ
 
+### T-07 เชื่อมหน้า Admin กับ dialog ยืนยัน (Frontend UI)
+- รองรับ: FR-DEL-01, FR-DEL-02, FR-DEL-03, FR-DEL-04, IF-REASON-01
+- ตรวจด้วย: AC-DEL-01, AC-DEL-02, AC-DEL-03
+- ไฟล์ที่แตะ: `frontend/src/App.jsx`, `frontend/src/pages/AdminActivityPage.tsx`, `frontend/src/components/ActivityActionMenu.tsx`, `frontend/src/components/ConfirmDeleteDialog.tsx`, `frontend/src/__tests__/AdminActivityPage.test.jsx`
+- ต้องทำหลัง: T-02, T-03
+- เสร็จเมื่อ: มุมมองจัดการของ Admin แสดงหน้า AdminActivityPage; การเลือกกิจกรรมและ action เปิด dialog ที่แสดงบริบทกิจกรรม; เหตุผลว่างหรือมีแต่ whitespace ไม่เรียก callback; การยกเลิกไม่เรียก callback; การยืนยันส่งกิจกรรม action และเหตุผลที่ trim แล้วให้ callback ของ parent
+- ขอบเขต: UI เท่านั้น; callback ใช้รับข้อมูลยืนยันจากหน้า ไม่เรียก Backend และไม่แสดงว่ากิจกรรมถูกลบ/ระงับจริง
+- สถานะ: เสร็จ รอทีมตรวจ
+
 ## ตารางตรวจความครบของ Acceptance Criteria
 
 | AC ID | task ที่ตรวจ AC นี้ |
 |---|---|
-| AC-DEL-01 | T-02 |
-| AC-DEL-02 | T-03 |
-| AC-DEL-03 | T-03 |
+| AC-DEL-01 | T-02, T-07 |
+| AC-DEL-02 | T-03, T-07 |
+| AC-DEL-03 | T-03, T-07 |
 | AC-DEL-04 | T-04 |
 | AC-DEL-05 | T-04, T-05 |
 | AC-DEL-06 | T-06 |

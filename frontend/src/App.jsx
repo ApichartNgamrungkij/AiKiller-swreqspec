@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import AdminActivityPage from './pages/AdminActivityPage'
 
 const activities = [
   { id: 1, title: 'ปลูกป่าชายเลน รักษ์ทะเลบ้านเรา', type: 'บำเพ็ญประโยชน์', date: 'เสาร์ 26 ตุลาคม 2569', dateValue: '2026-10-26', time: '08:00–15:00 น.', startTime: '08:00', endTime: '15:00', location: 'ศูนย์อนุรักษ์ป่าชายเลน จังหวัดชลบุรี', hours: 6, enrolled: 42, capacity: 60, organizer: 'ชมรมอาสาพัฒนา มหาวิทยาลัย', description: 'ร่วมปลูกต้นโกงกางและเรียนรู้การดูแลระบบนิเวศชายฝั่งกับชุมชนท้องถิ่น', color: 'ocean' },
@@ -9,6 +10,7 @@ const categories = ['ทั้งหมด', 'วิชาการ', 'กีฬ
 const roles = { student: 'นักศึกษา', organizer: 'ผู้จัดกิจกรรม', admin: 'Admin' }
 const weekdays = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์']
 
+// Supports FR-DEL-01 through FR-DEL-04; the demo role selector is not authentication.
 function App() {
   const [view, setView] = useState('activities')
   const [query, setQuery] = useState('')
@@ -17,6 +19,7 @@ function App() {
   const [schedule, setSchedule] = useState([])
   const [role, setRole] = useState('student')
   const [showRoleMenu, setShowRoleMenu] = useState(false)
+  const [lastAdminAction, setLastAdminAction] = useState(null)
   const filteredActivities = useMemo(() => activities.filter((activity) => {
     const text = `${activity.title} ${activity.location} ${activity.type}`.toLowerCase()
     return (category === 'ทั้งหมด' || activity.type === category) && text.includes(query.toLowerCase())
@@ -24,7 +27,7 @@ function App() {
 
   return <div className="app-shell">
     <header className="topbar"><a className="brand" href="#top" onClick={() => setView('activities')}><span className="brand-mark">✦</span><span><strong>อาสาดี</strong><small>Volunteer Hub</small></span></a><nav className="nav-links"><a className={view === 'activities' ? 'active' : ''} href="#activities" onClick={() => setView('activities')}>ค้นหากิจกรรม</a>{role === 'student' && <a className={view === 'schedule' ? 'active' : ''} href="#schedule" onClick={() => setView('schedule')}>ตารางของฉัน</a>}{role !== 'student' && <a className={view === 'manage' ? 'active' : ''} href="#manage" onClick={() => setView('manage')}>{role === 'admin' ? 'จัดการกิจกรรมทั้งหมด' : 'กิจกรรมของฉัน'}</a>}<a href="#about">เกี่ยวกับระบบ</a></nav><div className="account-area"><button className="profile-button" type="button" onClick={() => setShowRoleMenu((open) => !open)}><span className="account-dot">●</span>{roles[role]} <span>⌄</span></button>{showRoleMenu && <RoleMenu role={role} setRole={(nextRole) => { setRole(nextRole); setShowRoleMenu(false); setView('activities') }} />}</div></header>
-    <main id="top">{view === 'schedule' && role === 'student' ? <SchedulePage schedule={schedule} setSchedule={setSchedule} onViewActivity={() => setView('activities')} /> : view === 'manage' ? <RoleDashboard role={role} onBack={() => setView('activities')} /> : <ActivityPage activities={filteredActivities} query={query} setQuery={setQuery} category={category} setCategory={setCategory} setSelected={setSelected} />}</main>
+    <main id="top">{view === 'schedule' && role === 'student' ? <SchedulePage schedule={schedule} setSchedule={setSchedule} onViewActivity={() => setView('activities')} /> : view === 'manage' && role === 'admin' ? <AdminActivityPage activities={activities.map(({ id, title }) => ({ id, title, status: 'published' }))} isAdmin={role === 'admin'} onConfirmAction={setLastAdminAction} lastActionRequest={lastAdminAction} /> : view === 'manage' ? <RoleDashboard role={role} onBack={() => setView('activities')} /> : <ActivityPage activities={filteredActivities} query={query} setQuery={setQuery} category={category} setCategory={setCategory} setSelected={setSelected} />}</main>
     {selected && <ActivityModal activity={selected} schedule={schedule} role={role} onClose={() => setSelected(null)} />}<footer><span>อาสาดี · Volunteer Hub</span><span>ทุกชั่วโมงของคุณ มีความหมาย</span></footer>
   </div>
 }

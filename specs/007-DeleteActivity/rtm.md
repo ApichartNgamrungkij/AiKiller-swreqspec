@@ -1,39 +1,43 @@
 # RTM: DeleteActivity
-อ้างอิง: spec.md Status | tasks.md | test-cases.md
-สร้างด้วย /verify เมื่อ 2026-10-14 01:45 | test: 45 ผ่าน 1 ไม่ผ่าน
+อ้างอิง: spec.md Draft v2 | tasks.md | test-cases.md
+ผลทดสอบล่าสุด: Frontend test ใหม่ 12 ผ่าน; Backend เฉพาะชุดที่เกี่ยวข้อง 7 ผ่าน 0 ไม่ผ่าน (service visibility 2 + API routes 5); Backend ทั้งชุดยังมีข้อจำกัดจาก collection errors เพราะขาด apscheduler
 
-## 1. ตามรอยไปข้างหน้า (requirement ไป โค้ด ไป test)
+## 1. ตามรอยไปข้างหน้า (requirement ไป AC ไป task ไป โค้ด ไป test)
 | ID | AC | task | โค้ด (ไฟล์: ฟังก์ชัน) | test (ผล) | สถานะ |
 |---|---|---|---|---|---|
-| FR-DEL-01 | AC-DEL-01 | T-02 | `backend/app/api/admin_activity.py: list_admin_activities`; `frontend/src/pages/AdminActivityPage.tsx: AdminActivityPage`; `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu` | `frontend/src/__tests__/TC-DEL-01-1.test.jsx` pass | ครบ |
-| FR-DEL-02 | AC-DEL-01 | T-02 | `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu` | `frontend/src/__tests__/TC-DEL-01-1.test.jsx` pass | ครบ |
-| FR-DEL-03 | AC-DEL-02, AC-DEL-03 | T-03 | `backend/app/api/admin_activity.py: validate_delete_reason`; `confirm_activity_action` | `backend/app/api/admin_activity.py` embedded tests pass | ครบ |
-| FR-DEL-04 | AC-DEL-02 | T-03 | `backend/app/api/admin_activity.py: confirm_activity_action` | embedded tests pass | ครบ |
-| FR-DEL-05 | AC-DEL-04 | T-04 | `backend/app/services/activity_delete_service.py: delete_or_suspend_activity`; `backend/app/services/activity_visibility_service.py: student_activity_list` | `test_AC_DEL_04_student_activity_list_excludes_hidden_or_soft_deleted_activities` pass | ครบ |
-| FR-DEL-06 | AC-DEL-05 | T-04, T-05 | `backend/app/api/admin_activity.py: record_activity_audit_log`; `get_activity_audit_logs`; `handle_activity_action` | `test_AC_DEL_05_audit_log_is_created_when_activity_is_removed_or_suspended` pass | ครบ |
-| FR-DEL-07 | AC-DEL-06 | T-06 | `backend/app/services/access_control.py: require_admin_access`; `is_admin_user` | `backend/tests/api/test_delete_activity_access.py` pass | ครบ |
-| IF-ADMIN-01 | AC-DEL-01, AC-DEL-06 | T-02, T-03, T-06 | `frontend/src/components/ActivityActionMenu.tsx`; `backend/app/services/access_control.py` | UI + API tests pass | ครบ |
-| IF-DEL-01 | AC-DEL-01 | T-02, T-04 | `backend/app/api/admin_activity.py: can_admin_manage_activity`; `backend/app/services/activity_delete_service.py` | feature tests pass | ครบ |
-| IF-REASON-01 | AC-DEL-02, AC-DEL-03 | T-03 | `backend/app/api/admin_activity.py: validate_delete_reason` | embedded tests pass | ครบ |
-| IF-HIDE-01 | AC-DEL-04 | T-01, T-04 | `backend/app/services/activity_visibility_service.py`; `backend/app/models/activity.py` | `test_AC_DEL_04...` pass | ครบ |
-| ACC-AUDIT-01 | AC-DEL-05 | T-04, T-05 | `backend/app/services/activity_delete_service.py: delete_or_suspend_activity` | audit-log assertions pass | ครบ |
-| ACC-ADMIN-01 | AC-DEL-06 | T-06 | `backend/app/services/access_control.py: is_admin_user`; `require_admin_access` | `test_AC_DEL_06_non_admin_users_cannot_open_or_confirm_delete_actions` pass | ครบ |
-| CON-DEL-01 | ไม่มี AC ตรง | T-01, T-02, T-04 | `backend/app/services/activity_delete_service.py` แก้เฉพาะ Activity ที่เลือกเท่านั้น | ไม่มีผลกระทบต่อกิจกรรมอื่น; การออกแบบคงมี scope ตาม intent | ครบ |
-| NFR-DEL-01 | AC-DEL-06 | T-04, T-06 | `backend/app/services/access_control.py: require_admin_access` | API test pass | ครบ |
-| NFR-DEL-02 | AC-DEL-06 | T-06 | `backend/app/services/access_control.py: is_https_request`; `require_https` | `test_AC_DEL_06_https_is_required_for_delete_or_suspend_requests` pass | ครบ |
-| NFR-DEL-03 | AC-DEL-05 | T-05 | `backend/app/api/admin_activity.py: record_activity_audit_log` | audit-log test pass | ครบ |
+| FR-DEL-01 | AC-DEL-01 | T-02 | `backend/app/api/admin_activity.py: list_admin_activities`; `frontend/src/pages/AdminActivityPage.tsx: AdminActivityPage` | `test_TC_DEL_01_1...`, `test_TC_DEL_01_2...` ผ่าน; ทดสอบ component แยก ไม่ได้เปิดผ่าน `App` | ช่องโหว่ |
+| FR-DEL-02 | AC-DEL-01 | T-02 | `backend/app/api/admin_activity.py: get_available_actions`; `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu` | `test_TC_DEL_01_1...` ผ่าน โดยตรวจจำนวนปุ่ม แต่ไม่ได้กดปุ่มเพื่อยืนยัน action | ช่องโหว่ |
+| FR-DEL-03 | AC-DEL-02, AC-DEL-03 | T-03 | `backend/app/api/admin_activity.py: validate_delete_reason`; `backend/app/api/admin_activity_routes.py: perform_activity_action`; `frontend/src/components/ConfirmDeleteDialog.tsx: validateReason` | `test_blank_reason_is_rejected` และ `test_confirmation_is_required` ผ่าน; ไม่มี test ตรวจข้อความแจ้งเตือนใน UI | ช่องโหว่ |
+| FR-DEL-04 | AC-DEL-02 | T-03 | `backend/app/api/admin_activity_routes.py: perform_activity_action`; `frontend/src/components/ConfirmDeleteDialog.tsx: handleSubmit` | `test_confirmation_is_required` ผ่าน; UI ไม่ได้เชื่อม dialog กับปุ่ม action | ช่องโหว่ |
+| FR-DEL-05 | AC-DEL-04 | T-04 | `backend/app/services/activity_delete_service.py: delete_or_suspend_activity`; `backend/app/services/activity_service.py: filter_activities_for_role` | test_action_hides_activity_from_student_results ผ่าน 2 กรณี (delete และ suspend) โดยตรวจว่ากิจกรรมเป้าหมายไม่ปรากฏในผลค้นหานักศึกษา และกิจกรรมอื่นยังแสดงอยู่ | ครบ (service-level) |
+| FR-DEL-06 | AC-DEL-05 | T-04, T-05 | `backend/app/api/admin_activity_routes.py: perform_activity_action`; `backend/app/services/activity_delete_service.py: delete_or_suspend_activity`; `backend/app/services/activity_audit_log_service.py: record_log` (ไม่ได้ถูกเรียกจาก route) | `test_admin_can_suspend_activity_and_record_audit_log` ผ่าน โดยตรวจว่ามี log และเหตุผล; log ที่ route ใช้เป็น list ในหน่วยความจำ | ช่องโหว่ |
+| FR-DEL-07 | AC-DEL-06 | T-06 | `backend/app/services/access_control.py: require_admin_access`; `backend/app/api/admin_activity_routes.py: perform_activity_action` | `test_non_admin_cannot_change_activity` และ `test_AC_DEL_06_non_admin_users_cannot_open_or_confirm_delete_actions` ผ่าน; test override dependency ผู้ใช้ แต่ dependency จริงยังเป็น placeholder | ช่องโหว่ |
+| IF-ADMIN-01 | AC-DEL-01, AC-DEL-06 | T-02, T-03, T-06 | `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu`; `backend/app/services/access_control.py: require_admin_access` | frontend non-admin test และ backend non-admin tests ผ่าน; หน้าใน App ไม่ได้ใช้ component นี้ และ API auth dependency ยังไม่เชื่อมระบบจริง | ช่องโหว่ |
+| IF-DEL-01 | AC-DEL-01 | T-02, T-04 | `backend/app/api/admin_activity.py: can_admin_manage_activity`; `backend/app/services/activity_delete_service.py: delete_or_suspend_activity` | `test_TC_DEL_01_2...` และ `test_non_published_activity_cannot_be_changed` ผ่าน | ครบ |
+| IF-REASON-01 | AC-DEL-02, AC-DEL-03 | T-03 | `backend/app/api/admin_activity_routes.py: perform_activity_action`; `frontend/src/components/ConfirmDeleteDialog.tsx: validateReason` | `test_blank_reason_is_rejected` ผ่านและไม่เปลี่ยนสถานะ; ไม่มี test ตรวจว่าข้อความแจ้งเหตุผลแสดงใน flow ที่ผู้ใช้เปิดจริง | ช่องโหว่ |
+การเขียน
+| IF-HIDE-01 | AC-DEL-04 | T-01, T-04 | backend/tests/services/test_activity_visibility_after_delete.py::test_action_hides_activity_from_student_results | ผ่าน 2 กรณี (delete และ suspend) โดยตรวจว่ากิจกรรมเป้าหมายไม่ปรากฏในผลค้นหานักศึกษา และกิจกรรมอื่นยังแสดงอยู่ | ครบ (service-level) |
+| ACC-AUDIT-01 | AC-DEL-05 | T-04, T-05 | `backend/app/services/activity_delete_service.py: delete_or_suspend_activity`; `backend/app/api/admin_activity_routes.py: get_audit_log_store` | `test_admin_can_suspend_activity_and_record_audit_log` ผ่าน; route บันทึกลง list ชั่วคราวโดยตรง ไม่มีการเก็บถาวรหรือ endpoint ดูประวัติ | ช่องโหว่ |
+| ACC-ADMIN-01 | AC-DEL-06 | T-06 | `backend/app/services/access_control.py: is_admin_user`, `require_admin_access` | `test_non_admin_cannot_change_activity` และ `test_AC_DEL_06_non_admin_users_cannot_open_or_confirm_delete_actions` ผ่าน | ช่องโหว่ |
+| CON-DEL-01 | ไม่มี AC | T-01, T-02, T-04 | `backend/app/services/activity_delete_service.py: delete_or_suspend_activity` | test_action_hides_activity_from_student_results ผ่าน 2 กรณี ตรวจสถานะของกิจกรรมเป้าหมายและยืนยันว่ากิจกรรมอื่นยังเป็น PUBLISHED | ครบ (service-level) |
+| NFR-DEL-01 | AC-DEL-06 | T-04, T-06 | `backend/app/services/access_control.py: require_admin_access`; `backend/app/api/admin_activity_routes.py: perform_activity_action` | Backend test ปฏิเสธ non-admin ผ่าน; dependency ผู้ใช้จริงยังตอบ 501 เมื่อไม่ได้ override | ช่องโหว่ |
+| NFR-DEL-02 | ไม่มี AC ที่ตรวจ HTTPS โดยตรง | T-06 | `backend/app/services/access_control.py: is_https_request`, `require_https`; `backend/app/api/admin_activity_routes.py: perform_activity_action` | `test_AC_DEL_06_https_is_required_for_delete_or_suspend_requests` ผ่าน แต่ AC-DEL-06 ตรวจการปฏิเสธ non-admin ไม่ได้ตรวจ HTTPS | ช่องโหว่ |
+| NFR-DEL-03 | AC-DEL-05 | T-05 | `backend/app/services/activity_audit_log_service.py: record_log`, `list_for_activity`; `backend/app/models/activity_audit_log.py: ActivityAuditLog` | Test route ตรวจเพียงจำนวน log และเหตุผล; ไม่มี test ตรวจความครบของผู้ทำ ประเภท เวลา และการอ่านย้อนหลังจากระบบจริง | ช่องโหว่ |
 
 ## 2. ตามรอยย้อนกลับ (โค้ด ไป requirement)
 | โค้ด (ไฟล์: ฟังก์ชัน หรือ endpoint) | อ้าง ID | ตรงกับข้อความใน spec ไหม | หมายเหตุ |
 |---|---|---|---|
-| `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu` | FR-DEL-01, FR-DEL-02, IF-ADMIN-01 | ใช่ | แสดงเฉพาะกิจกรรมที่เป็น published และมีสิทธิ์ Admin เท่านั้น |
-| `frontend/src/pages/AdminActivityPage.tsx: AdminActivityPage` | FR-DEL-01, IF-ADMIN-01 | ใช่ | กรองเป็น published activities ก่อนแสดงเมนูให้เลือก |
-| `backend/app/api/admin_activity.py: confirm_activity_action` | FR-DEL-03, FR-DEL-04, IF-REASON-01 | ใช่ | บังคับให้ระบุเหตุผลและตรวจสอบ action ที่ถูกต้อง |
-| `backend/app/services/activity_delete_service.py: delete_or_suspend_activity` | FR-DEL-05, FR-DEL-06, ACC-AUDIT-01, IF-HIDE-01 | ใช่ | เปลี่ยน status เป็น hidden/soft deleted และบันทึก Audit Log |
-| `backend/app/services/activity_visibility_service.py: student_activity_list` | FR-DEL-05, IF-HIDE-01 | ใช่ | กรองกิจกรรมที่ไม่ใช่ published ออกจากรายการนักศึกษา |
-| `backend/app/services/access_control.py: require_admin_access` | FR-DEL-07, NFR-DEL-01, NFR-DEL-02, ACC-ADMIN-01 | ใช่ | ตัดสิทธิ์ผู้ไม่ใช่ Admin และตรวจ HTTPS |
-| `backend/tests/api/test_delete_activity_access.py` | AC-DEL-06 | ใช่ | ตรวจสิทธิ์ Admin และ HTTPS อย่างชัดเจน |
-| `frontend/src/__tests__/TC-DEL-01-1.test.jsx` | AC-DEL-01 | ใช่ | ทดสอบว่าผู้ใช้งาน Admin เห็นเมนูและ Non-admin ไม่เห็น |
+| `frontend/src/App.jsx: App`, `RoleDashboard` | FR-DEL-01, FR-DEL-06 | ไม่ครบ | หน้า App แสดง AdminActivityPage ผ่าน flow เลือกบทบาทแบบ demo และใช้ข้อมูลกิจกรรมตัวอย่าง ยังไม่ได้เชื่อมต่อ Backend API หรือข้อมูล Audit Log จริง |
+| `frontend/src/pages/AdminActivityPage.tsx: AdminActivityPage` | FR-DEL-01, FR-DEL-02 | ไม่ครบ | เชื่อมต่อกับ App แล้ว แสดงรายการกิจกรรมจาก props และส่ง action พร้อมเหตุผลผ่าน callback ได้ แต่ยังไม่ได้เรียก Backend API จริง |
+| `frontend/src/components/ActivityActionMenu.tsx: ActivityActionMenu` | FR-DEL-01, FR-DEL-02, IF-ADMIN-01 | บางส่วน | ซ่อนปุ่มเมื่อไม่ใช่ Admin/กิจกรรมไม่ published และแสดงสอง action; ไม่มี flow ที่ทำ action ต่อ |
+| `frontend/src/components/ConfirmDeleteDialog.tsx: validateReason`, `handleSubmit` | FR-DEL-03, FR-DEL-04, IF-REASON-01 | บางส่วน | ตรวจเหตุผลและเรียก callback ได้เมื่อ component ถูกใช้ แต่ไม่มีการเชื่อมจากหน้า Admin |
+| `backend/app/api/admin_activity.py: list_admin_activities`, `confirm_activity_action`, `handle_activity_action` | FR-DEL-01 ถึง FR-DEL-06, IF-DEL-01, IF-REASON-01 | บางส่วน | เป็น helper; test functions AC-DEL-01/02/03/04/05 ในไฟล์นี้ไม่ได้ถูกรวบรวมโดย pytest |
+| `backend/app/api/admin_activity_routes.py: perform_activity_action` | FR-DEL-03 ถึง FR-DEL-07, NFR-DEL-01, NFR-DEL-02 | ไม่ครบ | มี POST action เดียว; ไม่มี endpoint รายการ Admin หรืออ่าน Audit Log; `get_current_user` และ `get_activity` ตอบ 501; router ถูก include เฉพาะใน test |
+| `backend/app/services/activity_delete_service.py: delete_or_suspend_activity` | FR-DEL-05, FR-DEL-06, IF-HIDE-01, IF-DEL-01, CON-DEL-01 | บางส่วน | เปลี่ยน status เฉพาะ object ที่รับเข้าและสร้าง log เฉพาะเมื่อส่ง list มา; route ส่ง list ในหน่วยความจำ |
+| `backend/app/services/activity_service.py: filter_activities_for_role`; `backend/app/services/activity_visibility_service.py: student_activity_list` | FR-DEL-05, IF-HIDE-01 | ใช่ใน logic | มี service-level test สำหรับตรวจการซ่อนกิจกรรมแล้ว แต่ยังไม่มี end-to-end test ที่เชื่อมฐานข้อมูลและ runtime จริง |
+| `backend/app/services/activity_audit_log_service.py: record_log`, `list_for_activity`; `backend/app/models/activity_audit_log.py: ActivityAuditLog` | FR-DEL-06, NFR-DEL-03, ACC-AUDIT-01 | ไม่ครบ | Model กำหนดฟิลด์ครบ แต่ route ใช้ list ชั่วคราวและไม่มี API ให้ Admin อ่านย้อนหลัง |
+| `backend/app/services/access_control.py: is_admin_user`, `require_admin_access`, `is_https_request`, `require_https` | FR-DEL-07, NFR-DEL-01, NFR-DEL-02, ACC-ADMIN-01 | ใช่ใน helper | ตรวจ role และ HTTPS ได้ตาม test; route ใช้ dependency ผู้ใช้จริงที่ยังไม่ได้ตั้งค่า |
+| `backend/tests/api/test_admin_activity_routes.py`; `backend/tests/api/test_delete_activity_access.py` | AC-DEL-02, AC-DEL-03, AC-DEL-06 | บางส่วน | 7 tests ผ่านเมื่อรันแยก; dependency ถูก override และไม่มี test AC-DEL-04 ที่รวบรวมได้ |
 
 ## 3. ข้อค้นพบ
 ชนิด: AC ไม่มี test / test อ่อน / โค้ดไม่มี FR / FR ไม่มี AC / เดา Q-xx / ละเมิด Constraint / ตัวเลขไม่ตรง spec / อ้าง ID ผิดเรื่อง
@@ -41,9 +45,17 @@
 
 | F-ID | ชนิด | อยู่ที่ | ขัดกับ | รายละเอียด | ทีมตัดสิน |
 |---|---|---|---|---|---|
-| F-01 | Code | `backend/app/api/`, `backend/app/routes/` | FR-DEL-03, FR-DEL-04, FR-DEL-07 (ตรวจสอบกับข้อความจริงใน spec.md ก่อนยืนยัน) | ยังไม่พบ HTTP endpoint สำหรับลบหรือระงับกิจกรรมที่เชื่อมการตรวจสิทธิ์ Admin, การตรวจเหตุผล และการบันทึก Audit Log เข้าด้วยกัน แม้จะมี helper และ service รองรับบางส่วน | รอตรวจสอบและยืนยันกับทีมว่าขอบเขตงานกำหนดให้ต้องมี HTTP endpoint หรือไม่ |
-| F-02 | Test Evidence | `specs/007-DeleteActivity/rtm.md` | หลักฐานผลทดสอบ | RTM ระบุ 45 ผ่าน 1 ไม่ผ่าน แต่ยังหาแหล่งผลรันที่ยืนยันตัวเลขดังกล่าวไม่ได้ ผลที่ตรวจสอบย้อนกลับได้คือ frontend 39 tests ผ่าน และ backend เฉพาะส่วนที่เกี่ยวข้อง 6 tests ผ่าน ส่วน backend ทั้งชุดติดปัญหา `apscheduler` ที่ยังไม่ได้ติดตั้ง | แก้ข้อมูลผลทดสอบให้แยกตามชุดทดสอบและอ้างอิงผลรันจริง ไม่ใช้ยอดรวมที่ยังยืนยันไม่ได้ |
+| F-01 | Code | `backend/app/api/admin_activity_routes.py`, `backend/tests/api/test_admin_activity_routes.py` | FR-DEL-03, FR-DEL-04, FR-DEL-06, FR-DEL-07, NFR-DEL-01 | เพิ่ม HTTP endpoint สำหรับตรวจสิทธิ์ Admin, HTTPS, การยืนยัน, เหตุผล, การเปลี่ยนสถานะ และการบันทึก Audit Log; tests ที่เกี่ยวข้องผ่าน 7 tests. ตรวจรอบนี้พบว่า `get_current_user`/`get_activity` ยังตอบ 501, router ถูกติดตั้งเฉพาะใน test, log เป็น list ในหน่วยความจำ และไม่มี endpoint อ่านประวัติ | แก้ไข endpoint และเพิ่ม API tests แล้ว แต่ authentication และ activity lookup ยังเป็น placeholder และ Audit Log ยังเก็บในหน่วยความจำ ต้องเชื่อมต่อระบบจริงก่อนใช้งาน production |
+| F-03 | test อ่อน | `frontend/src/pages/AdminActivityPage.tsx`, `frontend/src/components/ActivityActionMenu.tsx`, `frontend/src/__tests__/TC-DEL-01-1.test.jsx` | FR-DEL-01, FR-DEL-02, FR-DEL-04, IF-ADMIN-01 | มี AdminActivityPage.test.jsx จำนวน 12 tests ครอบคลุมการเปิดหน้าผ่าน App การแสดงกิจกรรม การเปิด dialog การยกเลิก และการยืนยัน action พร้อมเหตุผลผ่าน callback อย่างไรก็ตาม callback ยังไม่เรียก Backend API จริง และยังมี test code ฝังอยู่ใน module ของ UI | |
+| F-04 | AC ไม่มี test | backend/tests/services/test_activity_visibility_after_delete.py | AC-DEL-04, FR-DEL-05, IF-HIDE-01 | เพิ่ม test_action_hides_activity_from_student_results ซึ่ง pytest เก็บเป็น test ได้และผ่าน 2 กรณี ได้แก่ delete และ suspend โดยตรวจว่ากิจกรรมเป้าหมายไม่ปรากฏในผลค้นหานักศึกษา | แก้แล้วในระดับ service — มี test ที่รันผ่านทั้งสองกรณี แต่ยังไม่ใช่ end-to-end/production test |
+| F-05 | test อ่อน | `backend/tests/api/test_admin_activity_routes.py: test_blank_reason_is_rejected`; `frontend/src/components/ConfirmDeleteDialog.tsx` | AC-DEL-03, FR-DEL-03, IF-REASON-01 |Backend test ตรวจ status 422 และการไม่เปลี่ยนสถานะเมื่อเหตุผลว่าง ส่วน UI test ตรวจเหตุผลว่างหรือมีแต่ช่องว่างและยืนยันว่าไม่เรียก callback แต่ยังไม่ได้ตรวจรายละเอียด response และข้อความแจ้งเตือนจาก Backend ครบทุกกรณี | |
+| F-06 | test อ่อน | `backend/tests/api/test_admin_activity_routes.py: test_admin_can_suspend_activity_and_record_audit_log` | AC-DEL-05, FR-DEL-06, NFR-DEL-03, ACC-AUDIT-01 | Test ตรวจเพียง status, จำนวน log และเหตุผล ไม่ตรวจ `admin_id`, `action_type`, `created_at` หรือการอ่านประวัติหลัง request; test ที่ assert บางฟิลด์อยู่ใน `admin_activity.py` และไม่ถูกรวบรวม | |
+| F-07 | FR ไม่มี AC | `specs/007-DeleteActivity/spec.md: NFR-DEL-02`; `specs/007-DeleteActivity/tasks.md` | NFR-DEL-02 | NFR กำหนดให้ส่งข้อมูลผ่าน HTTPS แต่ไม่มี AC ที่ตรวจ transport นี้; AC-DEL-06 ตรวจเฉพาะการปฏิเสธผู้ไม่มีสิทธิ์ แม้มี test helper สำหรับ HTTPS | |
+| F-08 | test อ่อน | backend/tests/services/test_activity_visibility_after_delete.py | CON-DEL-01 | เพิ่ม test ที่มีกิจกรรมเป้าหมายและกิจกรรมอื่น ตรวจว่าหลัง delete หรือ suspend กิจกรรมเป้าหมายหายจากผลค้นหา ขณะที่กิจกรรมอื่นยังเป็น PUBLISHED และยังแสดงผลได้ | แก้แล้วในระดับ service — ยืนยันว่ากิจกรรมอื่นไม่ถูกกระทบใน test ทั้งสองกรณี แต่ยังไม่ใช่ end-to-end/production test |
 
 ## 4. แก้แล้ว
 | F-ID | แก้อย่างไร | รู้ได้อย่างไร |
 |---|---|---|
+| F-02 | แก้ข้อความสรุปผลทดสอบให้ตรงกับหลักฐานที่ตรวจสอบได้ และระบุข้อจำกัดของ Backend suite | ตรวจสอบกับบันทึกใน `prompt-log.md` |
+| F-04 | เพิ่ม service-level test ที่ตรวจการซ่อนกิจกรรมหลัง delete/suspend ในไฟล์ backend/tests/services/test_activity_visibility_after_delete.py | รัน test แล้วผ่าน 2 กรณี |
+| F-08 | เพิ่มการตรวจว่ากิจกรรมอื่นยังคงเป็น PUBLISHED และปรากฏในผลค้นหานักศึกษาหลังจัดการกิจกรรมเป้าหมาย | รัน test แล้วผ่าน 2 กรณี |

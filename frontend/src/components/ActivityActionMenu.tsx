@@ -1,8 +1,22 @@
-// Supports FR-DEL-01, FR-DEL-02, IF-ADMIN-01, CON-DEL-01
-export default function ActivityActionMenu({ activity, onSelect }) {
-  if (activity?.status !== 'published') {
-    return null
+
+type ActivityActionMenuProps = {
+  activity: {
+    id: number | string
+    status: string
   }
+  isAdmin: boolean
+  onSelect: (action: 'delete' | 'suspend') => void
+}
+
+// Supports FR-DEL-01, FR-DEL-02, IF-ADMIN-01, CON-DEL-01
+export default function ActivityActionMenu({
+  activity,
+  isAdmin,
+  onSelect,
+}: ActivityActionMenuProps) {
+ if (!isAdmin || activity?.status !== 'published') {
+  return null
+}
 
   return (
     <div aria-label={`actions-${activity.id}`}>

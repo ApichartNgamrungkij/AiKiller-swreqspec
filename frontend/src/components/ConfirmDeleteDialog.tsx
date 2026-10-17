@@ -1,7 +1,14 @@
 import { useState } from 'react'
 
+type ConfirmDeleteDialogProps = {
+  activityTitle?: string
+  actionType?: 'delete' | 'suspend'
+  onConfirm: (reason: string) => void
+  onCancel: () => void
+}
+
 // Supports FR-DEL-03, FR-DEL-04, IF-REASON-01, ASM-01
-export function validateReason(reason) {
+export function validateReason(reason: string) {
   if (!reason || !reason.trim()) {
     return 'กรุณาระบุเหตุผลก่อนยืนยันการลบ/ระงับกิจกรรม'
   }
@@ -13,7 +20,7 @@ export default function ConfirmDeleteDialog({
   actionType = 'delete',
   onConfirm,
   onCancel,
-}) {
+}: ConfirmDeleteDialogProps) {
   const [reason, setReason] = useState('')
   const [error, setError] = useState('')
 
@@ -25,12 +32,19 @@ export default function ConfirmDeleteDialog({
     }
 
     setError('')
-    onConfirm?.(reason.trim())
+    onConfirm(reason.trim())
   }
 
   return (
-    <div aria-label="confirm-delete-dialog">
-      <h2>ยืนยันการ{actionType === 'delete' ? 'ลบ' : 'ระงับ'}กิจกรรม</h2>
+    <div
+      aria-label="confirm-delete-dialog"
+      aria-labelledby="confirm-delete-title"
+      aria-modal="true"
+      role="dialog"
+    >
+      <h2 id="confirm-delete-title">
+        ยืนยันการ{actionType === 'delete' ? 'ลบ' : 'ระงับ'}กิจกรรม
+      </h2>
       <p>กิจกรรม: {activityTitle}</p>
 
       <label htmlFor="activity-reason">เหตุผล</label>

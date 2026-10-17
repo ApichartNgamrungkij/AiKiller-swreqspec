@@ -1117,6 +1117,16 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 
 ---
 
+## 2026-10-14 02:02 คำสั่ง: /testcases AC-DEL-01 specs/007-DeleteActivity/
+
+- โหมด: เขียน test
+- สถานะแถวใน `specs/007-DeleteActivity/test-cases.md`: `TC-DEL-01-1`, `TC-DEL-01-2`, `TC-DEL-01-3` อยู่ในสถานะ `ใช้ได้`
+- ไฟล์ test ที่มีอยู่แล้ว: `frontend/src/__tests__/TC-DEL-01-1.test.jsx`
+- ผลลัพธ์: รัน `cd frontend && npm test -- --run` แล้วผ่านทั้งหมด (`19 files passed`, `39 tests passed`)
+- ข้อสรุป: โหมดนี้ใช้แถวที่ตรวจแล้วและไม่แก้โค้ดระบบ; เฉพาะ test ที่สอดคล้องกับ AC-DEL-01 ถูกเขียนและรันตามที่กำหนด
+
+---
+
 ## 2026-10-14 01:45 คำสั่ง: /verify specs/007-DeleteActivity/
 
 - เครื่องมือ: Copilot ใน Codespaces
@@ -1245,3 +1255,23 @@ HED-01 ถูกระบุในตารางตรวจ Constraints
 - สร้าง `specs/changes/CR-005-viewinfo-runtime-dependencies.md`
 - CR บันทึกสาเหตุ ผลกระทบ และคำถาม Q-CR-005-01 ถึง Q-CR-005-03
 - ยังไม่แก้ `spec.md`, `plan.md`, `tasks.md` หรือโค้ด เพราะทีมยังไม่ได้ยืนยัน runtime dependencies
+
+## 2026-10-17 12:20 คำสั่ง: /verify specs/007-DeleteActivity/rtm.md
+
+- Backend full suite (`cd backend && pytest -v`): เก็บได้ 84 items แต่หยุดตอน collection ด้วย 3 errors จาก `ModuleNotFoundError: apscheduler`; ยังไม่มีผล pass/fail สำหรับ test ทั้งชุด
+- Backend tests เฉพาะ feature (`tests/api/test_admin_activity_routes.py`, `tests/api/test_delete_activity_access.py`): 7 passed
+- Frontend full suite (`cd frontend && npm test`): 58 passed, 0 failed
+- ตารางตามรอยไปข้างหน้ามี 17 แถว: ครบ 1, ยังไม่ถึง 0, รอ Q-xx 0, ช่องโหว่ 16
+- ข้อค้นพบใหม่: F-03 ถึง F-08; คง F-01 พร้อมข้อความในช่อง `ทีมตัดสิน` เดิม และคง F-02 ในหัวข้อ `แก้แล้ว`
+- แก้เฉพาะ `specs/007-DeleteActivity/rtm.md` และเพิ่มบันทึกนี้ต่อท้าย `prompt-log.md`; ไม่แก้โค้ด test spec plan หรือ tasks
+
+## 2026-10-17 13:06 คำสั่ง: /implement T-07 specs/007-DeleteActivity/tasks.md
+
+- ผลลัพธ์: เพิ่ม task T-07 สำหรับเชื่อม flow ยืนยัน DeleteActivity ฝั่ง Frontend เท่านั้น และทำเครื่องหมาย `เสร็จ รอทีมตรวจ`
+- ไฟล์ที่แก้: `frontend/src/App.jsx`, `frontend/src/pages/AdminActivityPage.tsx`, `frontend/src/components/ConfirmDeleteDialog.tsx`, `frontend/src/__tests__/AdminActivityPage.test.jsx`, `specs/007-DeleteActivity/tasks.md`, `prompt-log.md`
+- ไฟล์เดิมที่คงไว้: `frontend/src/components/ActivityActionMenu.tsx` และ test เดิม `frontend/src/__tests__/TC-DEL-01-1.test.jsx`; ไม่แก้ Backend, `activityApi.ts`, CR-005, spec หรือ RTM
+- ผล test เฉพาะ: `AdminActivityPage.test.jsx` และ `TC-DEL-01-1.test.jsx` รวม 18 passed
+- ผล Frontend suite: 29 files, 73 passed; มี warning `act(...)` เดิมจาก tests ของ SearchList แต่ไม่มี test ล้มเหลว
+- ผล build: `npm run build` สำเร็จ; 32 modules transformed
+- ข้อจำกัด: callback ส่งข้อมูล UI ให้ parent เท่านั้น; ไม่เรียก Backend, ไม่เปลี่ยนข้อมูลจริง และ role selector ยังคงเป็น demo ไม่ใช่ Authentication
+- สิ่งที่เกือบต้องเดาแต่ไม่ได้อ้างเป็นของจริง: รายการใน Admin view มาจากข้อมูลตัวอย่างเดิมของ App และถูกแสดงเป็น published สำหรับทดสอบ UI เท่านั้น
